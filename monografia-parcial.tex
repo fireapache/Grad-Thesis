@@ -4,6 +4,10 @@
 \usepackage{graphicx} % para inserir figuras
 \usepackage{times,amsmath,amsfonts,xspace,dsfont,pgf,latexsym,amssymb}
 \usepackage{todonotes}
+\usepackage{caption}
+\captionsetup{compatibility=false}
+\usepackage{subcaption}
+\usepackage[linesnumbered]{algorithm2e}
 
 \newcommand{\red}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
 \newcommand{\blue}[1]{\textcolor[rgb]{0.00,0.00,1.00}{#1}}
@@ -14,12 +18,12 @@
 \curso{Ciência da Computação}
 \nomecurso{Bacharelado em Ciência da Computação}
 \titulocurso{Bacharel em Ciência da Computação}
-\title{Um Blabla Blablabla com Aplicações em Blablabla}
+\title{Algebraic Simplifications Increasing \\Performance And Exactitude of\\ Discrete Wavelet Transforms}
 
 \author{dos Santos}{Vinícius Rodrigues}
-\advisor[Prof.~Dr.]{Reiser}{Renata Hax Sander}
-\coadvisor[Prof.~Dr.]{Kozakevicius}{Alice}
-\collaborator[Prof.~Dr.]{Pilla}{Maurício}
+\advisor[Profa.~Dra.]{Reiser}{Renata Hax Sander}
+\coadvisor[Prof.~Dr.]{Pilla}{Maurício}
+\collaborator[Profa.~Dra.]{Kozakevicius}{Alice}
 
 \keyword{wavelet}
 \keyword{interval}
@@ -38,8 +42,8 @@
 
 
 \begin{englishabstract}%
-  {Titulo do Trabalho em Ingles}%
-  {wavelet, interval, performance, optimization}
+  {Algebraic Simplifications Increasing Performance And Exactitude of Discrete Wavelet Transforms}%
+  {wavelet, interval, performance, optimization, haar, daubechies, accuracy, exatitude}
   
 This document describes the interval extension of the Haar Wavelet Transform (HWT) implemented using C-XSC. Both Cascade and {\it à trous} algorithms are extended. Optimizations for the normalized formulations of the one- and two dimensional transforms to increase speed and accuracy  of the results are also presented. As an application, image compression is addressed, whose quality is computed and compared by different metrics. The error analysis of the different interval formulations as well as the speedup obtained through the interval formulations and the proposed simplifications are presented.
 
@@ -66,60 +70,67 @@ The final thesis will present a complete study over the Daubechies Wavelet Trans
 %Sumario
 \tableofcontents
 
-\chapter{INTRODUCTION}
+\chapter{Introduction}
 
-The quality of numerical results in Scientific Computing (SC) depends on understanding the different  causes of errors   and  controling their propagation in data,  as well as improving  computations in the involved procedures.
+The quality of numerical results in Scientific Computing (SC) depends on understanding the different error causes and on controling their propagation,  as well as improving  computations upon the involved procedures.
 %as well as improving the corresponding computations  \red{concerned with} the involved %procedures.
-This study considers the Interval Mathematics (IM) approach and proposes a solution based on Moore's arithmetic~\cite{Moore79} for the implementation of the Haar wavelet transform (HWT), considering two well established algorithms, Cascade and {\it à trous}, and their standard formulations assuming point values as input data.
+This study considers the Interval Mathematics (IM) approach and proposes a solution based on Moore's arithmetic~\cite{Moore79} for the implementation of the Haar wavelet transform (HWT), considering two well established algorithms, Cascade and {\it à trous}, and their standard formulations assuming point values as input data, being the first step on the development of the Int-DWT library that will provide interval results for several Discrete Wavelet Transforms (DWTs).
 
-Interval results carry over the safety of their quality together with the degree of their uncertainty~\cite{Moore79}. The diameter of the interval solution contains uncertainties of input parameters, being also an indicative of the error influence and of the extension of its propagation within the incoming data. Interval solutions also indicate truncation and rounding errors contained in the computed results.
+Interval results carry over the safety of their quality together with the degree of their uncertainty~\cite{Moore79}. The diameter of the interval solution represents with fidelity the uncertainties of input parameters, being also an indicative of the error influence and of the extension of its propagation within the incoming data. Interval solutions also indicate truncation and rounding errors contained in the computed results.
 
 In the last decade, many studies associating wavelet transforms with interval mathematics have arisen, promoting a new research direction and pointing out the relevance of  interval computations for a wide range of applications. Shu-Li et al.~\cite{shu-li2005} propose the interval extension of the interpolating wavelet family for the construction of an adaptive algorithm for solving partial differential equations (PDE). Another collocation method for solving PDE is presented by Liu~\cite{liu2013}, based on the interval extension for the Shannon-Garbor wavelet family. With respect to image processing applications, Minamoto and Aoki~\cite{minamoto2010} propose a blind digital image watermarking method using interval Daubechies wavelets.
 
-The main motivation for interval techniques integrated with  wavelet transforms is to provide trustworthy and validated results to technological and SC applications using such transformations. The pool of techniques involving wavelets is ample, specially in signal and image processing~\cite{5,6}. Even the  HWT, the  simplest discrete wavelet transform~(DWT) in terms of algorithm complexity, is still nowadays largely explored, its robustness with respect to many different mathematical structures and space formulations being a relevant aspect~\cite{novikov2012} and explored in many applications.  Besides, as demonstrated in \cite{brito1998}, the imaging inaccuracy of the Haar wavelet basis is the smallest possible, motivating its usage in many 2D problems and its formulation in the interval context.
+The main motivation for interval techniques integrated with  DWT is to provide trustworthy and validated results to technological and SC applications assuming such transformations. The pool of techniques involving wavelets is ample, specially in signal and image processing~\cite{5,6}.
+The  HWT, the  simplest discrete wavelet transform~(DWT) in terms of algorithm complexity, is still nowadays largely explored,  being its robustness with respect to many different mathematical structures and space formulations  a relevant aspect~\cite{novikov2012} addressed in many applications.
+%\todo[inline]{Pilla: Só porque ela é a mais simples não deveria ser explorada? Ficou meio repetitivo também.} Oi, Pilla, eu nao achei repetitivo...mas fica ah vontade para mudar..eu li li e acabo gostando da frase...
+Besides, as demonstrated in \cite{brito1998}, the imaging inaccuracy of the Haar wavelet basis is the smallest possible, motivating its usage in many 2D problems as well as the current formulation in the interval context.
 
 %Thus, the present study introduces an integrated analysis of both, the original %HWT~\cite{stollnitz1995} and the development of its interval extension,  called Int-HWT,  %which deals with \red{imprecise input data} and calculation erros. Here both 1D and 2D cases %are covered. The present work  also addresses  the analysis of a threshold procedure, %considered as a significant part of many compression and filtering algorithms for treating %signals and images.
+%this present 
+Hence, the present study introduces an integrated analysis of the original HWT algorithms and the proposed interval extensions.  Preliminary results of the new interval extension
+of the Int-HWT library presented in~\cite{7} are revisited here, including the interval extensions of the decimated HWT~\cite{stollnitz1995} (Cascade algorithm) for the 1D and 2D cases. The current research addresses as well the {\it À-Trous} algorithm, a non-decimated HWT formulation ~\cite{IEEE2007,kozakevicius2013}, proposing interval extensions for both  1D and 2D cases. Furthermore, a threshold procedure for treating signals and images, considered as a significant part of many compression and filtering algorithms, is analyzed and its interval extensions are presented, namely the Hard and Soft Decision  precudures. 
 
-Hence, this present study introduces an integrated analysis of the original HWT algorithms and the proposed interval extensions, developed as part of the library called Int-HWT, dealing with imprecise input data and calculation erros.  Preliminary results of the new methods of the Int-Haar library presented in~\cite{7} are revisited here, including the interval extensions of the decimated HWT~\cite{stollnitz1995} (Cascade algorithm) for the 1D and 2D cases.
+During the study of the original normalized and non-normalized forms of the HWT \cite{stollnitz1995}, the possibility to optimize them arises from the observation of the patterns of the transform filters in each decomposition level. Therefore, algebraic simplifications are executed to eliminate operations with irrational numbers, originally responsible for the normalization of the transform and considered in each iteration of the original algorithms \cite{weit2013}. Through these simplifications, a gain of precision in the interval formulations is obtained for the normalized decimated 1D HWT, producing therefore more reliable results. In the current work, a similar heuristic is considered to simplify the standard formulation of the non-decimated HWT, generating interval extensions implemented again in an optimal way.
 
-The current research addresses also the {\it à trous} algorithm, a non-decimated HWT formulation ~\cite{IEEE2007,kozakevicius2013}, proposing interval extensions for both  1D and 2D cases. Furthermore, a threshold procedure for treating signals and images, considered as a significant part of many compression and filtering algorithms, is analyzed and its interval extension is presented.
+The C-XSC library~\cite{holbig05} is employed to support the implementation of all formulations addressed by the Int-HWT library. Such open source  library consists of a set of tools for the development of numerical algorithms, integrating precision and automatic verification of the results, frequently applied in SC~\cite{cxsclink}. The compatibility between C++ and C-XSC library allows high level programming techniques for numerical applications~\cite{holbig05a}, aggregating other available libraries to support SC and also including additional packages in the source code~\cite{cxsc3}.
 
-During the study of the original normalized and non-normalized formulations for the HWT \cite{stollnitz1995}, the possibility to optimize them arises from the observation of the patterns of the transform filters in each level of decomposition. Therefore, algebraic simplifications are executed in order to eliminate operations with irrational numbers, originally responsible for the normalization of the transformation and considered in each iteration of the original algorithms. Through these simplifications, a gain of precision in the interval formulations is obtained, producing therefore more reliable results.
+%To make interval results able to contain all possible punctual results, algorithms performing only interval arithmetic have to be designed. In this context, the HWT and its many formulations are extended according to the interval arithmetic, considering the C-XSC interval library~\cite{cxsclink}.
 
-The C-XSC library \cite{holbig05} is employed to support the implementation of Int-HWT. Such library consists of a set of tools for the development of numerical algorithms, integrating precision and automatic verification of the results, frequently applied in SC. The compatibility between C++ and C-XSC library allows high level programming techniques for numerical applications \cite{holbig05a}, aggregating other available libraries to support SC.
+This paper is organized as follows :
+Section~\ref{sec:intarit} summarizes some aspects about the interval computation, supporting the extensions proposed in the remaining of the article.
+%Sections~\ref{sec:hwt-decimated} and \ref{sec:hwt-undecimated} present the decimated and undecimated formulation of the HWT. 
+The C-XSC library and 
+the proposed approach for interval data compression
+are presented in section~\ref{sec:optintform}.
+Afterwards, in Section~\ref{sec:optintform} the developed optimizations as well as the thresholding procedures are also presented. Interval metrics are introduced in Section~\ref{sec:metrics} and Section~\ref{sec:tests} presents tests and results. Finally, conclusions and the future works are shown in Section~\ref{sec:conclusion}.
 
-This paper is organized in the following configuration:
-Section~\ref{sec:intarit} summarizes some aspects about the interval computation, supporting the extensions proposed in the remaining of the article. Sections~\ref{sec:hwt-decimated} and \ref{sec:hwt-undecimated} present the decimated and undecimated formulation of the HWT. The simplifications introduced on the interval approach for obtaining a faster normalization procedure and the compression method are presented in sections~\ref{sec:intext}~and~\ref{sec:compress}, respectively. Afterwards, Section~\ref{sec:optintform} describes the developed optimizations. Tests and results are shown in Section~\ref{sec:tests}. Finally, conclusions and the future works are presented in Chapter~\ref{sec:conclusion}.
+\chapter{Interval Mathematics}\label{sec:intarit}
 
-\chapter{DEVELOPMENT}
-
-\section{Interval Arithmetics}\label{sec:intarit}
+\section{Concept of Interval Aritmethics}
 
 Interval analysis was developed by Ramon Moore in the 1960's~\cite{Moore59a,MoorePhD}, when computers were still at an early stage of development and every additional cost associated with keeping track of the computational errors were considered as too high. Furthermore, the produced error bounds were overly pessimistic and therefore quite useless.
 
 Nowadays, the research for new interval methods have reached a high scientific level, producing tight error bounds faster than approximations of non-rigorous computations. Even in pure mathematics, non-trivial results have recently been proved using computer-aided methods based on interval techniques~\cite{Tucker11}. Additionally, scientific computations demanding rigor as well as speed from numerical computations should be performed based on  techniques for performing validated numerical calculations provided by interval methods.
 
 Distinct approaches of arithmetic operations have been discussed in the literature, see for example \cite{Walster97a,Hickey2001a} and~\cite{FS04}.
-In this paper we consider the interval analysis proposed by Moore~\cite{Moore79}
-which is able to cover the development of an arithmetic for  intervals,   providing methods to obtain accuracy in numerical calculations.
 
-\subsection{Moore Interval Arithmetic Operations}\label{subsec:Moore}
-
+Despite distinct approaches of arithmetic for  intervals, see e.g.~\cite{Walster97a,Hickey2001a} and~\cite{FS04}, this paper considers the interval analysis proposed by Moore in the 1960's, providing methods to obtain accuracy in numerical calculations~\cite{Moore79,Moore59a,MoorePhD}.
+%
+%\subsection{Moore Interval Arithmetic Operations}\label{subsec:Moore}
+%
 %\red{Temos mesmo que explicar tudo isso? Não podemos citar o trabalho quando necessário? Pilla}
-
+%
 In Moore arithmetic, an interval $X$ is a continuum subset of real numbers which is in the infimum-supremum representation given as:
 \begin{equation}
-   X=\{x\in \mathbb{R} \colon a \leq x \leq b, a,b \in \mathbb{R}, a \leq b\};
+   X=\{x\in \mathbb{R} \colon a \leq x \leq b, a,b \in \mathbb{R}, a \leq b\}.
 \end{equation}
-and in the midpoint-radius representation, expressed by:
-\begin{equation}
-   X=\{x\in \mathbb{R} \colon | x- a | \leq \alpha, a \in \mathbb{R},  0 \leq \alpha  \in \mathbb{R}\}.
-   \end{equation}
-
-The two representations are identical for real intervals but not for floating-point intervals.  The infimum-supremum arithmetic is used in computers, since arithmetic based on midpoint-radius representation demands overestimation for multiplication and division. In general, it is not exactly representable in floating point causing additional computational effort.
-The set of all real intervals is indicated by $\mathbb{I}\mathbb{R}$. Frequently, an interval $X\in \mathbb{I}\mathbb{R}$ is indicated by its endpoints, $X=[a,b]$.  When $a=b$ then $[a,b] \in \mathbb{I}\mathbb{R}$ is called a degenerate interval. For an unary operator $\omega:\mathbb{I}\mathbb{R} \rightarrow \mathbb{I}\mathbb{R}$, we have that $
-\omega(X)= \{\omega(x) : x
-\in X\}$.
+%and in the midpoint-radius representation, expressed by:
+%\begin{equation}
+%   X=\{x\in \mathbb{R} \colon | x- a | \leq \alpha, a \in \mathbb{R},  0 \leq \alpha  \in \mathbb{R}\}.
+%   \end{equation}
+%
+%The two representations are identical for real intervals but not for floating-point intervals.  The infimum-supremum arithmetic is used in computers, since arithmetic based on midpoint-radius representation demands overestimation for multiplication and division. In general, it is not exactly representable in floating point causing additional computational effort.
+The set of all real intervals is indicated by $\mathbb{I}\mathbb{R}$. Frequently, an interval $X\in \mathbb{I}\mathbb{R}$ is indicated by its endpoints, $X=[a,b]$.  When $a=b$ then $[a,b] \in \mathbb{I}\mathbb{R}$ is called a degenerate interval. For an unary operator $\omega:\mathbb{I}\mathbb{R} \rightarrow \mathbb{I}\mathbb{R}$, we have that $\omega(X)= \{\omega(x) : x \in X\}$.
 For an arithmetic operation $\ast: \mathbb{I}\mathbb{R}^2 \rightarrow \mathbb{I}\mathbb{R}$ such that $\ast \in \{ +,-, /, \cdot \}$,
 the following property is valid for any two intervals $X$ and $Y$:
 $X\ast Y =\{x \ast y \colon x \in X \mbox { and } y \in Y\}$.
@@ -135,24 +146,22 @@ In particular, let $U$ be the real unit interval $U=[0,1]\subseteq \Re$.
 By Eq.~(\ref{eq-3}), the set of all subintervals of $U$ is indicated as
 $\mathbb{I}_U=\{[x,y]\subseteq \Re \colon 0\leq x\leq y\leq 1\}$.
 The  projections $l,r:\mathbb{I}_{[a,b]}\rightarrow [a,b]$  are respectively given by
-\begin{equation}\label{eq-4}
-l([x,y])=x \mbox {  and  } r([x,y])=y, \forall [x,y] \in \mathbb{I}_{[a,b]}.
-\end{equation}
-
+$l([x,y])=x$ and  $r([x,y])=y$, for all  $[x,y] \in \mathbb{I}_{[a,b]}$.
 Additionally, when $X=[x,y] \in \mathbb{I}_{[a,b]}$, the projection functions  $l(X)$ and $r(X)$ are also denoted by $\underline{X}$ and $\overline{X}$,
-respectively. Thus, by projections in Eq.(\ref{eq-4}), for all $X,Y \in \mathbb{I}_{[a,b]}$, interval arithmetic operations can also be defined as follows:
+respectively. Thus, for all $X,Y \in \mathbb{I}_{[a,b]}$, interval arithmetic operations can be defined as follows:
 \begin{eqnarray*}
-    X+Y \hspace{-0.1cm}&\hspace{-0.1cm}=\hspace{-0.1cm}&\hspace{-0.1cm} [\underline{X}+\underline{Y},\overline{X}+\overline{Y}];\\
-     X-Y \hspace{-0.1cm}&\hspace{-0.1cm}=\hspace{-0.1cm}&\hspace{-0.1cm}[\underline{X}-\overline{Y},\overline{X}-\underline{Y}] ;\\
-      1/Y \hspace{-0.1cm}&\hspace{-0.1cm}=\hspace{-0.1cm}&\hspace{-0.1cm} [1/\overline{Y},1/\underline{Y}] , \mbox { \,\,\,\, if \,\, $0 \notin Y$};\\
+    X\pm Y \hspace{-0.1cm}&\hspace{-0.1cm}=\hspace{-0.1cm}&\hspace{-0.1cm} [\underline{X}\pm \underline{Y},\overline{X}\pm \overline{Y}]; \hspace{3.0cm} 
+%     X-Y \hspace{-0.1cm}&\hspace{-0.1cm}=\hspace{-0.1cm}&\hspace{-0.1cm}[\underline{X}-\overline{Y},\overline{X}-\underline{Y}] ;\\
+      1/Y \hspace{-0.1cm}=\hspace{-0.1cm} [1/\overline{Y},1/\underline{Y}] , \mbox { \,\,\,\, if \,\, $0 \notin Y$};\\
       X\cdot Y \hspace{-0.1cm}&\hspace{-0.1cm}=\hspace{-0.1cm}&\hspace{-0.1cm} [\min\ \{\underline{X}\cdot\underline{Y},\underline{X}\cdot\overline{Y},
 \overline{X}\cdot\underline{Y},\overline{X}\cdot\overline{Y}\},\max
 \{\underline{X}\cdot\underline{Y},\underline{X}\cdot\overline{Y},
 \overline{X}\cdot\underline{Y},\overline{X}\cdot\overline{Y}\}].
 \end{eqnarray*}
-
-Other operators considered in this study are described below:
-Let $X\in \mathbb{I}_{[a,b]} $ and $n\in \mathbb{N}$. Then, the power and root operations are, respectively,  defined as  the following:
+%
+%Other operators considered in this study are described below:
+%Let $X\in \mathbb{I}_{[a,b]} $ and $n\in \mathbb{N}$. 
+Additionally, the power and root operations are, respectively,  defined as follows:
 \begin{align*}
  X^n &= \left \{
 \begin{array}{ll}
@@ -181,119 +190,113 @@ X\leq_{\mathbb{I}_{[a,b]}} Y \mbox{ iff } \underline{X}\leq
 Additionally, an interval function preserving the partial order $\leq_{\mathbb{I}_{[a,b]}}$ is called $\mathbb{I}_{[a,b]}$-monotonic function with respect to the partially ordered set $(\mathbb{I}_{[a,b]}, \leq_{\mathbb{I}_{[a,b]}})$.
 
 %%%%%%%%%%%%%%
-\subsection{Interval Extensions and Representations}
-%%%%%%%%%%%%%%
-It is possible to extend all standard (exponential, logarithm, trigonometric) real function $f$  to an interval function $F$. As pointed out in~\cite{Tucker11}, elementary functions, which are obtained by combining  constants, arithmetic operations and  compositions of standard functions, do not provide, in general, well-defined interval extensions. This can be observed for a set of singular points of a real function $f$, which frequently can be  included in the corresponding  natural extension. However,  the interval evaluation $F(X)$ produces the exact range of $f$ over the domain $X \in\mathbb{I}_{[a,b]}$.
+% \subsection{Interval Extensions and Representations}
+% %%%%%%%%%%%%%%
+% It is possible to extend all standard (exponential, logarithm, trigonometric) real function $f$  to an interval function $F$. As pointed out in~\cite{Tucker11}, elementary functions, which are obtained by combining  constants, arithmetic operations and  compositions of standard functions, do not provide, in general, well-defined interval extensions. This can be observed for a set of singular points of a real function $f$, which frequently can be  included in the corresponding  natural extension. However,  the interval evaluation $F(X)$ produces the exact range of $f$ over the domain $X \in\mathbb{I}_{[a,b]}$.
 
-By the Fundamental Theorem of Interval Analysis\cite{Tucker11},
-let $f$ be an elementary function  and $F$ be an interval extension  such that $F(X)$ is well-defined, for $X \in\mathbb{I}_{[a,b]}$. Then, $F$ satisfies the following properties:
-\begin{description}
-\item [(i)] \textbf{Inclusion Monotonicity}: $Z \subseteq Z' \subseteq X \rightarrow F(Z) \subseteq F(Z') \subseteq F(X)$ ;
-\item [(ii)] \textbf{Range Enclosure}: $f[X] = f(X)$.
-\end{description}
+% By the Fundamental Theorem of Interval Analysis\cite{Tucker11},
+% let $f$ be an elementary function  and $F$ be an interval extension  such that $F(X)$ is well-defined, for $X \in\mathbb{I}_{[a,b]}$. Then, $F$ satisfies the following properties:
+% \begin{description}
+% \item [(i)] \textbf{Inclusion Monotonicity}: $Z \subseteq Z' \subseteq X \rightarrow F(Z) \subseteq F(Z') \subseteq F(X)$ ;
+% \item [(ii)] \textbf{Range Enclosure}: $f[X] = f(X)$.
+% \end{description}
 
 
-An interval $X \in\mathbb{I}_{[a,b]}$ is said to be an interval representation of a real number $\alpha$, if $\alpha \in X$.
-%Considering two interval representations $X$ and $Y$ of a real number $
-%\alpha$,  $X$ is said to be a better representation of
-%$\alpha$ than $Y$ if $X$ is narrower than $Y$, that is,  if $X\subseteq Y%$.
-This notion can be easily extended for
-tuples of $n$ intervals $(\vec{X}) = (X_1, \ldots, X_n)$.
-In~\cite{Moore59a}, a function $F:\mathbb{I}_{[a,b]}^n \rightarrow  \mathbb{I}_{[a,b]}$ is an \textbf{interval
-representation} of a function $f:[a,b]^n \rightarrow  [a,b]$ if, for each
-$\vec{X}\in {\mathbb{I}_{[a,b]}}^n$ and $\vec{x}\in \vec{X}$, $f(\vec{x})\in
-F(\vec{X})$.
-From the previous paragraph, an interval function may be seen as a representation of a subset of real numbers $X$ defined as the range $f(X)$.
-%Now, extending the previous discussion, an interval function $F:\mathbb{I}_{[a,b]}^n \rightarrow \mathbb{I}_{[a,b]}$ is a better
-%interval representation of the function $f:U^n \rightarrow  U$ than $G:\mathbb{I}_{[a,b]}^n \rightarrow \mathbb{I}_{[a,b]}$, denoted by $G\sqsubseteq
-%F$, if for each $\vec{X}\in \mathbb{I}_{[a,b]}^n$, the inclusion $F(\vec{X})\subseteq G(\vec{X})$ holds.
-Considering  $F:\mathbb{I}_{[a,b]}^n \rightarrow \mathbb{I}_{[a,b]}$, let  $\underline{F},\overline{F}:U^n \rightarrow U$ be the functions
-respectively given by
-\begin{eqnarray}\label{eq-projection-Fu}
-\underline{F}(x_1,\ldots,x_n) & = &
-l(F([x_1,x_1],\ldots,[x_n,x_n])) \\ \overline{F}(x_1,\ldots,x_n) &
-= &
-r(F([x_1,x_1],\ldots,[x_n,x_n])).\label{eq-projection-Fo}\end{eqnarray}
+% An interval $X \in\mathbb{I}_{[a,b]}$ is said to be an interval representation of a real number $\alpha$, if $\alpha \in X$.
+% %Considering two interval representations $X$ and $Y$ of a real number $
+% %\alpha$,  $X$ is said to be a better representation of
+% %$\alpha$ than $Y$ if $X$ is narrower than $Y$, that is,  if $X\subseteq Y%$.
+% This notion can be easily extended for
+% tuples of $n$ intervals $(\vec{X}) = (X_1, \ldots, X_n)$.
+% In~\cite{Moore59a}, a function $F:\mathbb{I}_{[a,b]}^n \rightarrow  \mathbb{I}_{[a,b]}$ is an \textbf{interval
+% representation} of a function $f:[a,b]^n \rightarrow  [a,b]$ if, for each
+% $\vec{X}\in {\mathbb{I}_{[a,b]}}^n$ and $\vec{x}\in \vec{X}$, $f(\vec{x})\in
+% F(\vec{X})$.
+% From the previous paragraph, an interval function may be seen as a representation of a subset of real numbers $X$ defined as the range $f(X)$.
+% %Now, extending the previous discussion, an interval function $F:\mathbb{I}_{[a,b]}^n \rightarrow \mathbb{I}_{[a,b]}$ is a better
+% %interval representation of the function $f:U^n \rightarrow  U$ than $G:\mathbb{I}_{[a,b]}^n \rightarrow \mathbb{I}_{[a,b]}$, denoted by $G\sqsubseteq
+% %F$, if for each $\vec{X}\in \mathbb{I}_{[a,b]}^n$, the inclusion $F(\vec{X})\subseteq G(\vec{X})$ holds.
+% Considering  $F:\mathbb{I}_{[a,b]}^n \rightarrow \mathbb{I}_{[a,b]}$, let  $\underline{F},\overline{F}:U^n \rightarrow U$ be the functions
+% respectively given by
+% \begin{eqnarray}\label{eq-projection-Fu}
+% \underline{F}(x_1,\ldots,x_n) & = &
+% l(F([x_1,x_1],\ldots,[x_n,x_n])) \\ \overline{F}(x_1,\ldots,x_n) &
+% = &
+% r(F([x_1,x_1],\ldots,[x_n,x_n])).\label{eq-projection-Fo}\end{eqnarray}
 
-The fundamental theorem of interval arithmetic implicitly
-rests on the notion of correctness. It means that, when $F$ is an inclusion monotonic interval extension of a real function $f$,
-then $f(X_1,\ldots,X_n)\subseteq
-F(X_1,\ldots,X_n)$. Thus,  $F(X)$
-contains the range $f(X)$ and consequently,  the class of
-inclusion monotonic interval functions have the property of
-correctness. Moreover, since all arithmetic operations are inclusion
-monotonic functions, it holds that any rational interval function is also correct.
-In this paper, we consider the interval extension of three  real functions, which are studied in the following.
+% The fundamental theorem of interval arithmetic implicitly
+% rests on the notion of correctness. It means that, when $F$ is an inclusion monotonic interval extension of a real function $f$,
+% then $f(X_1,\ldots,X_n)\subseteq
+% F(X_1,\ldots,X_n)$. Thus,  $F(X)$
+% contains the range $f(X)$ and consequently,  the class of
+% inclusion monotonic interval functions have the property of
+% correctness. Moreover, since all arithmetic operations are inclusion
+% monotonic functions, it holds that any rational interval function is also correct.
+% In this paper, we consider the interval extension of three  real functions, which are studied in the following.
 
 %%%%%%%%%%%%
-\subsection{Interval Metrics}
+\section{Interval Metrics}\label{sec:metrics}
 %%%%%%%%%%%%%%%%%%
 %Not only interval algorithms managing computation error  but also metrics for evaluation and %comparison of image evolved in the DWTs use concepts from Interval Mathematics \cite{Moore79} %to perform interval analysis.   , evolved in the DWTs
 
 Not only interval algorithms  but also metrics for evaluating procedure's accuracy can assume concepts from Interval Mathematics \cite{Moore79} to perform interval analysis efficiently managing computation errors.
 The motivation to consider numerical intervals instead of simple punctual values is linked to the capability of intervals to represent infinite punctual values. This sort of representation is very useful in SC when the accuracy of the input (or output) data is not granted. In these cases of uncertainty or inaccuracy the interval procedures should ensure that all possible punctual results belong to the interval results.
-In addition, due to memory limitation, it is also common to compute round (or simply truncated) values to store the result afterwards. This heuristic may result in different values, depending on the machine's configuration where the program has been executed.
+In addition, due to memory limitation, it is also common to compute round (or simply truncated) values to store the result afterwards. This heuristic may result in different values, depending on the machine's configuration where the program has been executed. The metrics being used to measure result quality are presented below.
 
-The following 3 subsections will present the metrics being used to measure result quality.
-
-\subsubsection{Euclidean Distance}
-
-Let $\tilde{Y} = (\tilde{y})_{ij}, Y = (y)_{ij} \in \mathbb{R}^{n\times m}$ be multi-dimensional real matrices. $\tilde{Y} = (\tilde{y})_{ij} \in \mathbb{R}^{n\times m}$ is called an estimator of $Y$, a matrix of $nm$ predictions $\tilde{y}_{ij}$ of the original values $(y)_{ij}$.
+\subsection{Euclidean Distance}
+Let $\tilde{Y} = (\tilde{y})_{ij} \in \mathbb{R}^{n\times m}$ be an estimator of $Y = (y)_{ij} \in \mathbb{R}^{n\times m}$ whose  $nm$ elements  $\tilde{y}_{ij}$ are predictions of the original values $(y)_{ij}$.
 The Euclidean distance between  $Y$  and its estimator $\tilde{Y}$ is defined by the following expression:
 \begin{equation}\label{eq-5}
 D(\tilde{Y},Y) =  \sqrt{\sum_{j=0}^{m}\sum_{i=0}^{n}(\tilde{y}_{ij} - y_{ij})^2}.
 \end{equation}
 
-Analogously, $\tilde{\mathbb{Y}}= (\tilde{\mathbf{Y}})_{ij}, \mathbb{Y}= (\mathbf{Y})_{ij}\in \mathbb{IR}^{n\times m}$ are defined as being multi-dimensional real-interval matrices such that $\tilde{\mathbb{Y}}$ is called an interval estimator, an interval matrix of $nm$ interval predictions $\tilde{\mathbf{Y}}_{ij}$ of the original interval quantities $\mathbf{Y}_{ij}$. An interval extensional of the Euclidean distance  is given by the expression below:
+Analogously, $\tilde{\mathbb{Y}}= (\tilde{\mathbf{Y}})_{ij}$ is called an interval estimator of $\mathbb{Y}= (\mathbf{Y})_{ij}\in \mathbb{IR}^{n\times m}$ with an $nm$-dimensional matrix of interval predictions $\tilde{\mathbf{Y}}_{ij}$ of the original interval quantities $\mathbf{Y}_{ij}$. An interval extensional of Eq.(\ref{eq-5-1}) is given in the following:
 
 \begin{equation}
-\label{eq-5}
+\label{eq-5-1}
 \mathbf{D}(\tilde{\mathbb{Y}}, \mathbb{Y}) =  \sqrt{\sum_{j=0}^{m}\sum_{i=0}^{n} \left( \tilde{\mathbf{Y}}_{ij} - \mathbf{Y}_{ij} \right)^2}.
 \end{equation}
 
-\subsubsection{Mean Squared Error}
-
+\subsection{Mean Squared Error}
  The  Mean Squared Error (MSE) is considered as a risk function, corresponding to the expected value of the squared error loss.
-An MSE operator is an estimator measuring the average of the squares of the errors in SC, providing the difference between the estimator and what is estimated. MSE allows us to compare the pixel values of our original image to our degraded (noise) image. Additionally, The error is the amount by which the values of the original image differ from the degraded image.
+It is an estimator measuring the average of the squares of the errors in SC, providing the difference between the estimator and what is estimated. MSE allows us to compare the pixel values of our original image to our degraded (noise) image based on the amount by which the values of the original image differ from the degraded image.
 
-For all $Y=(y)_{ij} \in \mathbb{R}^{n\times m}$ corresponding to the related matrix of true values $y_{ij}$,  the accuracy of the estimator $\tilde{Y} = (\tilde{y})_{ij}$ can be
-obtained by application of an MSE operator as the following
-\begin{equation}\label{eq-5}
+Let $Y=(y)_{ij} \in \mathbb{R}^{n\times m}$ be the related matrix of true values $y_{ij}$.  The accuracy of $\tilde{Y} = (\tilde{y})_{ij}$ can be
+obtained by the application of an MSE operator as the following
+\begin{equation}\label{eq-6}
 MSE ( \tilde{Y},Y) = \frac{1}{mn} \sqrt{\sum_{j=0}^{m}\sum_{i=0}^{n}(\tilde{y}_{ij} - y_{ij})^2} = \frac{1}{mn} D(\tilde{Y},Y).
 \end{equation}
 
-Analogously, for all $\mathbb{Y}= (\mathbf{Y})_{ij}\in \mathbb{IR}^{n\times m}$  corresponding to the related matrix of true values $\mathbf{Y}_{ij}$,   the accuracy of the estimated values can be obtained by application of an interval extension of the $MSE$ operator in  Eq.~(\ref{eq-5}), which is given by the following expression:
+Analogously, for all $\mathbb{Y}= (\mathbf{Y})_{ij}\in \mathbb{IR}^{n\times m}$  corresponding to the related matrix of true values $\mathbf{Y}_{ij}$,   the accuracy of the estimated values can be obtained by applying  an interval extension of the $MSE$ operator in  Eq.~(\ref{eq-5}), which is given by the following expression:
 \begin{equation}
 \mathbf{MSE} (\tilde{\mathbf{Y}},\mathbf{Y}) = \frac{1}{mn}  \sqrt{\sum_{j=0}^{m}\sum_{i=0}^{n}(\tilde{\mathbf{Y}}_{ij} - \mathbf{Y}_{ij})^2}= \frac{1}{mn} \mathbf{D}(\tilde{\mathbb{Y}}, \mathbb{Y}) .
 \end{equation}
 
 %\red{Alice 6/10: Duvida aqui. as medidas MSE nao deveriam medir a qualidade dos valores estimados em relacao ao valores reais? Neste sentido, nao deveriamos escrever $\mathbf{MSE}(\tilde{\mathbf{Y}})  $???}
 
-% Vinícius { Alice, ? é a imagem aproximada e Y é a original, está correto dessa maneira! }
+% Vinícius { Alice, ? é a imagem aproximada e Y é a original, está correto dessa maneira!} -> aLICE:OK!!!
 
-\subsubsection{Peak signal-to-noise ratio}
-
-An important performance metric for evaluation and comparison of image or video codecs is the Rate/Distortion (R/D) where quality is measured in terms of Peak Signal-to-Noise Ratio (${PSNR}$). Such metric is expressed as the ratio between the maximum possible power of a signal and the power of corrupting noise that affects the fidelity of its representation.
-
-$PSNR$ is usually expressed in terms of the logarithmic decibel scale and  most commonly used to measure the quality of reconstruction of lossy compression codecs. In image compression, the signal is the original data, and the noise is the error introduced by compression. However, the range of validity of this metric is limited since it is only conclusively valid when used to compare results from the same content. Thus, the expression of ${PSNR}$ is most easily defined via the logarithmic decibel scale related to the $MSE$ as follows:
+\subsection{Peak signal-to-noise ratio}
+%
+%An important performance metric for evaluation and comparison of image or video codecs is 
+The Rate/Distortion (R/D) measures the image quality in terms of Peak Signal-to-Noise Ratio (${PSNR}$), expressing the ratio between the maximum possible power of a signal and the power of corrupting noise affecting the fidelity of its representation.  $PSNR$ is usually given by the logarithmic decibel scale and  most commonly used to measure the quality of reconstruction of lossy compression codecs. In image compression, the signal is the original data and the noise is the error introduced by compression. 
+%However, the range of validity of this metric is limited since it is only conclusively valid when used to compare results from the same content. 
+Thus, the expression of ${PSNR}$ is most easily defined via the logarithmic decibel scale related to the $MSE$ as follows:
 \begin{equation}\label{eq-8a}
 PSNR (\tilde{Y},Y) = 10 \cdot \log_{10} \frac{MAX_I^2}{MSE(\tilde{Y},Y)} ,
 \end{equation}
 when $I$ indicates a $mn$-dimensional monochrome image associated to $Y$ and  $MAX_I$  is  the maximum possible pixel value of the image $I$.
 
-% \red{alice 6/10 duvida. A imagem I  nao deveria ser a versao monocrotatica de Y? ou que eh I afinal?\\ $MAX_I$ tambem nao foi definido!!!!!!!!!!!!!!!!!}.
-
-% Vinícius: Foi resolvido!
-
-Thus, a natural interval extension of Eq.~(\ref{eq-8a}) is given as:
+Therefore, a natural interval extension of Eq.~(\ref{eq-8a}) is given as:
 \begin{equation}\label{eq-8b}
 \textbf{PSNR} (\tilde{\mathbf{Y}},\mathbf{Y}) = 10 \cdot \log_{10} \frac{[MAX_I,MAX_I]^2}{\mathbf{MSE}(\tilde{\mathbf{Y}}, \mathbf{Y})},
 \end{equation}
 when $[MAX_I,MAX_I]$ denotes the degenerate interval obtained by $MAX_I$ and $\mathbf{MSE}(\tilde{\mathbf{Y}}, \mathbf{Y})$ is the interval extension of $MSE(\tilde{Y},Y)$.
+%\red{alice 6/10 duvida. $[MAX_I,MAX_I]$ estah estranho aparecer I nos dois lados. um deles nao seria Y-intervalar?}
+% OI, VINICIUS. ESTA DÚVIDA ACIMA TAMBÉM FOI RESOLVIDA???.
 
-%\red{alice 6/10 duvida. $[MAX_I,MAX_I]$ estah estranho aparecer I nos dois lados. um deles nao seria Y-intervalar?}.
+Finally, it should be noticed that a computation of the MSE between two identical images, the value will be zero and hence the PSNR will be undefined. Moreover, as the main limitation, both metrics relies strictly on numerical comparison, on which  exactly focuses our study in this paper.
 
-Finally, it should be noticed that a computation of the MSE between two identical images , the value will be zero and hence the PSNR will be undefined. Moreover, as the main limitation, both metrics relies strictly on numerical comparison, on which  exactly focuses our study in this paper.
 
 \subsection{C-XSC Library} \label{sec:intext}
 
@@ -316,18 +319,19 @@ numerical verification methods to obtain  correct and self-validating numerical 
 
 In the last years significant improvements have been made in parallelized versions of interval linear system solvers supplied by C-XSC, for more details see~\cite{pblaslink, kolbergfernandesclaudio2008, milani2010}. Once the interval extensions allow different error computations, different compression algorithms can be derived, as shown in Section~\ref{sec:compress}.
 
-%
-%(alice: 10/9) Pessoal, eu comentei a parte abaixo, pois achei que ela  %fica repetitiva com o que deve ser colocado no final da introducao, %quando se desceve as secoes.
-%
-
 
 % With the summarized background already presented, in the remainder of %the current study the extension of the Haar wavelet transform for the %interval context is obtained. Taking advantage of the interval %arithmetics some formulation simplifications are made in order to %improve the quality of the interval extensions of the transforms. As an application, image compression is also pointed out in the interval context.
 
-\section{Int-HWT - Decimated Formulation}\label{sec:hwt-decimated}
+\chapter{Discrete Wavelet Transforms}
+\section{Haar Wavelet Transform}
+
+\subsection{Decimated Formulation}\label{sec:hwt-decimated}
 
 The Haar basis was proposed in 1910, introduced by the Hungarian mathematician Alfred Haar \cite{haara} in a diferent approach than the one considered by Daubechies in 1988, when she presented her orthogonal basis with compact support for the space of square integrable functions\cite{daubechies1992}, called wavelets. Nevertheless, through her work, the Haar functions started to be seen as a particular case of orthogonal wavelets. Nowadays, the HWT is well stated with some different fast algorithm formulations, been well established for many applications, specially those involving data compression, as considered by JPEG-2000 \cite{JPEG2000}.
 
-\subsection{One Dimensional Decimated Int-HWT}\label{sec:hwt1d_decimated}
+\subsubsection{One Dimensional}\label{sec:hwt1d_decimated}
+
+According to the description in \cite{stollnitz1995}, when assuming the decimated formulation of the transform and given an initial vector $C$ with $n$ punctual values, the one-dimensional HWT calculates the averages and differences of each pair of adjacent elements in the input vector $ C $, $(C_{2j-1}, C_{2j}), j=1,...,n/2$, generating therefore two output sets:  one for the scaling (averages) and another for the wavelets (differences) coefficients, both with $n_1= n/2$ points, half size of the original input vector C.
 
 According to the description in \cite{stollnitz1995}, when assuming the decimated formulation of the transform and given an initial vector $C$ with $n$ punctual values, the one-dimensional HWT calculates the averages and differences of each pair of adjacent elements in the input vector $ C $, $(C_{2j-1}, C_{2j}), j=1,...,n/2$, generating therefore two output sets:  one for the scaling (averages) and another for the wavelets (differences) coefficients, both with $n_1= n/2$ points, half size of the original input vector C.
 
@@ -338,9 +342,8 @@ The novelty here on the interval code remains in the definition of vectors as in
 Since the HWT main feature is to decompose information in many resolution levels, assuming as input the set of the scaling coefficients that contains the $n_1$ previously computed averages, the next level of the decimated HWT produces a second pair of half-sized vectors, one for the new $n_2=n_1/2$ averages and other for the corresponding $n_2=n_1/2$ wavelet coefficients.  This procedure is recursively defined and can be applied until a specific level of coarser resolution is achieved or until a single scalar scaling coefficient is obtained. The whole process of the direct HWT is also called \textbf{decomposition}.
 
 \begin{figure}[ht]
-    %\centering
-    \vspace{-0.2cm}
-    \includegraphics[width=13.6cm]{Imagens/D_and_DStep.png}
+	\centering
+    \includegraphics[width=14cm]{Imagens/D_and_DStep.png}
     \caption{1D decimated Int-HWT: $l=log_2(n)$ decomposition levels. Normalized interval filters: $h=( 1/\sqrt{[2,2]}, 1/\sqrt{[2,2]})$ for computing scaling coefficients; $g=( 1/\sqrt{[2,2]}, -1/\sqrt{[2,2]})$ for wavelet coefficients.}
     \label{fig:DandDS}
  \end{figure}
@@ -381,7 +384,7 @@ Since the HWT main feature is to decompose information in many resolution levels
 Figure \ref{fig:ComparisonIntPonc} shows the comparison between the standard and the interval procedures of the one-dimensional HWT assuming $l=log_2 n$ decomposition levels.
 %
 \begin{figure}[ht]
-    \centering
+    %\centering
     \includegraphics[width=12cm]{Imagens/FiguraA.png}
     \caption{1D decimated HWT algorithms:(top panel) original; (bottom panel) interval extension. Both cases assuming initial data as being punctual values and $log_2 n$ decomposition levels.}
     \label{fig:ComparisonIntPonc}
@@ -390,14 +393,14 @@ Figure \ref{fig:ComparisonIntPonc} shows the comparison between the standard and
 It is possible to notice in Figure~\ref{fig:ComparisonIntPonc} the care with the type of data being used in the formal parameters in both procedures. The constants must be expressed by intervals too. The instruction $sqrt(float(n))$, square root of punctual floating value, becames $sqrt(interval(n))$, square root of punctual interval. Inside the while loop the interval procedure calls another interval procedure, maintaining the compatibility of the data being calculated. The same type of code adaptation is considered for the rest of the punctual procedures, generating in this way the proposed interval extension.
 
 
-Using the sets of all wavelet coefficients - resulted from the decomposition process - together with the averages in the lowest level of the direct decimated Int-HWT, it is possible to accurately perform the inverse transformation (also called composition), generating the exact reconstruction of the original vector, which is an important characteristic of the HWT.
+Using the sets of all wavelet coefficients, resulted from the decomposition process, together with the averages in the lowest level of the direct decimated Int-HWT, it is possible to accurately perform the \textbf{inverse transformation} (also called \textbf{composition}), generating the exact reconstruction of the original vector, which is an important characteristic of the HWT.
 
 The pseudo-code that performs the level composition of  the 1D decimated Int-HWT is represented in Figure~\ref{fig:CandCS}. According to \cite{stollnitz1995}, in the composition process, starting from the coarsest resolution level of the transformation, the original values are restored level by level, combining the wavelet and scaling coefficients from the level immediately below.
 Therefore, the decomposition process is completely reversible, allowing the data reconstruction in each level of the transformation, until the end of the process is achieved, when finally the finest resolution level is exactly reconstructed.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=13.5cm]{Imagens/C_and_CStep.png}
+    \includegraphics[width=14cm]{Imagens/C_and_CStep.png}
     \caption{Inverse 1D decimated Int-HWT. Composition  process to reconstruct $l=log_2 n$ levels.}
     \label{fig:CandCS}
  \end{figure}
@@ -435,7 +438,7 @@ Therefore, the decomposition process is completely reversible, allowing the data
 
 % \end{algorithm}
 
-\subsection{Two Dimensional Decimated Int-HWT}
+\subsubsection{Two Dimensional}
 \label{sec:hwt2d}
 
 The HWT can be extended for two-dimensional vectors. According to the procedure described in \cite{stollnitz1995}, the fast algorithm for the 2D decimated HWT is obtained through the application of the one-dimensional transformation per direction (in all rows of the input matrix and after that, in all columns of the resulting one). In fact, the order how the many levels of the one-dimensional transformation are applied to the two-dimensional data generates different intermediate results and, therefore, distinct algorithms for the 2D transform.
@@ -463,8 +466,8 @@ After the $l=log_2 n$ decomposition levels of the 1D HWT were applied to the ent
 % \end{algorithm}
 
 \begin{figure}[ht]
-    %\centering
-    \includegraphics[width=13.6cm]{Imagens/SD_and_ND.png}
+    \centering
+    \includegraphics[width=14cm]{Imagens/SD_and_ND.png}
     \caption{2D decimated HWT: Standard and non-standard decomposition processes.}
     \label{fig:SDandND}
  \end{figure}
@@ -510,12 +513,12 @@ After the $l=log_2 n$ decomposition levels of the 1D HWT were applied to the ent
 
   The direct and inverse Int-HWT, Figures \ref{fig:DandDS}, \ref{fig:CandCS}, \ref{fig:SDandND} and \ref{fig:InverseSCandNSC}, can be thought as a convolution of the input data with a pair of filters , $h=(1/2, 1/2)$ and $g=(1/2,-1/2)$, that represent the transform \cite{stollnitz1995}.  The normalized Haar filters are $h=(1/\sqrt{2}, 1/\sqrt{2})$ and $g=(1/\sqrt{2},-1/\sqrt{2})$ and  the normalized transform preserves the energy of the entire set of coefficients obtained through the HWT. Therefore, according to \cite{stollnitz1995}, besides the standard and non-standard algorithms, the HWT can be performed using  normalized and non-normalized filters. Therefore combining the two possible algorithms with these two possible filter choices, there are four ways to compute the decimated 2D Int-HWT available: (i) non-standard, non-normalized; (ii) non-standard, normalized; (iii) standard, non-normalized; and (iv) standard, normalized.
 
-\section{Int-HWT - Undecimated Formulation}
+\subsection{Undecimated Formulation}
 \label{sec:hwt-undecimated}
 
 Another alternative version for the HWT is the undecimated approach, which avoids the decimation operation after the convolution with the filters has been computed. This undecimated transform has one well established formulation, called the {\it à trous} algorithm, which is considered in many astrophysical and statistical applications \cite{IEEE2007,kozakevicius2013}, specially for been a translation invariant transform.
 
-\subsection{One Dimensional Undecimated Int-HWT}
+\subsubsection{One Dimensional}
 \label{sec:hwt1d-undecimated}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
@@ -552,13 +555,13 @@ also called Composition, which provides the exact reconstruction of the original
     \label{fig:AtrousCompMethod}
 \end{figure}
 
-\subsection{Two Dimensional à trous algorithm}
+\subsubsection{Two Dimensional}
 \label{sec:hwt2d-undecimated}
 
 According to \cite{IEEE2007}, the algorithm for the 2D à trous HWT is again obtained through the application of the one-dimensional transformation in all rows and columns of the input matrix, as done for the decimated version of the HWT. Analogously, Standard and Non-Standard procedures can be designed according to the order how the 1D à trous transforms are applied to the 2D data.
 
 \begin{figure}[ht]
-\includegraphics[width=13.6cm]{Imagens/HaarAtrousStandard.png}
+\includegraphics[width=15cm]{Imagens/HaarAtrousStandard.png}
 	\caption{2D à trous HWT- standard algorithm for matrix decomposition.}
     \label{fig:AtrousStandard}
 \end{figure}
@@ -580,7 +583,7 @@ The undecimated non-standard decomposition, based on the original non-standard a
 
 \begin{figure}[ht]
 
-	\includegraphics[width=13.6cm]{Imagens/HaarAtrousNonStandard.png}
+	\includegraphics[width=15cm]{Imagens/HaarAtrousNonStandard.png}
 
 	\caption{Non Standard algorithm for matrix decomposition.}
     \label{fig:AtrousNonStandard}
@@ -589,10 +592,10 @@ The undecimated non-standard decomposition, based on the original non-standard a
 
 \begin{figure}[ht]
 
-	\includegraphics[width=10cm]{Imagens/HaarAtrousNonStandardPseudo.png}
+	\includegraphics[width=11cm]{Imagens/HaarAtrousNonStandardPseudo.png}
 
 	\caption{Pseudo code for the Non Standard matrix decomposition.}
-    \label{fig:AtrousStandardPseudo}
+    \label{fig:AtrousNonStandardPseudo}
 
 \end{figure}
 
@@ -602,13 +605,13 @@ The undecimated non-standard decomposition, based on the original non-standard a
 The same idea from the one-dimensional transform can be applied for both standard and non-standard sets of data to perform an inverse process, generating the input matrix. By using all matrices of wavelet coefficients resulted by the process of decomposition together with the averages in the lowest level of decomposition, it is possible to reconstruct, accurately. $MatrixComposition$ generates the exact reconstruction of the original input matrix of data. The algorithm describing its execution is shown in Figure~\ref{fig:ATrousMatrixComposition}.
 
 \begin{figure}[ht]
-	\includegraphics[width=10cm]{Imagens/ATrousMatrixComposition.png}
+	\includegraphics[width=11cm]{Imagens/ATrousMatrixComposition.png}
 	\caption{Pseudo code for À-trous matrix composition.}
     \label{fig:ATrousMatrixComposition}
 
 \end{figure}
 
-\section{Optimal Interval Formulations}
+\chapter{Developed Optimal Formulations}
 \label{sec:optintform}
 
 When the normalized filters are considered in the original algorithms of the HWT  \cite{stollnitz1995, IEEE2007},  divisions by  $ \sqrt{2} $  are executed in all iterations within the decomposition.
@@ -620,7 +623,11 @@ The solution proposed to avoid this issue for the interval extension is based on
 
  The basic idea for the algebraic simplifications is based on using the non-normalized transform, which introduces no extra computation errors for the HWT. By shifting the normalization step to the end of the transform, all operations with $ \sqrt{2} $ are applied only once, decreasing the error produced by its computation in each level of the decomposition.
 
-\subsection{1D Decimated Int-HWT Simplification}
+\section{Haar Wavelet Transform}
+
+\subsection{Decimated Formulation}
+
+\subsubsection{One Dimensional}
 \label{subsec:1DCascadeOpt}
 
  The normalized decomposition procedure for the decimated version of the Int-HWT, either 1D or 2D, is executed in the following order: first a non-normalized decomposition is made, as indicated by the pseudo-code in Figure~\ref{fig:Fig4}; after this stage the normalization of all coefficients is performed, multiplying all of them by the normalization factor $ 2^{-j/2} $, where $ j $ is the resolution level of the coefficients through out the decomposition.
@@ -645,7 +652,6 @@ Looking at the original decomposition procedure, shown in Figure~\ref{fig:DandDS
 
 \begin{figure}[ht]
     %\centering
-    \vspace{-0.2cm}
     \includegraphics[width=13.6cm]{Imagens/New_D_and_DStep.png}
     \caption{Int-HWT, decimated version: non-normalized Decomposition process and its step procedure.}
     \label{fig:NewDandDS}
@@ -654,8 +660,7 @@ Looking at the original decomposition procedure, shown in Figure~\ref{fig:DandDS
 The normalization procedure, presented in Figure~\ref{fig:1DNorm_and_Denorm}, performs the normalization step of all coefficients after their convolution using filters. Since it is executed once on every coefficient of a $n$ sized vector, its complexity can be $\BigO(n)$. By performing a non-normalized transform and the normalization procedure afterwards, the complexity is $\BigO(n\log(n) + n)$, which is the same complexity from the normalized transformation. The goal is therefore the gain on exactitude obtained by avoiding high number of divisions using $\sqrt{2}$ from the original $DecompositionStep$ algorithm, as shown in Figure~\ref{fig:test1-3}.
 
 \begin{figure}[ht]
-	\centering
-    \vspace{-0.2cm}
+	%\centering
     \includegraphics[width=12.4cm]{Imagens/Norm_and_Denorm.png}
     \caption{Int-HWT, decimated version: on dimensional normalization procedure.}
     \label{fig:1DNorm_and_Denorm}
@@ -665,15 +670,17 @@ The normalized composition procedure follows the same basic idea to reduce compu
 
 
 
-\subsection{2D Decimated Int-HWT Simplification }
+\subsubsection{Two Dimensional}
 
+\label{subsec:cascade2D_Opt_Haar}
+%
 The simplifications implemented for the 2D int-HWT consider the same principle presented in the 1D case, i.e., the same strategy of multiplying the transformed values by the corresponding $2^{-j/2}$ normalization factor, where $j$ is the corresponding level. To compose or decompose a matrix the 1D transform is applied in all rows and in all columns of the input matrix.
 
-However, according to what was discussed in Section~\ref{sec:hwt2d}, there are two algorithms for composition and decomposition of matrices, what suggests distinct normalization procedures for both approaches. During the study of the original algorithms~\cite{stollnitz1995}, a pattern of normalization factors was recognized. These patterns were analyzed and employed in the development of the normalization procedures for both standard and non-standard algorithms, assuming the decimated version of the HWT.
+However, according to \cite{stollnitz1995}, there are two main algorithms for composition and decomposition of matrices, know as Standard and Non-Standard procedures, what suggests distinct normalization procedures for both approaches. During the study of the original algorithms~\cite{stollnitz1995}, patterns of normalization factors were recognized. These patterns were analysed and employed in the development of the normalization procedures for both algorithms, assuming the decimated version of the HWT.
 
 These patterns are illustrated in Figure~\ref{fig:2DNormFactors}, where 3 decomposition levels are presented for 8x8 matrices. The parameters $ j' $ and $ j'' $ indicate the  normalization levels. The rule to calculate these normalization factors is described in the equation:
 \begin{center}
-	\large $ 2^{-(j' + j'')/2} ,$
+	\LARGE $ 2^{\frac{-(j' + j'')}{2}} ,$
 \end{center}
 where $ 0 \leq j' , j'' \leq (\log_{2}n) -1 $ and $ n $ indicates the matrix order.
 \begin{figure}[ht]
@@ -683,16 +690,10 @@ where $ 0 \leq j' , j'' \leq (\log_{2}n) -1 $ and $ n $ indicates the matrix ord
 	\label{fig:2DNormFactors}
 \end{figure}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\red{alice 12/10/2015 Pessoal: parei aqui. acho que é melhor o vinicius mexer agora, limpar as coisas que ficaram para tras ao longo do trabalho e depois entao, mexemos de novo no texto. Acho que precisaremos enxugar a discussao. está ficando longo e repetitivo. acho que devemos diminuir a parte inicial que está muito similar como que ja foi publicado e dar mais enfoque para a parte das complexidades e validacao em relacao à aplicacao. só que a meu ver, isso só pode ser feito, depois que chegarmos ao final dessa versao preliminar. nao sei quantas paginas ao certo ja temos, porque há ainda muitos comentarios e recados no texto. minha sugestão é que agora dvemos trabalhar para gerarmos uma versao limpa, daí repensamos o que fazer, dependendo da restricao de paginas da revista. alias, quantas sao???????? ate breve. alice}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
 By analyzing the original standard algorithm, Figure~\ref{fig:SDandND}, it depends on the original normalized decomposition procedure, whose complexity is $\BigO(n\log(n) + n)$, executing it for every row and column of the input matrix. Considering a $n$x$n$ matrix the complexity of the original standard algorithm is $\BigO(n(n\log(n) + n) + n(n\log(n) + n))$, therefore $\BigO(2n^2\log(n) + 2n^2)$. Performing the non-normalized decomposition algorithm, discussed in Section~\ref{subsec:1DCascadeOpt}, it reduces the calculations by avoiding intermediate normalization steps.
 
 \begin{figure}[ht]
-  	\includegraphics[width=9cm]{Imagens/StandardNormalization.png}
+  	\includegraphics[width=10cm]{Imagens/StandardNormalization.png}
   	\caption{2D decimated Int-HWT: Normalization step for the standard decomposition process.}
 	\label{fig:StandardNormAlg}
 \end{figure}
@@ -709,16 +710,48 @@ Looking at the original non-standard algorithm, Figure~\ref{fig:SDandND}, it is 
 	\label{fig:NonStandardNormAlg}
 \end{figure}
 
+The non-normalized non-standard decomposition ( $\BigO(\log(\log(n) + \log(n)))$) does not need the normalization step,  and its $Non-StandardNormalization$ algorithm, shown in Figure~\ref{fig:NonStandardNormAlg}, is performed with complexity $\BigO(n^2)$. The overall complexity of these procedures is $\BigO(n^2 + \log(\log(n) + \log(n)))$, which is the same from the original normalized non-standard algorithm. The gain of time presented in Figure~\ref{fig:test2S-NS} was obtained performing simple divisions by $2$ which are faster than using $\sqrt{2}$ as divisor when analysing processor microinstructions.
+
+\subsection{Undecimated Formulation}
+
+
+The simplifications implemented for the 2D int-HWT consider the same principle presented in the 1D case, i.e., the same strategy of multiplying the transformed values by the corresponding $2^{-j/2}$ normalization factor, where $j$ is the corresponding level. To compose or decompose a matrix the 1D transform is applied in all rows and in all columns of the input matrix.
+
+However, according to what was discussed in Section~\ref{sec:hwt2d}, there are two algorithms for composition and decomposition of matrices, what suggests distinct normalization procedures for both approaches. During the study of the original algorithms~\cite{stollnitz1995}, a pattern of normalization factors was recognized. These patterns were analyzed and employed in the development of the normalization procedures for both standard and non-standard algorithms, assuming the decimated version of the HWT.
+
+These patterns are illustrated in Figure~\ref{fig:2DNormFactors}, where 3 decomposition levels are presented for 8x8 matrices. The parameters $ j' $ and $ j'' $ indicate the  normalization levels. The rule to calculate these normalization factors is described in the equation:
+\begin{center}
+	\large $ 2^{-(j' + j'')/2} ,$
+\end{center}
+where $ 0 \leq j' , j'' \leq (\log_{2}n) -1 $ and $ n $ indicates the matrix order.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\red{alice 12/10/2015 Pessoal: parei aqui. acho que é melhor o vinicius mexer agora, limpar as coisas que ficaram para tras ao longo do trabalho e depois entao, mexemos de novo no texto. Acho que precisaremos enxugar a discussao. está ficando longo e repetitivo. acho que devemos diminuir a parte inicial que está muito similar como que ja foi publicado e dar mais enfoque para a parte das complexidades e validacao em relacao à aplicacao. só que a meu ver, isso só pode ser feito, depois que chegarmos ao final dessa versao preliminar. nao sei quantas paginas ao certo ja temos, porque há ainda muitos comentarios e recados no texto. minha sugestão é que agora dvemos trabalhar para gerarmos uma versao limpa, daí repensamos o que fazer, dependendo da restricao de paginas da revista. alias, quantas sao???????? ate breve. alice}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+By analyzing the original standard algorithm, Figure~\ref{fig:SDandND}, it depends on the original normalized decomposition procedure, whose complexity is $\BigO(n\log(n) + n)$, executing it for every row and column of the input matrix. Considering a $n$x$n$ matrix the complexity of the original standard algorithm is $\BigO(n(n\log(n) + n) + n(n\log(n) + n))$, therefore $\BigO(2n^2\log(n) + 2n^2)$. Performing the non-normalized decomposition algorithm, discussed in Section~\ref{subsec:1DCascadeOpt}, it reduces the calculations by avoiding intermediate normalization steps.
+
+The non-normalized standard decomposition is performed with $\BigO(2n^2\log(n))$, and the last step is to normalize the results using the $StandardNormalization$ algorithm, presented in Figure~\ref{fig:StandardNormAlg}, and since it is operating one time on each coefficient of the input matrix its complexity can be expressed by $\BigO(n^2)$. The complexity of performing the non-normalized standard decomposition and the standard normalization step can be expressed by $\BigO(2n^2\log(n) + n^2)$, which is faster than the original normalized procedure by avoiding a second iteration of $\BigO(n^2)$ on the input matrix.
+
+The original normalized standard composition, presented in Figure~\ref{fig:InverseSCandNSC}, can be analyzed in the same way as its decomposition procedure since it performs the same number of operations but produces an approximation of the input matrix used for decomposition. The original version is executed in $\BigO(2n^2\log(n) + 2n^2)$ time, while its optimized version operates in $\BigO(2n^2\log(n) + n^2)$.
+
+Looking at the original non-standard algorithm, Figure~\ref{fig:SDandND}, it is executing a intermediate normalization at line 1, dividing each coefficient by the order of the input matrix, which configures a $\BigO(n^2)$ operation. Considering a quadratic matrix of order $n$, the rest of the algorithm operates in a $while$ loop which is executed $\log_2(n)$ times. For each $while$ loop there are two $for$ loops also executing $\log_2(n)$ times, each one performing the $DecompositionStep$ algorithm ($\BigO(n)$) on portions of the input matrix, depending on the level of transformation. The original non-standard decomposition is executed in $\BigO(n^2 + \log(\log(n) + \log(n)))$ time.
+
+
+
 The non-normalized non-standard decomposition ( $\BigO(\log(\log(n) + \log(n)))$) does not need the normalization step,  and its $Non-StandardNormalization$ algorithm, shown in Figure~\ref{fig:NonStandardNormAlg}, is performed with complexity $\BigO(n^2)$. The overall complexity of these procedures is $\BigO(n^2 + \log(\log(n) + \log(n)))$, which is the same from the original normalized non-standard algorithm. The gain of time presented in Figure~\ref{fig:test2S-NS} was obtained performing simple divisions by $2$ which is faster than using $\sqrt{2}$ as divisor.
 
-\subsection{1D Undecimated Int-HWT Simplification}
+\subsubsection{One Dimensional}
 
 The normalized decomposition procedure for the undecimated version of the Int-HWT, either one-dimensional or two-dimensional, is executed in the same order from the optimization developed for the decimated version: first a non-normalized decomposition is made, as indicated in Figure~\ref{fig:DTAtrous}; after this stage the normalization of all coefficients is performed, multiplying all of them by the normalization factor $ 2^{j/2} $, where $ j $ is the resolution level of the coefficients through out the decomposition.
 
 The complexities of both $ DecompositionStep $ and $ Decomposition $ procedures are  $\BigO(2n + 2)$ and $\BigO(Levels.(2n + 3))$, respectively. Both are part of the original decomposition procedure, shown in Figure~\ref{fig:AtrousDecompMethods}. As in the previous cases, by performing a non-normalized decomposition there is no need to execute divisions by $\sqrt{2}$ in the step procedure, pseudo-code shown in Figure~\ref{fig:NewAtrousDS}, reducing the corresponding complexities to $\BigO(2n)$ and $\BigO(2n.Levels)$ (the same complexity as the original normalized transform).
 
 \begin{figure}[ht]
-  	\includegraphics[width=8.6cm]{Imagens/Atrous_New_DStep.png}
+  	\includegraphics[width=10cm]{Imagens/Atrous_New_DStep.png}
   	\caption{2D undecimated Int-HWT: non-normalized decomposition step.}
 	\label{fig:NewAtrousDS}
 \end{figure}
@@ -726,7 +759,7 @@ The complexities of both $ DecompositionStep $ and $ Decomposition $ procedures 
 The normalization procedure, presented in Figure~\ref{fig:Atrous1DNormalization}, performs the normalization step of all coefficients after the transform. In contrast with the decimated version, the undecimated approach deals with a set of vectors as result of the transform, and each resultant vector need to be normalized individually. The normalization procedure multiplies each scalar coefficient by its normalization factor $ 2^{i/2} $ for every resultant vector from the transform, configuring $ \BigO(n.Levels) $ from line 1 to 5 of the pseudo-code. With the new set of scalar values all wavelet coefficients are then recalculated, configuring $ \BigO(Levels.(n + 3) + 2) $ from line 6 to 16, which can be simplified to $ \BigO(n.Levels) $. The overall complexity of the procedure is $ \BigO(2n.Levels) $.
 
 \begin{figure}[ht]
-  	\includegraphics[width=8cm]{Imagens/Atrous1DNormalization.png}
+  	\includegraphics[width=9cm]{Imagens/Atrous1DNormalization.png}
   	\caption{1D undecimated Int-HWT: normalization procedure.}
 	\label{fig:Atrous1DNormalization}
 \end{figure}
@@ -735,7 +768,7 @@ By performing a non-normalized vector transform and the normalization procedure,
 
 The composition process, shown in Figure~\ref{fig:AtrousCompMethod}, starts with a copy of all scalar coefficients from the lowest level summing it with all wavelet vectors produced during decomposition. The complexity of this procedure is $ \BigO(n.Levels) $ and can be used for both normalized and non-normalized transformations, there is no need for optimization.
 
-\subsection{2D undecimated Int-HWT Simplification}
+\subsubsection{Two Dimension}
 
 As done for the decimated case, the undecimated transform, preformed by the à-trous algorithm, considers the same principle presented in the one-dimensional optimization, i.e., the same strategy of multiplying the transformed values by the corresponding $2^{j/2}$ normalization factor, where $j$ is the corresponding level. To decompose a data matrix the two-dimensional implementation creates a set of matrices carrying scalar coefficients and another set of matrices to store wavelet coefficients. The procedure is expensive on both performing and storing the results. Applying the same idea used in previous implementations, it is possible to reduce the error involved in the process.
 
@@ -744,12 +777,12 @@ In Figure~\ref{fig:AtrousStandardPseudo} the original standard procedure is pres
 The next step in order to normalize the transformed values is to perform the $A\-TrousMatrixNormalization$ procedure, shown in Figure~\ref{fig:AtrousMatrixNormalization}, which is executed in $\BigO(4n.m.Levels)$. Therefore, the optimized decomposition procedure developed costs $\BigO(8n.m.Levels)$, twice the cost of the original normalized formulation, but tests indicate that our approach results in more exact values as shown in Figure~\ref{fig:test4S-NS}.
 
 \begin{figure}[ht]
-  	\includegraphics[width=11cm]{Imagens/ATrousMatrixNormalization.png}
+  	\includegraphics[width=11.5cm]{Imagens/ATrousMatrixNormalization.png}
   	\caption{2D undecimated Int-HWT: normalization procedure.}
 	\label{fig:AtrousMatrixNormalization}
 \end{figure}
 
-\section{Application - Data Compression}
+\section{Interval Compression}
 \label{sec:compress}
 
 The main goal of compression procedures is to express an initial data set with the smaller amount of points as possible, this task can be done either with or without loss of information~\cite{stollnitz1995},~\cite{kozakevicius2014}. In the wavelet context, the wavelet expansion of the initial data is analysed in order to decide which wavelet coefficients are more significant then others. Therefore, keeping only the most significant ones, the truncated series represents the compressed(or filtered) data. In~\cite{perin2013} ECG signals were analysed assuming adaptive compression techniques.
@@ -837,63 +870,102 @@ The Soft Decision is made by verifying if most of the interval data is less than
 %     }
 % \end{algorithm}
 
-\section{Tests and Results}
+\chapter{Tests and Results}
 \label{sec:tests}
 
-The numerical validation of algorithms described in Sections~\ref{sec:hwt-decimated} and \ref{sec:hwt-undecimated} are based on the application of the HWT for image processing. In this manner, the interval parameters for test executions were obtained from punctual values setting degenerated intervals and using them as input to the interval extensions of both decimated and undecimated implementations of the HWT.
+The numerical validation of algorithms proposed and described in Section~\ref{sec:optintform} is based on the application of the HWT for image processing. In this manner, the interval parameters for test executions were obtained from punctual values setting degenerated intervals and using them as input to the interval extensions of both decimated and undecimated implementations of the HWT.
 
-The implementation of interval procedures in the Int-Haar library performs the computation of interval error in the process, presenting the widest interval diameter contained in the transformation results. For all tests the time measurement was done by executing each function 30 times, mean and standard deviation values were obtained from those times and used to generate the figures presented in this section.
+The implementation of interval procedures in the Int-HWT library performs the computation of interval error in the process, presenting the widest interval diameter contained in the transformation results. For all tests, the time measurement carried out by executing each function 30 times, mean and standard deviation values were obtained from those times and used to generate the figures presented in the following subsections.
 
-In order to compute tests using the 1D HWT and its interval extension a vector filled with 1048576 random values is being used as input. For tests that use the 2D HWT algorithms the input is generate from a 1024x1024 image, using 8 bits gray-scale codification, configuring 1048576 values.
+\section{Haar Wavelet Transform}
 
-The tests were executed on a Intel~\textsuperscript{\textregistered} Core~\textsuperscript{\texttrademark} i7 950 Processor @ 3.07GHz, 6GB RAM DDR3 @ 1066MHz, Windows 8.1 OS, compiled using Microsoft Visual C++ Compiler for Visual Studio 2015 on Win64 Release compilation target.
+In order to compute tests using the 1D HWT and its interval extension, a vector filled with 1048576 random values is used as input. For tests using 2D HWT algorithms, the input is generated from a 1024x1024 matrix of random values, configuring 1048576 values.
 
-The results shown in Figure~\ref{fig:test1-3} describe the execution time of both decomposition and composition procedures from Section~\ref{sec:hwt1d_decimated}, targeting the decimated and undecimated 1D HWT. The data indicates that the decimated algorithms developed in this work are faster then the originals from the literature \cite{stollnitz1995}, and the error of calculation is significantly smaller than the original formulation. The data also indicates that the developed undecimated algorithms are slower then the originals from the literature \cite{IEEE2007}.
+The tests were executed on an Intel~\textsuperscript{\textregistered} Core~\textsuperscript{\texttrademark} i7 950 Processor @ 3.07GHz, 6GB RAM DDR3 @ 1066MHz, Windows 10 OS, compiled using Microsoft Visual C++ Compiler for Visual Studio 2013 on x64 Release compilation target.
 
-The undecimated formulation do not add error to calculations on composition step if there is no error from the input. The increase of error on composition in conjunction with decomposition is the case where there are errors at input data for the composition step. The result of the Euclidean Distance (EUC) and Mean Square Error (MSE) for both formulations indicate that the output from developed decomposition and composition procedures in sequence result in an better image quality, closer to the input used. Peak Signal to Noise Ratio (PSNR) is largest used in compression evaluation, measuring the quality of the resultant image comparing with the original input, where the highest value means better results.
+The results shown in Figure~\ref{fig:Dec1DHWT} describe the performance of both decomposition and composition procedures from Section~\ref{subsec:1DCascadeOpt}, targeting the decimated and undecimated 1D HWT. The data indicate that the decimated algorithms developed in this work are $46\%$ faster than the results found in \cite{stollnitz1995}, when composing the results from decomposing the input. Decomposition, Composition and the combination of both operations, are executed $30\times$, taking $15.46ms$, $16.4317ms$ and $31.1012ms$ with standard deviations of $0.757038ms$, $0.155433ms$ and $0.117835ms$ respectively. The accuracy gain is from $95\%$ up to $99.8\%$, meaning that the developed algorithms generate much more exact results compared to those from the literature. Euclidean Distance (EUC) and Mean Square Error (MSE) are around $99.8\%$ of gain, and Peak-to-Noise Ratio (PSNR) is about $24.4\%$.
 
+The data also indicate that the developed undecimated algorithms are about 30\% slower than the original formulations \cite{IEEE2007} when composing the results from the decomposition step, shown in Figure~\ref{fig:Und1DHWT}. The average times of execution for decomposition, composition and the combination of both are respectively $43.4929ms$, $12.0031ms$ and $55.0647ms$, and   the corresponding  standard deviation are  $0.385967ms$, $0.440633ms$ and $0.371797ms$ . 
+
+The undecimated formulation adds no error to calculations on the composition step, considering that the input does not contain errors, which explains the lack of bars in Figure~\ref{fig:Und1DHWT}. The accuracy gain when performing the combination of both decomposition and composition is around $81\%$. The EUC is about $54.5\%$, and MSE is $79.3\%$, while PSNR is $2.15\%$. These results show that despite the loss of performance the developed algorithms are more accurate than the algorithms from the literature~\cite{IEEE2007}.
+
+% \begin{figure}[ht]
+%     \centering
+%     \includegraphics[width=14cm]{Imagens/test1-3.png}
+%     \caption{Times of execution and error measurement for the 1D HWT using 1048576 random values.}
+%     \label{fig:test1-3}
+% \end{figure}
+%
 \begin{figure}[ht]
-    \centering
-    \includegraphics[width=16cm]{Imagens/test1-3.png}
-    \caption{Times of execution and error measurement for the 1D HWT using 1048576 random values.}
-    \label{fig:test1-3}
+  \centering
+  \begin{subfigure}[b]{0.48\textwidth}
+	\includegraphics[width=\textwidth]{Imagens/test1.png}
+	\caption{Decimated 1D HWT}
+    \label{fig:Dec1DHWT}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.48\textwidth}
+	\includegraphics[width=\textwidth]{Imagens/test3.png}
+	\caption{Undecimated 1D HWT}
+	\label{fig:Und1DHWT}
+  \end{subfigure}
+  \caption{Performance, accuracy and metric gains for the 1D HWT.}
+  \label{fig:test1-3}
 \end{figure}
 
-The data from Figure~\ref{fig:test2S-NS} shows the execution time of both decomposition and composition procedures, using the standard and non standard algorithms for matrices from Section~\ref{sec:hwt2d}, targeting the decimated 2D HWT. The data indicates that the algorithms developed in this work are faster then the originals, and the error of its calculation is smaller compared with original algorithms. It is important to verify that, as shown in Figure~\ref{fig:2DNormFactors}, the calculation of $ \sqrt{2} $ for the developed non standard method do not need to be performed due to the implemented algebraic simplification. Therefore, the calculation error during this process is null, indicated by the lack of bars in the same chart. The EUC and MSE indicate that composition in conjunction with decomposition result in an image closer to the original input, meaning less calculus deviation during the process, and PSNR confirms the quality of results.
+Data from Figure~\ref{fig:test2S-NS} show the performance of both standard and non-standard approaches for the decimated 2D HWT. The results presented in \mbox{Figure}~\ref{fig:Dec2DSHWT} show a performance boost of $58,1\%$ during the composition step. The average time of execution of the decomposition, composition and the combination of both are $42.2897ms$, $32.5122ms$ and $74.6253ms$, and their standard deviations are $0.271538ms$, $0.487003ms$ and $0.314095ms$ respectively. The accuracy gain of decomposition, composition and the combination of both are $99.8\%$, $93.5\%$ and $98.3\%$, meaning that the results provided from the developed algorithms are much more exact compared to the literatureliterature~\cite{stollnitz1995}. The EUC, MSE and PSNR metrics are $99.8\%$, $99.9\%$ and $19.2\%$, showing that the developed algorithms are more accurate than the algorithms from the literature~\cite{stollnitz1995}.
+
+Figure~\ref{fig:Dec2DNSHWT} shows the performance, accuracy and metric gains for the decimated 2D non-standard HWT comparing to the original algorithms found in~\cite{stollnitz1995}. The average time of execution for decomposition, composition and both operations are $37.8028ms$, $49.1ms$ and $86.0812ms$, and their standard deviations are respectively $0.985911ms$, $0.362122ms$ and $0.255491ms$. It is important to verify that, as shown in Figure~\ref{fig:2DNormFactors}, the developed non-standard method do not need to perform calculations of $ \sqrt{2} $ due to the implemented algebraic simplifications. Therefore, the corresponding calculations do not increase the error during this process, indicated by accuracy values at $100\%$ for all three methods. Due to the lack of error, the EUC and MSE are also shown at $100\%$. The PSNR metric cannot be calculated due to division by $0$, since it uses MSE as divisor and its value is $0$.
+%
+% \begin{figure}[ht]
+%     \centering
+%     \includegraphics[width=14cm]{Imagens/test2S-NS.png}
+%     \caption{Times of execution and error measurement for the 2D Standard and Non Standard HWT using a 1024x1024 image.}
+%     \label{fig:test2S-NS}
+% \end{figure}
+%
+\begin{figure}[ht]
+  \centering
+  \begin{subfigure}[b]{0.48\textwidth}
+	\includegraphics[width=\textwidth]{Imagens/test2S.png}
+	\caption{Decimated 2D Standard HWT}
+    \label{fig:Dec2DSHWT}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.48\textwidth}
+	\includegraphics[width=\textwidth]{Imagens/test2NS.png}
+	\caption{Decimated 2D Non-Standard HWT}
+	\label{fig:Dec2DNSHWT}
+  \end{subfigure}
+  \caption{Times of execution and error measurement for the 2D HWT using 1024x1024 matrix with random values.}
+  \label{fig:test2S-NS}
+\end{figure}
+%
+Figure~\ref{fig:test4S-NS} shows the performance impact of both standard and non-standard approaches for the undecimated 2D HWT. The performance shown in Figure~\ref{fig:Und2DSHWT} and Figure~\ref{fig:Und2DNSHWT} indicates that the developed algorithms are at least $10\%$ slower than the originals, despite the composition step which has a little advantage of $5\%$ on the standard method.
+For the standard approach, the average execution time for decomposition, composition and the combination of both are $195.461ms$, $290.717ms$ and $200.601ms$, and their standard deviations $3.43775ms$, $10.5094ms$, $3.13332ms$. For the non-standard approach execution time averages  are $173.385ms$, $286.755ms$ and $192.677ms$, and their standard deviations are $3.03845ms$, $4.40987ms$ and $2.65613ms$. Both approaches also share the same percentage of accuracy gain, $92.6\%$ and $87.4\%$ respectively for decomposition and the combination of both algorithms performing together. The EUC, MSE and PSNR of both approaches are around $51\%$, $76\%$ and $2\%$ respectively.
+
+% \begin{figure}[ht]
+%     \centering
+%     \includegraphics[width=14cm]{Imagens/test4S-NS.png}
+%     \caption{Times of execution and error measurement for the 2D Non Standard HWT {\it À-Trous} using a 1024x1024 image.}
+%     \label{fig:test4S-NS}
+% \end{figure}
 
 \begin{figure}[ht]
-    \centering
-    \includegraphics[width=16cm]{Imagens/test2S-NS.png}
-    \caption{Times of execution and error measurement for the 2D Standard and Non Standard HWT using a 1024x1024 image.}
-    \label{fig:test2S-NS}
+  \centering
+  \begin{subfigure}[b]{0.48\textwidth}
+	\includegraphics[width=\textwidth]{Imagens/test4S.png}
+	\caption{Undecimated 2D Standard HWT}
+    \label{fig:Und2DSHWT}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.48\textwidth}
+	\includegraphics[width=\textwidth]{Imagens/test4NS.png}
+	\caption{Undecimated 2D Non-Standard HWT}
+	\label{fig:Und2DNSHWT}
+  \end{subfigure}
+  \caption{Times of execution and error measurement for the 2D HWT using 1024x1024 matrix with random values on 4 levels of decomposition.}
+  \label{fig:test4S-NS}
 \end{figure}
 
-The data from Figure~\ref{fig:test4S-NS} shows the execution time of both decomposition and composition procedures, using the standard and non standard algorithms for matrices from Section~\ref{sec:hwt2d-undecimated}, used on the undecimated 2D HWT. The data indicates that the algorithms developed in this work are slower then the literature, both formulations do not add error to calculations on composition step if there is no error on the input. The error of calculations are smaller compared with original algorithms. The EUC and MSE indicate that composition in conjunction with decomposition result in an image closer to the original input, meaning less calculus deviation during the process, and PSNR confirms the quality of results.
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=16cm]{Imagens/test4S-NS.png}
-    \caption{Times of execution and error measurement for the 2D Non Standard HWT À-Trous using a 1024x1024 image.}
-    \label{fig:test4S-NS}
-\end{figure}
-
-%\begin{table}[ht]
-%    \centering
-%    \caption{Calculus error generated by the algorithms from the literature and those developed in this work.}
-%    \label{tab:Table2}
-%    \begin{tabular}{|l|l|l|}
-%        \hline
-%        | & Decomposition & Composition \\
-%        \hline
-%        Standard Method New & 3.492460E-010 & 6.705523E-008 \\
-%        Standard Method Original & 7.916242E-008 & 4.671514E-006 \\
-%        Non-Standard Method New & 0.000000 & 0.000000\\
-%        Non-Standard Method Original & 7.171184E-008 & 1.819804E-006 \\
-%        \hline
-%    \end{tabular}
-%\end{table}
-
-\chapter{CONCLUSION}
+\chapter{Conclusion}
 \label{sec:conclusion}
 
 This work presented an interval implementation of the HWT, for both decimated and undecimated approaches and covering all cases of study, obtaining good results related to error analysis, that is, the optimizations improve accuracy. As consequence of the implemented optimizations our algorithms are faster then the original decimated formulation, but slower than the original undecimated algorithms.
