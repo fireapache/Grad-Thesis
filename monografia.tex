@@ -615,6 +615,46 @@ The same idea from the one-dimensional transform can be applied for both standar
 
 \subsection{One Dimensional}\label{sec:1DDaWT}
 
+According to the description in \cite{DAUBTHESIS}, when assuming the original formulation of the transform and given an initial vector $C$ with $n$ punctual values, the one-dimensional DaWT calculate scaling and wavelet coefficients of each pair of adjacent elements in the input vector $C$, $(C_{2j-1}, C_{2j}), j=1,...,n/2$, generating therefore two output sets: a vector containing the scaling and a second vector with wavelet coefficients, both with $n_1= n/2$ points, half size of the original input vector $C$.
+
+According to the description in \cite{stollnitz1995}, when assuming the decimated formulation of the transform and given an initial vector $C$ with $n$ punctual values, the one-dimensional HWT calculates the averages and differences of each pair of adjacent elements in the input vector $ C $, $(C_{2j-1}, C_{2j}), j=1,...,n/2$, generating therefore two output sets:  one for the scaling (averages) and another for the wavelets (differences) coefficients, both with $n_1= n/2$ points, half size of the original input vector C.
+
+Figure~\ref{fig:DandDS} presents the  $log_2(n)$ level decomposition of the Int-HWT algorithm,  formulated for the decimated case as an extension of the original algorithm presented in~\cite{stollnitz1995}.
+The novelty here on the interval code remains in the definition of vectors as interval vectors. Constants are defined as interval quantities and all arithmetics are treated as interval operations. In this sense, in Figure~\ref{fig:DandDS} the interval quantities  $h=( 1/\sqrt{[2;2]}, 1/\sqrt{[2;2]})$ and $g=( 1/\sqrt{[2;2]}, -1/\sqrt{[2;2]})$ are the  normalized interval filters associated to the Int-HWT, representing the interval extension of the standard algorithm. The discrete convolution from $C$ with $h$ generates the averages (scaling coefficients) and  for computing the differences (wavelet coefficients) the filter $g$ is considered.
+
+Since the HWT main feature is to decompose information in many resolution levels, assuming as input the set of the scaling coefficients that contains the $n_1$ previously computed averages, the next level of the decimated HWT produces a second pair of half-sized vectors, one for the new $n_2=n_1/2$ averages and other for the corresponding $n_2=n_1/2$ wavelet coefficients.  This procedure is recursively defined and can be applied until a specific level of coarser resolution is achieved or until a single scalar scaling coefficient is obtained. The whole process of the direct HWT is also called \textbf{decomposition}.
+
+\begin{figure}[ht]
+	\centering
+    \includegraphics[width=14cm]{Imagens/D_and_DStep.png}
+    \caption{1D decimated Int-HWT: $l=log_2(n)$ decomposition levels. Normalized interval filters: $h=( 1/\sqrt{[2,2]}, 1/\sqrt{[2,2]})$ for computing scaling coefficients; $g=( 1/\sqrt{[2,2]}, -1/\sqrt{[2,2]})$ for wavelet coefficients.}
+    \label{fig:DandDS}
+ \end{figure}
+
+Figure \ref{fig:ComparisonIntPonc} shows the comparison between the standard and the interval procedures of the one-dimensional HWT assuming $l=log_2 n$ decomposition levels.
+
+\begin{figure}[ht]
+    %\centering
+    \includegraphics[width=12cm]{Imagens/FiguraA.png}
+    \caption{1D decimated HWT algorithms:(top panel) original; (bottom panel) interval extension. Both cases assuming initial data as being punctual values and $log_2 n$ decomposition levels.}
+    \label{fig:ComparisonIntPonc}
+\end{figure}
+
+It is possible to notice in Figure~\ref{fig:ComparisonIntPonc} the care with the type of data being used in the formal parameters in both procedures. The constants must be expressed by intervals too. The instruction $sqrt(float(n))$, square root of punctual floating value, becames $sqrt(interval(n))$, square root of punctual interval. Inside the while loop the interval procedure calls another interval procedure, maintaining the compatibility of the data being calculated. The same type of code adaptation is considered for the rest of the punctual procedures, generating in this way the proposed interval extension.
+
+
+Using the sets of all wavelet coefficients, resulted from the decomposition process, together with the averages in the lowest level of the direct decimated Int-HWT, it is possible to accurately perform the \textbf{inverse transformation} (also called \textbf{composition}), generating the exact reconstruction of the original vector, which is an important characteristic of the HWT.
+
+The pseudo-code that performs the level composition of  the 1D decimated Int-HWT is represented in Figure~\ref{fig:CandCS}. According to \cite{stollnitz1995}, in the composition process, starting from the coarsest resolution level of the transformation, the original values are restored level by level, combining the wavelet and scaling coefficients from the level immediately below.
+Therefore, the decomposition process is completely reversible, allowing the data reconstruction in each level of the transformation, until the end of the process is achieved, when finally the finest resolution level is exactly reconstructed.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=14cm]{Imagens/C_and_CStep.png}
+    \caption{Inverse 1D decimated Int-HWT. Composition  process to reconstruct $l=log_2 n$ levels.}
+    \label{fig:CandCS}
+ \end{figure}
+
 \subsection{Two Dimensional}\label{sec:2DDaWT}
 
 \chapter{Developed Optimal Formulations}
