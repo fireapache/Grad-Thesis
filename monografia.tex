@@ -9,6 +9,9 @@
 \usepackage{subcaption}
 \usepackage[linesnumbered]{algorithm2e}
 
+\let\oldnl\nl% Store \nl in \oldnl
+\newcommand{\nonl}{\renewcommand{\nl}{\let\nl\oldnl}}% Remove line number for one line
+
 \newcommand{\red}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
 \newcommand{\blue}[1]{\textcolor[rgb]{0.00,0.00,1.00}{#1}}
 \DeclareMathSymbol{\Theta}{\mathalpha}{operators}{2}
@@ -557,17 +560,13 @@ also called Composition, which provides the exact reconstruction of the original
 
 According to \cite{IEEE2007}, the algorithm for the 2D à trous HWT is again obtained through the application of the one-dimensional transformation in all rows and columns of the input matrix, as done for the decimated version of the HWT. Analogously, Standard and Non-Standard procedures can be designed according to the order how the 1D à trous transforms are applied to the 2D data.
 
-\begin{figure}[ht]
+\begin{figure}[h!]
 \includegraphics[width=15cm]{Imagens/HaarAtrousStandard.png}
 	\caption{2D à trous HWT- standard algorithm for matrix decomposition.}
     \label{fig:AtrousStandard}
 \end{figure}
 
-The undecimated standard decomposition for the 1D Int-HWT, based on the Standard decimated decomposition, is performed by executing the 1D à trous Int-HWT for each row of the input matrix. This process is called Row~À-Trous~Transform~(\textit{RAT}), characterizing this procedure as a horizontal transformation. Considering $n$ decomposition levels, the RAT procedure is repeated $n$ times, generating matrices $ C^1_R $ ... $ C^n_R $ and $ D^1_R $ ... $ D^n_R $. After decomposing all rows from the input matrix, the decomposition of all its columns is performed, called Column~À-Trous~Transform~(\textit{CAT}), characterizing a vertical transformation and generating matrices $ C^{n+1}_C $ ... $ C^{n*2}_C $ and $ D^{n+1}_C $ ... $ D^{n*2}_C $.
-
-The matrices $ C^j_R $ and $ C^j_C $  store scaling coefficients, while $ D^j_R $ and $ D^j_C $ store wavelet coefficients. A visual representation of the process is shown in Figure~\ref{fig:AtrousStandard}, and its pseudo algorithm is shown in Figure~\ref{fig:AtrousStandardPseudo}.
-
-\begin{figure}[ht]
+\begin{figure}[h!]
 
 \includegraphics[width=10cm]{Imagens/HaarAtrousStandardPseudo.png}
 
@@ -576,18 +575,11 @@ The matrices $ C^j_R $ and $ C^j_C $  store scaling coefficients, while $ D^j_R 
 
 \end{figure}
 
-The undecimated non-standard decomposition, based on the original non-standard algorithm from the Cascade approach, is performed by intercalating both \textit{RAT} and \textit{CAT} operations, extracting vertical and horizontal details for each level of decomposition, as shown in Figure~\ref{fig:AtrousNonStandard}. For each level $ j $ of decomposition the algorithm performs a \textit{RAT} step, generating matrices $ C^j_R $ and $ D^j_R $, and right after a \textit{CAT} is performed, generating matrices $ C^j_C $ and $ D^j_C $. Both $ C^j_R $ and $ C^j_C $ store scalar coefficients, while $ D^j_R $ and $ D^j_C $ hold wavelet coefficients, and those four matrices represent one level full decomposed. The À-trous Non Standard algorithm is shown in Figure~\ref{fig:AtrousStandardPseudo}
+The undecimated standard decomposition for the 1D Int-HWT, based on the Standard decimated decomposition, is performed by executing the 1D à trous Int-HWT for each row of the input matrix. This process is called Row~À-Trous~Transform~(\textit{RAT}), characterizing this procedure as a horizontal transformation. Considering $n$ decomposition levels, the RAT procedure is repeated $n$ times, generating matrices $ C^1_R $ ... $ C^n_R $ and $ D^1_R $ ... $ D^n_R $. After decomposing all rows from the input matrix, the decomposition of all its columns is performed, called Column~À-Trous~Transform~(\textit{CAT}), characterizing a vertical transformation and generating matrices $ C^{n+1}_C $ ... $ C^{n*2}_C $ and $ D^{n+1}_C $ ... $ D^{n*2}_C $.
 
-\begin{figure}[ht]
+The matrices $ C^j_R $ and $ C^j_C $  store scaling coefficients, while $ D^j_R $ and $ D^j_C $ store wavelet coefficients. A visual representation of the process is shown in Figure~\ref{fig:AtrousStandard}, and its pseudo algorithm is shown in Figure~\ref{fig:AtrousStandardPseudo}.
 
-	\includegraphics[width=15cm]{Imagens/HaarAtrousNonStandard.png}
-
-	\caption{Non Standard algorithm for matrix decomposition.}
-    \label{fig:AtrousNonStandard}
-
-\end{figure}
-
-\begin{figure}[ht]
+\begin{figure}[h!]
 
 	\includegraphics[width=11cm]{Imagens/HaarAtrousNonStandardPseudo.png}
 
@@ -596,12 +588,23 @@ The undecimated non-standard decomposition, based on the original non-standard a
 
 \end{figure}
 
+\begin{figure}[h!]
+
+	\includegraphics[width=15cm]{Imagens/HaarAtrousNonStandard.png}
+
+	\caption{Non Standard algorithm for matrix decomposition.}
+    \label{fig:AtrousNonStandard}
+
+\end{figure}
+
+The undecimated non-standard decomposition, based on the original non-standard algorithm from the Cascade approach, is performed by intercalating both \textit{RAT} and \textit{CAT} operations, extracting vertical and horizontal details for each level of decomposition, as shown in Figure~\ref{fig:AtrousNonStandard}. For each level $ j $ of decomposition the algorithm performs a \textit{RAT} step, generating matrices $ C^j_R $ and $ D^j_R $, and right after a \textit{CAT} is performed, generating matrices $ C^j_C $ and $ D^j_C $. Both $ C^j_R $ and $ C^j_C $ store scalar coefficients, while $ D^j_R $ and $ D^j_C $ hold wavelet coefficients, and those four matrices represent one level full decomposed. The À-trous Non Standard algorithm is shown in Figure~\ref{fig:AtrousStandardPseudo}
+
 %\todo[inline]{Depois que falares dos algoritmos atrous 1d e 2d, podes entao entrar na questao da normalizacao, pois tanto no caso do algoritmo de cascata, quanto no algoritmo atrous, tu conseguiste as simplificaçoes que vao otimizar os codigos intervalares. acho mais prudente chamar de simplificação ao invés de otimizacao. \\
 %O parágrafo abaixo é um bom link entre seções. então, podes aproveitá-lo para a conexão entre a seção anterior e a próxima}
 
 The same idea from the one-dimensional transform can be applied for both standard and non-standard sets of data to perform an inverse process, generating the input matrix. By using all matrices of wavelet coefficients resulted by the process of decomposition together with the averages in the lowest level of decomposition, it is possible to reconstruct, accurately. $MatrixComposition$ generates the exact reconstruction of the original input matrix of data. The algorithm describing its execution is shown in Figure~\ref{fig:ATrousMatrixComposition}.
 
-\begin{figure}[ht]
+\begin{figure}[h!]
 	\includegraphics[width=11cm]{Imagens/ATrousMatrixComposition.png}
 	\caption{Pseudo code for À-trous matrix composition.}
     \label{fig:ATrousMatrixComposition}
@@ -614,45 +617,140 @@ The same idea from the one-dimensional transform can be applied for both standar
 
 According to the description in \cite{DAUBTHESIS}, when assuming the original formulation of the transform and given an initial vector $C$ with $n$ punctual values, the one-dimensional DaWT calculate scaling and wavelet coefficients of each pair of adjacent elements in the input vector $C$, $(C_{2j-1}, C_{2j}), j=1,...,n/2$, generating therefore two output sets: a vector containing the scaling and a second vector with wavelet coefficients, both with $n_1= n/2$ points, half size of the original input vector $C$.
 
-According to the description in \cite{stollnitz1995}, when assuming the decimated formulation of the transform and given an initial vector $C$ with $n$ punctual values, the one-dimensional HWT calculates the averages and differences of each pair of adjacent elements in the input vector $ C $, $(C_{2j-1}, C_{2j}), j=1,...,n/2$, generating therefore two output sets:  one for the scaling (averages) and another for the wavelets (differences) coefficients, both with $n_1= n/2$ points, half size of the original input vector C.
+Figure~\ref{fig:DaubDandDS} presents the $log_2(n)$ level decomposition of the Int-DaWT algorithm,  formulated for the decimated case as an extension of the original algorithm presented in~\cite{DAUBTHESIS}. The novelty here on the interval code remains in the definition of vectors as interval vectors. Constants are defined as interval quantities and all arithmetics are treated as interval operations. In this sense, in Figure~\ref{fig:DaubDandDS}, the interval quantities  $h$ and $g$, shown in Figure~\ref{fig:IntDaWHFilters}, are the  normalized interval filters associated to the Int-DaWT, representing the interval extension of the original algorithm. The discrete convolution from $C$ with $h$ generates the next set of scaling coefficients and for computing the wavelet coefficients the filter $g$ is considered.
 
-Figure~\ref{fig:DandDS} presents the  $log_2(n)$ level decomposition of the Int-HWT algorithm,  formulated for the decimated case as an extension of the original algorithm presented in~\cite{stollnitz1995}.
-The novelty here on the interval code remains in the definition of vectors as interval vectors. Constants are defined as interval quantities and all arithmetics are treated as interval operations. In this sense, in Figure~\ref{fig:DandDS} the interval quantities  $h=( 1/\sqrt{[2;2]}, 1/\sqrt{[2;2]})$ and $g=( 1/\sqrt{[2;2]}, -1/\sqrt{[2;2]})$ are the  normalized interval filters associated to the Int-HWT, representing the interval extension of the standard algorithm. The discrete convolution from $C$ with $h$ generates the averages (scaling coefficients) and  for computing the differences (wavelet coefficients) the filter $g$ is considered.
+\begin{figure}[h!]
 
-Since the HWT main feature is to decompose information in many resolution levels, assuming as input the set of the scaling coefficients that contains the $n_1$ previously computed averages, the next level of the decimated HWT produces a second pair of half-sized vectors, one for the new $n_2=n_1/2$ averages and other for the corresponding $n_2=n_1/2$ wavelet coefficients.  This procedure is recursively defined and can be applied until a specific level of coarser resolution is achieved or until a single scalar scaling coefficient is obtained. The whole process of the direct HWT is also called \textbf{decomposition}.
+\begin{center}
+\Large
+$h = (
+\quad \frac{1+\sqrt{3}}{4\sqrt{2}},
+\quad \frac{3+\sqrt{3}}{4\sqrt{2}},
+\quad \frac{3-\sqrt{3}}{4\sqrt{2}},
+\quad \frac{1-\sqrt{3}}{4\sqrt{2}}
+\quad )$
+\end{center}
 
-\begin{figure}[ht]
-	\centering
-    \includegraphics[width=14cm]{Imagens/D_and_DStep.png}
-    \caption{1D decimated Int-HWT: $l=log_2(n)$ decomposition levels. Normalized interval filters: $h=( 1/\sqrt{[2,2]}, 1/\sqrt{[2,2]})$ for computing scaling coefficients; $g=( 1/\sqrt{[2,2]}, -1/\sqrt{[2,2]})$ for wavelet coefficients.}
-    \label{fig:DandDS}
- \end{figure}
+\begin{center}
+\Large
+$g = (
+\quad \frac{1-\sqrt{3}}{4\sqrt{2}},
+\quad \frac{-3+\sqrt{3}}{4\sqrt{2}},
+\quad \frac{3+\sqrt{3}}{4\sqrt{2}},
+\quad \frac{-1-\sqrt{3}}{4\sqrt{2}}
+\quad )$
+\end{center}
 
-Figure \ref{fig:ComparisonIntPonc} shows the comparison between the standard and the interval procedures of the one-dimensional HWT assuming $l=log_2 n$ decomposition levels.
-
-\begin{figure}[ht]
-    %\centering
-    \includegraphics[width=12cm]{Imagens/FiguraA.png}
-    \caption{1D decimated HWT algorithms:(top panel) original; (bottom panel) interval extension. Both cases assuming initial data as being punctual values and $log_2 n$ decomposition levels.}
-    \label{fig:ComparisonIntPonc}
+\caption{Scaling and Wavelet filters for the direct DaWT}
 \end{figure}
 
-It is possible to notice in Figure~\ref{fig:ComparisonIntPonc} the care with the type of data being used in the formal parameters in both procedures. The constants must be expressed by intervals too. The instruction $sqrt(float(n))$, square root of punctual floating value, becames $sqrt(interval(n))$, square root of punctual interval. Inside the while loop the interval procedure calls another interval procedure, maintaining the compatibility of the data being calculated. The same type of code adaptation is considered for the rest of the punctual procedures, generating in this way the proposed interval extension.
+\begin{figure}[h!]
 
+\begin{center}
+\Large
+$h' = (
+\quad \frac{[1;1]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\quad \frac{[3;3]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\quad \frac{[3;3]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\quad \frac{[1;1]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}}
+\quad )$
+\end{center}
 
-Using the sets of all wavelet coefficients, resulted from the decomposition process, together with the averages in the lowest level of the direct decimated Int-HWT, it is possible to accurately perform the \textbf{inverse transformation} (also called \textbf{composition}), generating the exact reconstruction of the original vector, which is an important characteristic of the HWT.
+\begin{center}
+\Large
+$g' = (
+\quad \frac{[1;1]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\quad \frac{-[3;3]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\quad \frac{[3;3]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\quad \frac{-[1;1]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}}
+\quad )$
+\end{center}
 
-The pseudo-code that performs the level composition of  the 1D decimated Int-HWT is represented in Figure~\ref{fig:CandCS}. According to \cite{stollnitz1995}, in the composition process, starting from the coarsest resolution level of the transformation, the original values are restored level by level, combining the wavelet and scaling coefficients from the level immediately below.
-Therefore, the decomposition process is completely reversible, allowing the data reconstruction in each level of the transformation, until the end of the process is achieved, when finally the finest resolution level is exactly reconstructed.
+\caption{Interval extension of the Scaling and Wavelet filters for the direct DaWT}
+\label{fig:IntDaWHFilters}
+\end{figure}
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=14cm]{Imagens/C_and_CStep.png}
-    \caption{Inverse 1D decimated Int-HWT. Composition  process to reconstruct $l=log_2 n$ levels.}
-    \label{fig:CandCS}
+\begin{figure}[h!]
+
+\begin{center}
+\Large
+$ih = (
+\quad \frac{3-\sqrt{3}}{4\sqrt{2}},
+\quad \frac{3+\sqrt{3}}{4\sqrt{2}},
+\quad \frac{1+\sqrt{3}}{4\sqrt{2}},
+\quad \frac{1-\sqrt{3}}{4\sqrt{2}}
+\quad )$
+\end{center}
+
+\begin{center}
+\Large
+$ig = (
+\quad \frac{1-\sqrt{3}}{4\sqrt{2}},
+\quad \frac{-1-\sqrt{3}}{4\sqrt{2}},
+\quad \frac{3+\sqrt{3}}{4\sqrt{2}},
+\quad \frac{-1+\sqrt{3}}{4\sqrt{2}}
+\quad )$
+\end{center}
+
+\caption{Scaling and Wavelet filters for the inverse DaWT}
+\end{figure}
+
+\begin{figure}[h!]
+
+\begin{center}
+\Large
+$ih' = (
+\quad \frac{[3;3]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\quad \frac{[3;3]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\quad \frac{[1;1]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\quad \frac{[1;1]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}}
+\quad )$
+\end{center}
+
+\begin{center}
+\Large
+$ig' = (
+\enskip \frac{[1;1]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\quad \frac{-[1;1]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\quad \frac{[3;3]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\quad \frac{-[1;1]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}}
+\quad )$
+\end{center}
+
+\caption{Interval extension of the Scaling and Wavelet filters for the inverse DaWT}
+\end{figure}
+
+Since the DaWT main feature is to decompose information in many resolution levels, assuming as input the set of the scaling coefficients that contains the $n_1$ previously computed averages, the next decomposition level produces a second pair of half-sized vectors, one for the new $n_2=n_1/2$ scaling coefficients and other for the corresponding $n_2=n_1/2$ wavelet coefficients. This procedure is recursively defined and can be applied until a specific level of coarser resolution is achieved or until two scaling coefficients are obtained.
+
+\begin{figure}[h!]
+    \includegraphics[width=7.2cm]{Imagens/Daub_D.png}
+    
+    \includegraphics[width=14cm]{Imagens/Daub_DStep.png}
+    \caption{1D DaWT decomposition procedure.}
+    \label{fig:DaubDandDS}
+ \end{figure}
+
+Using the sets of all wavelet coefficients, resulted from the decomposition process, together with the scaling coefficients in the lowest level of the decomposed data, it is possible to perform the inverse transformation, also known as composition), reconstructing the original vector, which is an important characteristic of DWTs.
+
+The pseudo-code that performs the level composition of the 1D DaWT is represented in Figure~\ref{fig:DaubCandCS}. According to \cite{DAUBTHESIS}, in the composition process, starting from the coarsest resolution level of the transformation, the original values are restored level by level, combining the wavelet and scaling coefficients from the level immediately below. Therefore, the decomposition process is completely reversible, allowing the data reconstruction in each level of the transformation, until the end of the process is achieved, when finally the finest resolution level is exactly reconstructed.
+
+\begin{figure}[h!]
+    \includegraphics[width=7.1cm]{Imagens/Daub_C.png}
+    
+    \includegraphics[width=14cm]{Imagens/Daub_CStep.png}
+    \caption{Inverse 1D DaWT, Composition process to reconstruct $l=log_2 n$ levels.}
+    \label{fig:DaubCandCS}
  \end{figure}
 
 \subsection{Two Dimensional}\label{sec:2DDaWT}
+
+The DaWT can be extended for two-dimensional vectors, the same concept used for the HWT in Section~\ref{sec:hwt2d}. According to the procedure described in \cite{DAUBTHESIS}, the fast algorithm for the 2D DaWT is obtained through the application of the one-dimensional transformation per direction (in all rows of the input matrix and after that, in all columns of the resulting one). In fact, the order how the many levels of the one-dimensional transformation are applied to the two-dimensional data generates different intermediate results and, therefore, distinct algorithms for the 2D transform.
+
+Following what was presented in \cite{DAUBTHESIS}, the 2D DaWT can be calculated through the standard method, showed in Figure~\ref{fig:SDandND}. In this formulation, the many levels of the one-dimensional transform are applied to all rows. After the $l=log_2 n$ decomposition levels of the 1D HWT were applied to the entire set of rows of the matrix, the same 1D procedure is applied to the columns to the resulting matrix, as many levels as done for the rows. This completes the 2D transformation, assuming $l=log_2 n$ decomposition levels. Figure \ref{fig:DecompositionMethods} illustrates the application of this algorithm.
+
+According to \cite{DAUBTHESIS} and shown in Figure \ref{fig:SDandND},the non-standard method is another option for the 2D DaWT, whose interval extension is also proposed here. In this formulation the operations by rows and columns through out each level of the transform are intercalated. Thereby, every row is decomposed in one level and right after that all columns are also decomposed in one level, completing one level of decomposition for the entire 2D data. In this non standard formulation of the 2D HWT, the resulting scaling coefficients after one decomposition level, which are one fourth of the entire initial data, are then considered as the input for the computation of the next decomposition level of the transform. The three remaining blocks with wavelet coefficients are not further decomposed. Each one also containing one fourth of the original data.  The complete process repeats itself until in the last level just a single scaling coefficient and just one wavelet coefficient for the remaining three sets are obtained. A representation of this formulation is presented in Figure~\ref{fig:DecompositionMethods}(right panel).
+
+  The direct and inverse Int-HWT, Figures \ref{fig:DandDS}, \ref{fig:CandCS}, \ref{fig:SDandND} and \ref{fig:InverseSCandNSC}, can be thought as a convolution of the input data with a pair of filters , $h=(1/2, 1/2)$ and $g=(1/2,-1/2)$, that represent the transform \cite{stollnitz1995}.  The normalized Haar filters are $h=(1/\sqrt{2}, 1/\sqrt{2})$ and $g=(1/\sqrt{2},-1/\sqrt{2})$ and  the normalized transform preserves the energy of the entire set of coefficients obtained through the HWT. Therefore, according to \cite{stollnitz1995}, besides the standard and non-standard algorithms, the HWT can be performed using  normalized and non-normalized filters. Therefore combining the two possible algorithms with these two possible filter choices, there are four ways to compute the decimated 2D Int-HWT available: (i) non-standard, non-normalized; (ii) non-standard, normalized; (iii) standard, non-normalized; and (iv) standard, normalized.
 
 \chapter{Developed Optimal Formulations}
 \label{sec:optintform}
