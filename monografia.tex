@@ -1028,18 +1028,7 @@ In order to compute tests using the 1D HWT and its interval extension, a vector 
 
 The results shown in Figure~\ref{fig:Dec1DHWT} describe the performance of both decomposition and composition procedures from Section~\ref{subsec:1DCascadeOpt}, targeting the decimated and undecimated 1D HWT. The data indicate that the decimated algorithms developed in this work are $46\%$ faster than the results found in \cite{stollnitz1995}, when composing the results from decomposing the input. Decomposition, Composition and the combination of both operations, are executed $30\times$, taking $15.46ms$, $16.4317ms$ and $31.1012ms$ with standard deviations of $0.757038ms$, $0.155433ms$ and $0.117835ms$ respectively. The accuracy gain is from $95\%$ up to $99.8\%$, meaning that the developed algorithms generate much more exact results compared to those from the literature. Euclidean Distance (EUC) and Mean Square Error (MSE) are around $99.8\%$ of gain, and Peak-to-Noise Ratio (PSNR) is about $24.4\%$.
 
-The data also indicate that the developed undecimated algorithms are about 30\% slower than the original formulations \cite{IEEE2007} when composing the results from the decomposition step, shown in Figure~\ref{fig:Und1DHWT}. The average times of execution for decomposition, composition and the combination of both are respectively $43.4929ms$, $12.0031ms$ and $55.0647ms$, and   the corresponding  standard deviation are  $0.385967ms$, $0.440633ms$ and $0.371797ms$ . 
-
-The undecimated formulation adds no error to calculations on the composition step, considering that the input does not contain errors, which explains the lack of bars in Figure~\ref{fig:Und1DHWT}. The accuracy gain when performing the combination of both decomposition and composition is around $81\%$. The EUC is about $54.5\%$, and MSE is $79.3\%$, while PSNR is $2.15\%$. These results show that despite the loss of performance the developed algorithms are more accurate than the algorithms from the literature~\cite{IEEE2007}.
-
-% \begin{figure}[ht]
-%     \centering
-%     \includegraphics[width=14cm]{Imagens/test1-3.png}
-%     \caption{Times of execution and error measurement for the 1D HWT using 1048576 random values.}
-%     \label{fig:test1-3}
-% \end{figure}
-%
-\begin{figure}[ht]
+\begin{figure}[h!]
   \centering
   \begin{subfigure}[b]{0.48\textwidth}
 	\includegraphics[width=\textwidth]{Imagens/test1.png}
@@ -1055,22 +1044,15 @@ The undecimated formulation adds no error to calculations on the composition ste
   \label{fig:test1-3}
 \end{figure}
 
+The data also indicate that the developed undecimated algorithms are about 30\% slower than the original formulations \cite{IEEE2007} when composing the results from the decomposition step, shown in Figure~\ref{fig:Und1DHWT}. The average times of execution for decomposition, composition and the combination of both are respectively $43.4929ms$, $12.0031ms$ and $55.0647ms$, and   the corresponding  standard deviation are  $0.385967ms$, $0.440633ms$ and $0.371797ms$ . 
+
+The undecimated formulation adds no error to calculations on the composition step, considering that the input does not contain errors, which explains the lack of bars in Figure~\ref{fig:Und1DHWT}. The accuracy gain when performing the combination of both decomposition and composition is around $81\%$. The EUC is about $54.5\%$, and MSE is $79.3\%$, while PSNR is $2.15\%$. These results show that despite the loss of performance the developed algorithms are more accurate than the algorithms from the literature~\cite{IEEE2007}.
+
 \subsection{Two Dimensional}
 
 \subsubsection{Decimated}
 
-Data from Figure~\ref{fig:test2S-NS} show the performance of both standard and non-standard approaches for the decimated 2D HWT. The results presented in \mbox{Figure}~\ref{fig:Dec2DSHWT} show a performance boost of $58,1\%$ during the composition step. The average time of execution of the decomposition, composition and the combination of both are $42.2897ms$, $32.5122ms$ and $74.6253ms$, and their standard deviations are $0.271538ms$, $0.487003ms$ and $0.314095ms$ respectively. The accuracy gain of decomposition, composition and the combination of both are $99.8\%$, $93.5\%$ and $98.3\%$, meaning that the results provided from the developed algorithms are much more exact compared to the literatureliterature~\cite{stollnitz1995}. The EUC, MSE and PSNR metrics are $99.8\%$, $99.9\%$ and $19.2\%$, showing that the developed algorithms are more accurate than the algorithms from the literature~\cite{stollnitz1995}.
-
-Figure~\ref{fig:Dec2DNSHWT} shows the performance, accuracy and metric gains for the decimated 2D non-standard HWT comparing to the original algorithms found in~\cite{stollnitz1995}. The average time of execution for decomposition, composition and both operations are $37.8028ms$, $49.1ms$ and $86.0812ms$, and their standard deviations are respectively $0.985911ms$, $0.362122ms$ and $0.255491ms$. It is important to verify that, as shown in Figure~\ref{fig:2DNormFactors}, the developed non-standard method do not need to perform calculations of $ \sqrt{2} $ due to the implemented algebraic simplifications. Therefore, the corresponding calculations do not increase the error during this process, indicated by accuracy values at $100\%$ for all three methods. Due to the lack of error, the EUC and MSE are also shown at $100\%$. The PSNR metric cannot be calculated due to division by $0$, since it uses MSE as divisor and its value is $0$.
-%
-% \begin{figure}[ht]
-%     \centering
-%     \includegraphics[width=14cm]{Imagens/test2S-NS.png}
-%     \caption{Times of execution and error measurement for the 2D Standard and Non Standard HWT using a 1024x1024 image.}
-%     \label{fig:test2S-NS}
-% \end{figure}
-%
-\begin{figure}[ht]
+\begin{figure}[h!]
   \centering
   \begin{subfigure}[b]{0.48\textwidth}
 	\includegraphics[width=\textwidth]{Imagens/test2S.png}
@@ -1085,20 +1067,14 @@ Figure~\ref{fig:Dec2DNSHWT} shows the performance, accuracy and metric gains for
   \caption{Times of execution and error measurement for the 2D HWT using 1024x1024 matrix with random values.}
   \label{fig:test2S-NS}
 \end{figure}
-%
+
+Data from Figure~\ref{fig:test2S-NS} show the performance of both standard and non-standard approaches for the decimated 2D HWT. The results presented in \mbox{Figure}~\ref{fig:Dec2DSHWT} show a performance boost of $58,1\%$ during the composition step. The average time of execution of the decomposition, composition and the combination of both are $42.2897ms$, $32.5122ms$ and $74.6253ms$, and their standard deviations are $0.271538ms$, $0.487003ms$ and $0.314095ms$ respectively. The accuracy gain of decomposition, composition and the combination of both are $99.8\%$, $93.5\%$ and $98.3\%$, meaning that the results provided from the developed algorithms are much more exact compared to the literatureliterature~\cite{stollnitz1995}. The EUC, MSE and PSNR metrics are $99.8\%$, $99.9\%$ and $19.2\%$, showing that the developed algorithms are more accurate than the algorithms from the literature~\cite{stollnitz1995}.
+
+Figure~\ref{fig:Dec2DNSHWT} shows the performance, accuracy and metric gains for the decimated 2D non-standard HWT comparing to the original algorithms found in~\cite{stollnitz1995}. The average time of execution for decomposition, composition and both operations are $37.8028ms$, $49.1ms$ and $86.0812ms$, and their standard deviations are respectively $0.985911ms$, $0.362122ms$ and $0.255491ms$. It is important to verify that, as shown in Figure~\ref{fig:2DNormFactors}, the developed non-standard method do not need to perform calculations of $ \sqrt{2} $ due to the implemented algebraic simplifications. Therefore, the corresponding calculations do not increase the error during this process, indicated by accuracy values at $100\%$ for all three methods. Due to the lack of error, the EUC and MSE are also shown at $100\%$. The PSNR metric cannot be calculated due to division by $0$, since it uses MSE as divisor and its value is $0$.
+
 \subsubsection{Undecimated}
 
-Figure~\ref{fig:test4S-NS} shows the performance impact of both standard and non-standard approaches for the undecimated 2D HWT. The performance shown in Figure~\ref{fig:Und2DSHWT} and Figure~\ref{fig:Und2DNSHWT} indicates that the developed algorithms are at least $10\%$ slower than the originals, despite the composition step which has a little advantage of $5\%$ on the standard method.
-For the standard approach, the average execution time for decomposition, composition and the combination of both are $195.461ms$, $290.717ms$ and $200.601ms$, and their standard deviations $3.43775ms$, $10.5094ms$, $3.13332ms$. For the non-standard approach execution time averages  are $173.385ms$, $286.755ms$ and $192.677ms$, and their standard deviations are $3.03845ms$, $4.40987ms$ and $2.65613ms$. Both approaches also share the same percentage of accuracy gain, $92.6\%$ and $87.4\%$ respectively for decomposition and the combination of both algorithms performing together. The EUC, MSE and PSNR of both approaches are around $51\%$, $76\%$ and $2\%$ respectively.
-
-% \begin{figure}[ht]
-%     \centering
-%     \includegraphics[width=14cm]{Imagens/test4S-NS.png}
-%     \caption{Times of execution and error measurement for the 2D Non Standard HWT {\it À-Trous} using a 1024x1024 image.}
-%     \label{fig:test4S-NS}
-% \end{figure}
-
-\begin{figure}[ht]
+\begin{figure}[h!]
   \centering
   \begin{subfigure}[b]{0.48\textwidth}
 	\includegraphics[width=\textwidth]{Imagens/test4S.png}
@@ -1114,17 +1090,16 @@ For the standard approach, the average execution time for decomposition, composi
   \label{fig:test4S-NS}
 \end{figure}
 
-\section{Daubechies Wavelet Transform}
+Figure~\ref{fig:test4S-NS} shows the performance impact of both standard and non-standard approaches for the undecimated 2D HWT. The performance shown in Figure~\ref{fig:Und2DSHWT} and Figure~\ref{fig:Und2DNSHWT} indicates that the developed algorithms are at least $10\%$ slower than the originals, despite the composition step which has a little advantage of $5\%$ on the standard method.
+For the standard approach, the average execution time for decomposition, composition and the combination of both are $195.461ms$, $290.717ms$ and $200.601ms$, and their standard deviations $3.43775ms$, $10.5094ms$, $3.13332ms$. For the non-standard approach execution time averages  are $173.385ms$, $286.755ms$ and $192.677ms$, and their standard deviations are $3.03845ms$, $4.40987ms$ and $2.65613ms$. Both approaches also share the same percentage of accuracy gain, $92.6\%$ and $87.4\%$ respectively for decomposition and the combination of both algorithms performing together. The EUC, MSE and PSNR of both approaches are around $51\%$, $76\%$ and $2\%$ respectively.
 
-\subsection{One Dimensinal}
+\section{Daubechies Wavelet Transform}
 
 In order to avaluate the 1D DaWT and its interval extension, 3 tests were are executed using vectors filled with 1048576, 4194304 and 16777216 random values as input respectively. For tests using 2D DaWT algorithms, the inputs were generated from 1024x1024, 2048x2048 and 4096x4096 mtrices of random values.
 
-The results shown in Figure~\ref{fig:test5} describe the performance of both decomposition and composition procedures from Section~\ref{sec:1DDaWT}, targeting the one dimensional DaWT. The data indicate that the developed algorithms are $35\%$, $26\%$ and $26\%$ slower than the results based in~\cite{DAUBTHESIS}, when decomposing the vectors, and its coefficient of variation (CV) are $13.6\%$, $22.4\%$ and $17.6\%$ respectively. The Composition tests indicates that the developed algorithms are $84\%$, $78\%$ and $68\%$ slower than the algorithms in the literature~\cite{DAUBTHESIS}, its CV are $5.7\%$, $5.3\%$ and $9.8\%$. The combination of both Decomposition and Composition operations are $64\%$, $53\%$ and $49\%$ and its CV are $7.5\%$, $9.4\%$ and $9.7\%$.
+\subsection{One Dimensinal}
 
-The interval extension shows that the results are $343$x, $22$x and $203629$x less accurate, meaning that the developed algorithms generate much larger intervals compared to the original formulation of the DaWT, its due to the proposed filter presented in Section~\ref{sec:1DDaWT}. The results from EUC are $68.3\%$, $68.3\%$ and $68.3\%$, data from MSE indicate gains of $89.9\%$, $91.4\%$ and $91.9\%$, and PSNR gains are $13.7\%$, $18.1\%$ and $22.4\%$. The results from EUC, MSE and PSNR shows a very good gain over the original formulations of the DaWT.
-
-\begin{figure}[ht]
+\begin{figure}[h!]
   \centering
   \begin{subfigure}[b]{0.48\textwidth}
 	\includegraphics[width=\textwidth]{Imagens/test5-1048576.png}
@@ -1145,15 +1120,15 @@ The interval extension shows that the results are $343$x, $22$x and $203629$x le
   \label{fig:test5}
 \end{figure}
 
+The results shown in Figure~\ref{fig:test5} describe the performance of both decomposition and composition procedures from Section~\ref{sec:1DDaWT}, targeting the one dimensional DaWT. The data indicate that the developed algorithms are $35\%$, $26\%$ and $26\%$ slower than the results based in~\cite{DAUBTHESIS}, when decomposing the vectors, and its coefficient of variation (CV) are $13.6\%$, $22.4\%$ and $17.6\%$ respectively. The Composition tests indicates that the developed algorithms are $84\%$, $78\%$ and $68\%$ slower than the algorithms in the literature~\cite{DAUBTHESIS}, its CV are $5.7\%$, $5.3\%$ and $9.8\%$. The combination of both Decomposition and Composition operations are $64\%$, $53\%$ and $49\%$ and its CV are $7.5\%$, $9.4\%$ and $9.7\%$.
+
+The interval extension shows that the results are $343$x, $22$x and $203629$x less accurate, meaning that the developed algorithms generate much larger intervals compared to the original formulation of the DaWT, its due to the proposed filter presented in Section~\ref{sec:1DDaWT}. The results from EUC are $68.3\%$, $68.3\%$ and $68.3\%$, data from MSE indicate gains of $89.9\%$, $91.4\%$ and $91.9\%$, and PSNR gains are $13.7\%$, $18.1\%$ and $22.4\%$. The results from EUC, MSE and PSNR shows a very good gain over the original formulations of the DaWT.
+
 \subsection{Two Dimensinal}
 
 \subsubsection{Standard}
 
-The results shown in Figure~\ref{fig:test6S} describe the performance of both decomposition and composition procedures from Section~\ref{sec:2DDaWT}, targeting the two dimensional Standard DaWT. The data indicate that the developed algorithms are $25\%$, $23\%$ and $17\%$ slower than the results based in~\cite{DAUBTHESIS}, when decomposing the vectors, and its coefficient of variation (CV) are $7.5\%$, $10.5\%$ and $2.2\%$ respectively. The Composition tests indicates that the developed algorithms are $63\%$, $56\%$ and $39\%$ slower than the algorithms in the literature~\cite{DAUBTHESIS}, its CV are $4\%$, $9.6\%$ and $1.6\%$. The combination of both Decomposition and Composition operations are $44\%$, $40\%$ and $28\%$ and its CV are $3.3\%$, $7.1\%$ and $3.3\%$.
-
-The interval extension shows that the results are $220$x, $18$x and $80236$x less accurate, meaning that the developed algorithms generate much larger intervals compared to the original formulation of the DaWT. The results from EUC are $66.4\%$, $70\%$ and $70\%$, data from MSE indicate gains of $88.7\%$, $90.8\%$ and $91.2\%$, and PSNR gains are $3.2\%$, $3.6\%$ and $3.6\%$. The results from EUC, MSE and PSNR shows a very good gain over the original formulations of the DaWT.
-
-\begin{figure}[ht]
+\begin{figure}[h!]
   \centering
   \begin{subfigure}[b]{0.48\textwidth}
 	\includegraphics[width=\textwidth]{Imagens/test6S-1024.png}
@@ -1174,13 +1149,13 @@ The interval extension shows that the results are $220$x, $18$x and $80236$x les
   \label{fig:test6S}
 \end{figure}
 
+The results shown in Figure~\ref{fig:test6S} describe the performance of both decomposition and composition procedures from Section~\ref{sec:2DDaWT}, targeting the two dimensional Standard DaWT. The data indicate that the developed algorithms are $25\%$, $23\%$ and $17\%$ slower than the results based in~\cite{DAUBTHESIS}, when decomposing the vectors, and its coefficient of variation (CV) are $7.5\%$, $10.5\%$ and $2.2\%$ respectively. The Composition tests indicates that the developed algorithms are $63\%$, $56\%$ and $39\%$ slower than the algorithms in the literature~\cite{DAUBTHESIS}, its CV are $4\%$, $9.6\%$ and $1.6\%$. The combination of both Decomposition and Composition operations are $44\%$, $40\%$ and $28\%$ and its CV are $3.3\%$, $7.1\%$ and $3.3\%$.
+
+The interval extension shows that the results are $220$x, $18$x and $80236$x less accurate, meaning that the developed algorithms generate much larger intervals compared to the original formulation of the DaWT. The results from EUC are $66.4\%$, $70\%$ and $70\%$, data from MSE indicate gains of $88.7\%$, $90.8\%$ and $91.2\%$, and PSNR gains are $3.2\%$, $3.6\%$ and $3.6\%$. The results from EUC, MSE and PSNR shows a very good gain over the original formulations of the DaWT.
+
 \subsubsection{Non Standard}
 
-The results shown in Figure~\ref{fig:test6NS} describe the performance of both decomposition and composition procedures from Section~\ref{sec:2DDaWT}, targeting the two dimensional Standard DaWT. The data indicate that the developed algorithms are $40\%$, $34\%$ and $21\%$ slower than the results based in~\cite{DAUBTHESIS}, when decomposing the vectors, and its coefficient of variation (CV) are $6.3\%$, $7.1\%$ and $3\%$ respectively. The Composition tests indicates that the developed algorithms are $29\%$, $25\%$ and $15\%$ slower than the algorithms in the literature~\cite{DAUBTHESIS}, its CV are $4.7\%$, $15.6\%$ and $2.3\%$. The combination of both Decomposition and Composition operations are $34\%$, $28\%$ and $18\%$ and its CV are $4\%$, $6.7\%$ and $2.7\%$.
-
-The interval extension shows that the results are $3034$x, $67$x and $5916370$x less accurate, meaning that the developed algorithms generate much larger intervals compared to the original formulation of the DaWT. The results from EUC are $47\%$, $43.3\%$ and $45\%$, data from MSE indicate gains of $71.9\%$, $67.6\%$ and $70\%$, and PSNR gains are $1.8\%$, $1.6\%$ and $1.7\%$. The results from EUC, MSE and PSNR shows a very good gain over the original formulations of the DaWT.
-
-\begin{figure}[ht]
+\begin{figure}[h!]
   \centering
   \begin{subfigure}[b]{0.48\textwidth}
 	\includegraphics[width=\textwidth]{Imagens/test6NS-1024.png}
@@ -1200,6 +1175,10 @@ The interval extension shows that the results are $3034$x, $67$x and $5916370$x 
   \caption{Performance and metric results for the 2D Non Standard DaWT.}
   \label{fig:test6NS}
 \end{figure}
+
+The results shown in Figure~\ref{fig:test6NS} describe the performance of both decomposition and composition procedures from Section~\ref{sec:2DDaWT}, targeting the two dimensional Standard DaWT. The data indicate that the developed algorithms are $40\%$, $34\%$ and $21\%$ slower than the results based in~\cite{DAUBTHESIS}, when decomposing the vectors, and its coefficient of variation (CV) are $6.3\%$, $7.1\%$ and $3\%$ respectively. The Composition tests indicates that the developed algorithms are $29\%$, $25\%$ and $15\%$ slower than the algorithms in the literature~\cite{DAUBTHESIS}, its CV are $4.7\%$, $15.6\%$ and $2.3\%$. The combination of both Decomposition and Composition operations are $34\%$, $28\%$ and $18\%$ and its CV are $4\%$, $6.7\%$ and $2.7\%$.
+
+The interval extension shows that the results are $3034$x, $67$x and $5916370$x less accurate, meaning that the developed algorithms generate much larger intervals compared to the original formulation of the DaWT. The results from EUC are $47\%$, $43.3\%$ and $45\%$, data from MSE indicate gains of $71.9\%$, $67.6\%$ and $70\%$, and PSNR gains are $1.8\%$, $1.6\%$ and $1.7\%$. The results from EUC, MSE and PSNR shows a very good gain over the original formulations of the DaWT.
 
 \chapter{Conclusion}
 \label{sec:conclusion}
