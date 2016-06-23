@@ -528,7 +528,7 @@ The  {\it à trous} HWT is again constructed recursively, until a certain decompo
 
 \begin{figure}[ht]
 	\vspace{-0.2cm}
-    \small
+    \normalsize
       \begin{tabular}{l l l}
           $C^{0} = [9 \quad 7 \quad 5 \quad 3] \quad \rightarrow $ & $ C^1 = [8 \quad 6 \quad 4 \quad 6] \quad \rightarrow $ & $ C^{2} =  [7 \quad 5 \quad 5 \quad 7] \quad \rightarrow \enskip ... $  \\
           $ $ & $ D^1 = [1 \quad 1 \quad 1 -3] $ & $ D^{2} =  [1 \quad 1 -1 -1] $
@@ -779,11 +779,12 @@ The solution proposed to avoid this issue for the interval extension is based on
 Depending on $ j $, the computation of $ \sqrt{2} $ may not be necessary, avoiding  any computation error in this case. This process is illustrated in Figure \ref{fig:Fig4}, assuming 2 levels of the 1D HWT and considering the same example as presented in \cite{stollnitz1995}.
 
  \begin{figure}[ht]
+ 	\large
     \centering
     $[9 \quad 7 \quad 3 \quad 5] \rightarrow [6 \quad 2 \quad 1 \quad -1] \rightarrow [6 \quad 2 \quad \frac{1}{\sqrt{2}} \quad \frac{-1}{\sqrt{2}}]$
 
     \vspace{0.2cm}
-
+	\normalsize
     $ \textbf{Input} \quad \quad \rightarrow \textbf{Decomposition} \rightarrow \textbf{Normalization} $
     \caption{Example of the one-dimensional optimization.}
     \label{fig:Fig4}
@@ -862,7 +863,7 @@ However, according to what was discussed in Section~\ref{sec:hwt2d}, there are t
 
 These patterns are illustrated in Figure~\ref{fig:2DNormFactors}, where 3 decomposition levels are presented for 8x8 matrices. The parameters $ j' $ and $ j'' $ indicate the  normalization levels. The rule to calculate these normalization factors is described in the equation:
 \begin{center}
-	\large $ 2^{-(j' + j'')/2} ,$
+	\LARGE $ 2^{\frac{-(j' + j'')}{2}} ,$
 \end{center}
 where $ 0 \leq j' , j'' \leq (\log_{2}n) -1 $ and $ n $ indicates the matrix order.
 
