@@ -9,6 +9,11 @@
 \usepackage{subcaption}
 \usepackage[linesnumbered]{algorithm2e}
 
+\DeclareCaptionType{myeqs}[Equation][List of equations]
+\captionsetup[myeqs]{labelformat=simple}
+
+\addtolength{\jot}{0.5cm}
+
 \let\oldnl\nl% Store \nl in \oldnl
 \newcommand{\nonl}{\renewcommand{\nl}{\let\nl\oldnl}}% Remove line number for one line
 
@@ -930,7 +935,69 @@ During further study it was observed that the same optimization strategies used 
 
 \subsection{One Dimensional} \label{sec:Daub1DOptimization}
 
+The normalized decomposition procedure for the DaWT 1D is executed in the following order: first a non-normalized decomposition is made, as indicated by the pseudo-code in Figure~\ref{fig:Fig4}; after this stage the normalization of all coefficients is performed, multiplying all of them by the normalization factor $ 2^{j/2} $, where $ j $ is the resolution level of the coefficients through out the decomposition. This represents the same process used in the HWT presented in Figure~\ref{fig:Fig4}, depending on $ j $, the computation of $ \sqrt{2} $ may not be necessary, avoiding computing error in this case.
 
+The next step of the optimization is to reduce the number of operations using $\sqrt{3}$ used by the filters $h$, $g$, $ih$ and $ig$. The algebraic manipulations are presented in equations \ref{eq:hOptFilter}, \ref{eq:gOptFilter}, \ref{eq:ihOptFilter} and \ref{eq:igOptFilter}, where $a$, $b$, $c$, and $d$ represent 4 different coefficients.
+
+\begin{myeqs}[h!] 
+\begin{eqnarray}
+	h & = & a\left(\frac{1+\sqrt{3}}{4\sqrt{2}}\right) + b\left(\frac{3+\sqrt{3}}{4\sqrt{2}}\right) + c\left(\frac{3-\sqrt{3}}{4\sqrt{2}}\right) + d\left(\frac{1-\sqrt{3}}{4\sqrt{2}}\right) \\
+	 & = & \frac{a\left(1+\sqrt{3}\right) + b\left(3+\sqrt{3}\right) + c\left(3-\sqrt{3}\right) + d\left(1-\sqrt{3}\right)}{4\sqrt{2}} \\
+	 & = & \frac{a+a\sqrt{3} + 3b+b\sqrt{3} + 3c-c\sqrt{3} + d-d\sqrt{3}}{4\sqrt{2}} \\
+	 & = & \frac{a + d + 3\left(b + c\right) + \sqrt{3}\left(a + b - c - d\right)}{4\sqrt{2}}
+\end{eqnarray}
+\caption{Minimizing operations with $\sqrt{2}$ and $\sqrt{3}$ for filter set $h$.} \label{eq:hOptFilter}
+\end{myeqs}
+
+\begin{myeqs}[h!]
+\begin{eqnarray}
+	g & = & a\left(\frac{1-\sqrt{3}}{4\sqrt{2}}\right) + b\left(\frac{\sqrt{3}-3}{4\sqrt{2}}\right) + c\left(\frac{3+\sqrt{3}}{4\sqrt{2}}\right) + d\left(\frac{-1-\sqrt{3}}{4\sqrt{2}}\right) \\
+	 & = & \frac{a\left(1-\sqrt{3}\right) + b\left(\sqrt{3}-3\right) + c\left(3+\sqrt{3}\right) + d\left(-1-\sqrt{3}\right)}{4\sqrt{2}} \\
+	 & = & \frac{a-a\sqrt{3} + b\sqrt{3} - 3b + 3c+c\sqrt{3} - d - d\sqrt{3}}{4\sqrt{2}} \\
+	 & = & \frac{a - d + 3\left(c - b\right) + \sqrt{3}\left(b + c - a - d\right)}{4\sqrt{2}}
+\end{eqnarray}
+\caption{Minimizing operations with $\sqrt{2}$ and $\sqrt{3}$ for filter set $g$.} \label{eq:gOptFilter}
+\end{myeqs}
+
+\begin{myeqs}[h!]
+\begin{eqnarray}
+	ih & = & a\left(\frac{3-\sqrt{3}}{4\sqrt{2}}\right) + b\left(\frac{3+\sqrt{3}}{4\sqrt{2}}\right) + c\left(\frac{1+\sqrt{3}}{4\sqrt{2}}\right) + d\left(\frac{1-\sqrt{3}}{4\sqrt{2}}\right) \\
+	 & = & \frac{a\left(3-\sqrt{3}\right) + b\left(3+\sqrt{3}\right) + c\left(1+\sqrt{3}\right) + d\left(1-\sqrt{3}\right)}{4\sqrt{2}} \\
+	 & = & \frac{3a-a\sqrt{3} + 3b+b\sqrt{3} + c+c\sqrt{3} + d-d\sqrt{3}}{4\sqrt{2}} \\
+	 & = & \frac{c + d + 3\left(a + b\right) + \sqrt{3}\left(b + c - a - d\right)}{4\sqrt{2}}
+\end{eqnarray}
+\caption{Minimizing operations with $\sqrt{2}$ and $\sqrt{3}$ for filter set $ih$.} \label{eq:ihOptFilter}
+\end{myeqs}
+
+\begin{myeqs}[h!]
+\begin{eqnarray}
+	ig & = & a\left(\frac{1-\sqrt{3}}{4\sqrt{2}}\right) + b\left(\frac{-1-\sqrt{3}}{4\sqrt{2}}\right) + c\left(\frac{3+\sqrt{3}}{4\sqrt{2}}\right) + d\left(\frac{\sqrt{3}-3}{4\sqrt{2}}\right) \\
+	 & = & \frac{a\left(1-\sqrt{3}\right) + b\left(-1-\sqrt{3}\right) + c\left(3+\sqrt{3}\right) + d\left(\sqrt{3}-3\right)}{4\sqrt{2}} \\
+	 & = & \frac{a-a\sqrt{3} - b-b\sqrt{3} + 3c+c\sqrt{3} - 3d+d\sqrt{3}}{4\sqrt{2}} \\
+	 & = & \frac{a - b + 3\left(c - d\right) + \sqrt{3}\left(c + d - a - b\right)}{4\sqrt{2}}
+\end{eqnarray}
+\caption{Minimizing operations with $\sqrt{2}$ and $\sqrt{3}$ for filter set $ig$.} \label{eq:igOptFilter}
+\end{myeqs}
+
+Looking at the original decomposition procedure, shown in Figure~\ref{fig:DaubDandDS}, the complexity of $DecompositionStep$ is $\BigO(3 + (n - 3) + 3)$, which can be simplified to $\BigO(n)$, and the main $ decomposition $ algorithm the complexity is $\BigO(1 + \log(n) * (n + 1))$, that can be simplified to $\BigO(n\log(n))$. By performing the non-normalized decomposition there is no need to execute the normalization step at line 1 of the original $decomposition$ algorithm, neither the divisions by $\sqrt{2}$ at its step procedure. Therefore, overall complexity for non-normalized transformation of a $n$ sized vector is $\BigO(n\log(n))$, representing the pseudo-code shown in Figure~\ref{fig:NewDandDS}.
+
+\begin{figure}[ht]
+    %\centering
+    \includegraphics[width=13.6cm]{Imagens/New_D_and_DStep.png}
+    \caption{Int-HWT, decimated version: non-normalized Decomposition process and its step procedure.}
+    \label{fig:NewDandDS}
+ \end{figure}
+
+The normalization procedure, presented in Figure~\ref{fig:1DNorm_and_Denorm}, performs the normalization step of all coefficients after their convolution using filters. Since it is executed once on every coefficient of a $n$ sized vector, its complexity can be $\BigO(n)$. By performing a non-normalized transform and the normalization procedure afterwards, the complexity is $\BigO(n\log(n) + n)$, which is the same complexity from the normalized transformation. The goal is therefore the gain on exactitude obtained by avoiding high number of divisions using $\sqrt{2}$ from the original $DecompositionStep$ algorithm, as shown in Figure~\ref{fig:test1-3}.
+
+\begin{figure}[ht]
+	%\centering
+    \includegraphics[width=12.4cm]{Imagens/Norm_and_Denorm.png}
+    \caption{Int-HWT, decimated version: on dimensional normalization procedure.}
+    \label{fig:1DNorm_and_Denorm}
+ \end{figure}
+
+The normalized composition procedure follows the same basic idea to reduce computation of $\sqrt{2}$, it performs the non-normalized inverse transform, but this time a denormalization step, shown in Figure~\ref{fig:1DNorm_and_Denorm}, is executed before the transform begins. The original algorithms for composition and its step procedure, Figure~\ref{fig:CandCS}, behave similarly to decomposition. The complexity of the $Composition$ procedure is $\BigO(n\log(n) + n)$ if the normalized formulation is considered, otherwise it is $\BigO(n\log(n))$. The denormalization step, also shown in Figure~\ref{fig:1DNorm_and_Denorm}, is almost the same $Normalization$ algorithm, whose complexity is $\BigO(n)$. The difference is at line 6, where it is dividing each coefficient by the normalization factor, preparing the data to be transformed. Therefore the optimal composition has the complexity from the original version, $\BigO(n\log(n) + n)$, but its results are more exact due to the normalization step, avoiding the calculation of $\sqrt{2}$ on every iteration.
 
 \subsection{Two Dimensional} \label{sec:Daub2DOptimization}
 
