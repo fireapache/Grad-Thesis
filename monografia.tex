@@ -755,14 +755,12 @@ The direct and inverse of the DaWT, Figures \ref{fig:DaubDandDS}, \ref{fig:DaubC
 \chapter{Developed Optimal Formulations}
 \label{sec:optintform}
 
-When the normalized filters are considered in the original algorithms of the HWT  \cite{stollnitz1995, IEEE2007},  divisions by  $ \sqrt{2} $  are executed in all iterations within the decomposition.
+When the normalized filters are considered in the original algorithms of the HWT and DaWT \cite{stollnitz1995, IEEE2007, DAUBTHESIS},  divisions by  $ \sqrt{2} $  are executed in all iterations within the decomposition.
 Once  $ \sqrt{2} $   is not a computable value, each level of the decomposition or composition adds a certain degree of error into the data. The error generated in each iteration is then propagated through all levels until the end of the procedure.
 
-The solution proposed to avoid this issue for the interval extension is based on performing algebraic simplifications to eliminate the computation of these non computable values, $2^{j/2}$ , whenever possible, reducing the error involved in the process. Therefore the developed interval procedures produce more trustworthy results in comparison with the original algorithms analyzed here \cite{stollnitz1995} and \cite{kozakevicius2013}.
+The solution proposed to avoid this issue by performing algebraic simplifications in order to eliminate the computation of these non computable values, $2^{j/2}$ , whenever possible, reducing the error involved in the process. Therefore the developed algorithms produce more trustworthy results in comparison to the literature.
 
- The original algorithms and their interval versions developed here are compared. Assuming  the same input data is analyzed with all different formulations of the HWT:  the Cascade (decimated) and à-trous (undecimated) algorithms for both normalized and non-normalized approaches.
-
- The basic idea for the algebraic simplifications is based on using the non-normalized transform, which introduces no extra computation errors for the HWT. By shifting the normalization step to the end of the transform, all operations with $ \sqrt{2} $ are applied only once, decreasing the error produced by its computation in each level of the decomposition.
+The basic idea for the algebraic simplifications is based on using the non-normalized transform, which introduces no computing errors for the HWT. By shifting the normalization step to the end of the transform, all operations with $ \sqrt{2} $ are applied only once, decreasing the error produced by its computation in each level of the decomposition or composition.
 
 \section{Haar Wavelet Transform}
 
