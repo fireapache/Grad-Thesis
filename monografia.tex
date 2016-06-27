@@ -1328,11 +1328,17 @@ The interval extension shows that the results are $3034$x, $67$x and $5916370$x 
 \chapter{Conclusion}
 \label{sec:conclusion}
 
-This work presented an interval implementation of the HWT, for both decimated and undecimated approaches and covering all cases of study, obtaining good results related to error analysis, that is, the optimizations improve accuracy. As consequence of the implemented optimizations our algorithms are faster then the original decimated formulation, but slower than the original undecimated algorithms.
+This work presented an interval implementation of the Haar Wavelet Transform (HWT), for both decimated and undecimated approaches and covering all cases of study. The same study and optimization strategies were applied on the Daubechies Wavelet Transform (DaWT) with success.
 
-As the wavelet transforms are appropriated to data analysis in contexts that the scales of representation are relevant to the problem, the precision gain obtained with the proposed simplifications in this work represent a significant contribution to this research area.
+The optimization for the decimated HWT made possible a gain of both accuracy of results and performance on performing the calculations, as it was expected. The same optimization was applied to the undecimated HWT, also know as À-Trous approach, and good results were obtained from the results accuracy, but there were performance loss due to the addition of operations on top of the original formation from the literature~\cite{stollnitz1995}.
 
-Further research considers the study of the Daubechies Wavelet Transform together with corresponding parallel and/or distribution Int-DWT library extension, by making use of massive parallel architectural of GPUs and considering CUDA programming language.
+It was proposed a new set of filters by simplifying the DaWT original filters~\cite{DAUBTHESIS} in order to increase accurary of results. The algebraic manipulation of its filters made possible a gain in terms of accuracy of results in both 1D and 2D procedures. However there was a need to add normalization steps on the top of the original DaWT formulation which resulted in a loss of performance.
+
+Good results related to error analysis were obtained, that is, the optimizations improve accuracy. The metrics used in this work helped to avaluate the accuracy of all presented implementations.
+
+As the wavelet transforms are appropriated to data analysis in contexts that the scales of representation are relevant to the problem, the accuracy gain obtained with the proposed simplifications in this work represent a significant contribution to this research area.
+
+Further research considers the study of other Discrete Wavelet Transforms (DWTs), together with the corresponding parallel and/or distribution of the Int-DWTs Library, making the usage of massive parallel architectural of GPUs and considering CUDA programming language for fast computation.
 
 
 \bibliography{bibliografia}
