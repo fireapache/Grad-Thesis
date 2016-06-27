@@ -388,7 +388,7 @@ Figure \ref{fig:ComparisonIntPonc} shows the comparison between the standard and
 %
 \begin{figure}[ht]
     %\centering
-    \includegraphics[width=12cm]{Imagens/FiguraA.png}
+    \includegraphics[width=13cm]{Imagens/FiguraA.png}
     \caption{1D decimated HWT algorithms:(top panel) original; (bottom panel) interval extension. Both cases assuming initial data as being punctual values and $log_2 n$ decomposition levels.}
     \label{fig:ComparisonIntPonc}
 \end{figure}
@@ -403,7 +403,7 @@ Therefore, the decomposition process is completely reversible, allowing the data
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=14cm]{Imagens/C_and_CStep.png}
+    \includegraphics[width=15cm]{Imagens/C_and_CStep.png}
     \caption{Inverse 1D decimated Int-HWT. Composition  process to reconstruct $l=log_2 n$ levels.}
     \label{fig:CandCS}
  \end{figure}
@@ -1021,9 +1021,52 @@ During the study The original algorithms for composition and its step procedure,
     \label{fig:Daub_Opt_CStep}
 \end{figure}
 
+\newpage
+
 \subsection{Two Dimensional} \label{sec:Daub2DOptimization}
 
+The simplifications implemented for the 2D DaWT consider the same principle presented in the 1D case, i.e., the same strategy of multiplying the transformed values by the corresponding $2^{-j/2}$ normalization factor, where $j$ is the corresponding level. To compose or decompose a matrix the 1D transform is applied in all rows and in all columns of the input matrix. However, according to \cite{stollnitz1995}, there are two main algorithms for composition and decomposition of matrices, know as Standard and Non-Standard procedures.
 
+\newpage
+
+During the study of the original DaWT formulation~\cite{DAUBTHESIS}, patterns of normalization factors were recognized. These patterns were analysed and employed in the development of the normalized procedures for the Standard algorithm. In contrast to the 2D HWT optimization, the DaWT Non-Standard procedure does not use the normalization step due to its behavior.
+
+The normalization patterns are illustrated in Figure~\ref{fig:Daub2DNormFactors}, where 3 decomposition levels are presented for 16x16 matrices. The parameters $ j' $ and $ j'' $ indicate the  normalization levels. The rule to calculate these normalization factors is described in the equation:
+
+\begin{center}
+	\LARGE $ 2^{\frac{-(j' + j'')}{2}} ,$
+\end{center}
+
+where $ 0 \leq j' , j'' \leq (\log_{2}n) -1 $ and $ n $ indicates the matrix order.
+
+\begin{figure}[h!]
+  	\centering
+  	\includegraphics[width=9cm]{Imagens/DaubNormFactors.png}
+  	\caption{DaWT (a) Standard normalization pattern, (b) rule for normalization factors.}
+	\label{fig:Daub2DNormFactors}
+\end{figure}
+
+\begin{figure}[h!]
+  	\includegraphics[width=10cm]{Imagens/Daub_Opt_Standard.png}
+  	\caption{DaWT 2D Standard normalization step decomposition process.}
+	\label{fig:DaubOptStandard}
+\end{figure}
+
+\newpage
+
+By analyzing the original Standard algorithm inherited from the HWT, Figure~\ref{fig:SDandND}, it depends on the original normalized decomposition procedure, whose complexity is $\BigO(n\log(n))$, executing it for every row and column of the input matrix. Considering a $n$x$n$ matrix the complexity of the original standard algorithm is $\BigO(n(n\log(n)) + n(n\log(n)))$, or just $\BigO(n^2\log(n))$.
+
+\begin{figure}[h!]
+  	\includegraphics[width=10cm]{Imagens/Daub_StandardStepNorm.png}
+  	\caption{DaWT 2D Standard normalization step decomposition process.}
+	\label{fig:StandardNormAlg}
+\end{figure}
+
+In oposition to the HWT, the optimal normalized DaWT Standard decomposition has to performe its normalization step, shown in Figure~\ref{fig:StandardNormAlg}, in between the decomposition of rows and columns, and a second time at the ending of the procedure, as presented in Figure~\ref{fig:DaubOptStandard}. Since the normalization step procedure is a kernel that will apply the right normalization factor to each coefficient in a $n$x$n$ matrix, its complexity can be expressed as $\BigO(n^2)$. Therefore the developed optimal Standard normalized decomposition procedure is performed with complexity of $\BigO(n^2\log(n) + n^2)$, or $\BigO(n^2(1 + \log(n)))$. Considering this, the developed procedure is slower than the original but is more accurated due to the new set of filter proposed.
+
+The Non-Standard procedure has the same limitation from the Standard where the column operations depend on normalized row operations. Considering this limitation the Non-Standard algorithm would have to normalize each step level of decomposition before the next opetation. Instead of adding a normalization step in between each row or column decomposition it is better to perform a normalized procedure using the new set of filters. This way the Non-Standard algorithm has the same complexity as the same developed procedure from the HWT, as seen in Section~\ref{subsec:cascade2D_Opt_Haar}.
+
+By the same reason that the 1D DaWT does not use any denormalization procedure, the 2D Standard and Non-Standard DaWT also not perform denormalization of its coefficients before composition. Both approaches inherit the 2D HWT composition procedures, keeping their original complexity as discussed in Section~\ref{subsec:cascade2D_Opt_Haar}. However the developed 2D DaWT Composition routines in Int-DWTs library present better results as consequence of using the new set of simplified filters, as discussed in Section~\ref{sec:Daub1DOptimization}.
 
 \section{Interval Compression}
 \label{sec:compress}
