@@ -243,7 +243,7 @@ The motivation to consider numerical intervals instead of simple punctual values
 In addition, due to memory limitation, it is also common to compute round (or simply truncated) values to store the result afterwards. This heuristic may result in different values, depending on the machine's configuration where the program has been executed. The metrics being used to measure result quality are presented below.
 
 \subsection{Euclidean Distance}
-Let $\tilde{Y} = (\tilde{y})_{ij} \in \mathbb{R}^{n\times m}$ be an estimator of $Y = (y)_{ij} \in \mathbb{R}^{n\times m}$ whose  $nm$ elements  $\tilde{y}_{ij}$ are predictions of the original values $(y)_{ij}$.
+Let $\tilde{Y} = (\tilde{y})_{ij} \in \mathbb{R}^{n\times m}$ be an estimator of $Y = (y)_{ij} \in \mathbb{R}^{n\times m}$ whose  $n.m$ elements  $\tilde{y}_{ij}$ are predictions of the original values $(y)_{ij}$.
 The Euclidean distance between  $Y$  and its estimator $\tilde{Y}$ is defined by the following expression:
 \begin{equation}\label{eq-5}
 D(\tilde{Y},Y) =  \sqrt{\sum_{j=0}^{m}\sum_{i=0}^{n}(\tilde{y}_{ij} - y_{ij})^2}.
