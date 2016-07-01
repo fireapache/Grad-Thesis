@@ -49,7 +49,7 @@
 
 \begin{abstract}
 
-Este trabalho descreve o desenvolvimento e análise de resultados para consolidação da biblioteca Int-DWTs contendo Métodos Intervalares para Transformadas Discretas Wavelet. Os métodos presentes em Int-DWTs incluem estensões intervalares e suas correspondentes otimizações para Transformadas Discretas Wavelet (TDWs), mais especificamente para as Transformadas Wavelet de Haar e Daubechies. As otimizações implementadas promoveram simplificações algébricas visando o incremento de desempenho e a garantia de exatidão das TDWs estudadas. COnsiderando compressão de imagens como uma das relevantes aplicações para TDWs, a qualidade de resultados é analisada ao comparar três usuais métricas: EUC (Euclidean Distance), MSE (\textit{Mean Squared Error}) e PSNR (\textit{peak signal-to-noise ratio}). O nível de erro produzido pelas formulações intervalares, como também os desempenhos obtidos através das simplificações propostas, são analisadas e comparadas com resultados baseados na literatura. O uso de técnicas intervalares, viabilizou uma análise eficiente de erros com validação automática para os métodos da Int-DWTs. Em contextos onde que as escalas de representação são relevantes para o problema, o ganho de exatidão obitido com a otimizações propostas representam uma contribuição significativa para a área de Computação Científica.
+Este trabalho descreve o desenvolvimento e análise de resultados para consolidação da biblioteca Int-DWTs contendo Métodos Intervalares para Transformadas Discretas Wavelet. Os métodos presentes em Int-DWTs incluem estensões intervalares e suas correspondentes otimizações para Transformadas Discretas Wavelet (TDWs), mais especificamente para as Transformadas Wavelet de Haar e Daubechies. As otimizações implementadas promoveram simplificações algébricas visando o incremento de desempenho e a garantia de exatidão das TDWs estudadas. COnsiderando compressão de imagens como uma das relevantes aplicações para TDWs, a qualidade de resultados é analisada ao comparar três usuais métricas: $EUC$ (Euclidean Distance), MSE (\textit{Mean Squared Error}) e $PSNR$ (\textit{peak signal-to-noise ratio}). O nível de erro produzido pelas formulações intervalares, como também os desempenhos obtidos através das simplificações propostas, são analisadas e comparadas com resultados baseados na literatura. O uso de técnicas intervalares, viabilizou uma análise eficiente de erros com validação automática para os métodos da Int-DWTs. Em contextos onde que as escalas de representação são relevantes para o problema, o ganho de exatidão obitido com a otimizações propostas representam uma contribuição significativa para a área de Computação Científica.
 
 %são implementadas utilizando a biblioteca de aritimética intervalar C-XSC.
 
@@ -57,9 +57,9 @@ Este trabalho descreve o desenvolvimento e análise de resultados para consolidaç
 
 \begin{englishabstract}%
   {Algebraic Simplifications Increasing Performance And Accuracy of Discrete Wavelet Transforms}%
-  {wavelet, interval, performance, optimization, haar, daubechies, accuracy, exatitude}
+  {wavelet, interval, performance, optimization, haar, daubechies, accuracy, accuracy}
   
-This project describes the main results consolidating the Interval Methods of Discrete Wavelet Transforms Library (Int-DWTs), providing algebraic simplifications in order to increase performance and guarantee exactitude of Discrete Wavelet Transforms (DWTs). The methods in the Int-DWTs include interval extensions and corresponding optimizations to the Haar Wavelet Transform (HWT) and Daubechies Wavelet Transform (DWT), which are implemented by using C-XSC. Optimizations for the normalized formulations of the one- and two-dimensional transforms to increase speed and guarantee accuracy of results are also presented. As an application, image compression is addressed, whose quality is computed and compared by different metrics. The error analysis of the different interval formulations as well as the speedup obtained through the interval formulations and the proposed simplifications are analyzed. The results consider a study over the interval extension of DWT, deducting simplifications and implementing optimizations based on the analogous methodology performed over HWT approaches. In addition, not only interval algorithms are developed but also metrics for evaluating procedure's accuracy are considered. By assuming concepts from Interval Mathematics, it enables us to perform interval analysis and efficiently manage of computing errors of DWTs. The metrics being used to measure result quality in the Int-DWTs are the following: Euclidean Distance, Mean Squared Error and Peak signal-to-noise ratio. In contexts that the scales of representation are relevant to the problem, the accuracy gain obtained with the proposed optimizations in the Int-DWTs represent a significant contribution to the scientific computing research area. 
+This project describes the main results consolidating the Interval Methods of Discrete Wavelet Transforms Library (Int-DWTs), providing algebraic simplifications in order to increase performance and guarantee accuracy of Discrete Wavelet Transforms (DWTs). The methods in the Int-DWTs include interval extensions and corresponding optimizations to the Haar Wavelet Transform (HWT) and Daubechies Wavelet Transform (DWT), which are implemented by using C-XSC. Optimizations for the normalized formulations of the one- and two-dimensional transforms to increase speed and guarantee accuracy of results are also presented. As an application, image compression is addressed, whose quality is computed and compared by different metrics. The error analysis of the different interval formulations as well as the speedup obtained through the interval formulations and the proposed simplifications are analyzed. The results consider a study over the interval extension of DWT, deducting simplifications and implementing optimizations based on the analogous methodology performed over HWT approaches. In addition, not only interval algorithms are developed but also metrics for evaluating procedure's accuracy are considered. By assuming concepts from Interval Mathematics, this work enables us to perform interval analysis and efficiently manage computing errors of DWTs. The metrics being used to measure result quality in the Int-DWTs are the following: Euclidean Distance, Mean Squared Error and Peak signal-to-noise ratio. In contexts where the scales of representation are relevant to the problem, the accuracy gain obtained with the proposed optimizations in the Int-DWTs represent a significant contribution to the scientific computing research area. 
 
 \end{englishabstract}
 
@@ -85,31 +85,45 @@ This project describes the main results consolidating the Interval Methods of Di
 \chapter{Introduction}
 
 The quality of numerical results in Scientific Computing (SC) depends on understanding the different error causes and on controlling their propagation,  as well as improving  computations upon the involved procedures.
-%as well as improving the corresponding computations  \red{concerned with} the involved %procedures.
+
 This study considers the Interval Mathematics (IM) approach and proposes a solution based on Moore's arithmetic~\cite{Moore79} for the implementation of the Haar wavelet transform (HWT), considering two well established algorithms, Cascade and {\it à trous}, and their standard formulations assuming point values as input data, being the first step on the development of the Int-DWT library that will provide interval results for several Discrete Wavelet Transforms (DWTs).
 
 Interval results carry over the safety of their quality together with the degree of their uncertainty~\cite{Moore79}. The diameter of the interval solution represents with fidelity the uncertainties of input parameters, being also an indicative of the error influence and of the extension of its propagation within the incoming data. Interval solutions also indicate truncation and rounding errors contained in the computed results.
 
-In the last decade, many studies associating wavelet transforms with interval mathematics have arisen, promoting a new research direction and pointing out the relevance of  interval computations for a wide range of applications. Shu-Li et al.~\cite{shu-li2005} propose the interval extension of the interpolating wavelet family for the construction of an adaptive algorithm for solving Partial Differential Equations (PDE). Another collocation method for solving PDE is presented by Liu~\cite{liu2013}, based on the interval extension for the Shannon-Garbor wavelet family. With respect to image processing applications, Minamoto and Aoki~\cite{minamoto2010} propose a blind digital image watermarking method using interval Daubechies wavelets.
+In the last decade, many studies associating wavelet transforms with interval mathematics have arisen, promoting a new research direction and pointing out the relevance of  interval computations for a wide range of applications. Shu-Li et al.~\cite{shu-li2005} propose the interval extension of the interpolating wavelet family for the construction of an adaptive algorithm for solving Partial Differential Equations (PDE).
 
-The main motivation for interval techniques integrated with  DWTs is to provide trustworthy and validated results to technological and SC applications assuming such transformations. The pool of techniques involving wavelets is ample, specially in signal and image processing~\cite{5,6}. The  HWT, the  simplest discrete wavelet transform~(DWT) in terms of algorithm complexity, is still nowadays largely explored,  being its robustness with respect to many different mathematical structures and space formulations  a relevant aspect~\cite{novikov2012} addressed in many applications. Besides, as demonstrated in \cite{brito1998}, the imaging inaccuracy of the Haar wavelet basis is the smallest possible, motivating its usage in many 2D problems as well as the current formulation in the interval context.
+Another collocation method for solving PDE is presented by Liu~\cite{liu2013}, based on the interval extension for the Shannon-Garbor wavelet family. With respect to image processing applications, Minamoto and Aoki~\cite{minamoto2010} propose a blind digital image watermarking method using interval Daubechies wavelets.
+
+The main motivation for interval techniques integrated with  DWTs is to provide trustworthy and validated results to technological and SC applications assuming such transformations. The pool of techniques involving wavelets is ample, specially in signal and image processing~\cite{5,6}.
+
+\newpage
+
+The  HWT, the  simplest discrete wavelet transform~(DWT) in terms of algorithm complexity, is still nowadays largely explored,  being its robustness with respect to many different mathematical structures and space formulations  a relevant aspect~\cite{novikov2012} addressed in many applications. Besides, as demonstrated in \cite{brito1998}, the imaging inaccuracy of the Haar wavelet basis is the smallest possible, motivating its usage in many 2D problems as well as the current formulation in the interval context.
 
 Hence, the present study introduces an integrated analysis of the original HWT algorithms and the proposed interval extensions.  Preliminary results of the new interval extension
-of the Int-HWT library presented in~\cite{7} are revisited here, including the interval extensions of the decimated HWT~\cite{stollnitz1995} (Cascade algorithm) for the 1D and 2D cases. The current research addresses as well the {\it À-Trous} algorithm, a non-decimated HWT formulation ~\cite{IEEE2007,kozakevicius2013}, proposing interval extensions for both  1D and 2D cases. Furthermore, a threshold procedure for treating signals and images, considered as a significant part of many compression and filtering algorithms, is analyzed and its interval extensions are presented, namely the Hard and Soft Decision procedures. 
+of the Int-HWT library presented in~\cite{7} are revisited here, including the interval extensions of the decimated HWT~\cite{stollnitz1995} (Cascade algorithm) for the 1D and 2D cases.
 
-During the study of the original normalized and non-normalized forms of the HWT \cite{stollnitz1995}, the possibility to optimize them arises from the observation of the patterns of the transform filters in each decomposition level. Therefore, algebraic simplifications are executed to eliminate operations with irrational numbers, originally responsible for the normalization of the transform and considered in each iteration of the original algorithms \cite{weit2013}. Through these simplifications, a gain of accuracy is obtained for the normalized approaches for the 1D HWT, producing therefore more reliable results. In the current work, a similar heuristic is considered to simplify the standard formulation of the undecimated HWT and DaWT, generating interval extensions implemented again in an optimal way.
+The current research addresses as well the {\it À-Trous} algorithm, a non-decimated HWT formulation ~\cite{IEEE2007,kozakevicius2013}, proposing interval extensions for both  1D and 2D cases. Furthermore, a threshold procedure for treating signals and images, considered as a significant part of many compression and filtering algorithms, is analyzed and its interval extensions are presented, namely the Hard and Soft Decision procedures. 
 
-The C-XSC library~\cite{holbig05} is employed to support the implementation of all formulations addressed by the Int-HWT library. Such open source  library consists of a set of tools for the development of numerical algorithms, integrating precision and automatic verification of the results, frequently applied in SC~\cite{cxsclink}. The compatibility between C++ and C-XSC library allows high level programming techniques for numerical applications~\cite{holbig05a}, aggregating other available libraries to support SC and also including additional packages in the source code~\cite{cxsc3}.
+During the study of the original normalized and non-normalized forms of the HWT \cite{stollnitz1995}, the possibility to optimize them arises from the observation of the patterns of the transform filters in each decomposition level. Therefore, algebraic simplifications are executed to eliminate operations with irrational numbers, originally responsible for the normalization of the transform and considered in each iteration of the original algorithms \cite{weit2013}.
 
-%This paper is organized as follows: Section~\ref{sec:intarit} summarizes some aspects about the interval computation, supporting the extensions proposed in the remaining of the article. The C-XSC library and the proposed approach for interval data compression are presented in section~\ref{sec:optintform}. The original formulations and interval considerations of the HWT and DaWT are presented in Section~\ref{sec: Afterwards, in Section~\ref{sec:optintform} the developed optimizations as well as the thresholding procedures are also presented. Interval metrics are introduced in Section~\ref{sec:metrics} and Section~\ref{sec:tests} presents tests and results. Finally, conclusions and the future works are shown in Section~\ref{sec:conclusion}.
+Through these simplifications, a gain of accuracy is obtained for the normalized approaches for the 1D HWT, producing therefore more reliable results. In the current work, a similar heuristic is considered to simplify the standard formulation of the undecimated HWT and DaWT, generating interval extensions implemented again in an optimal way.
+
+The C-XSC library~\cite{holbig05} is employed to support the implementation of all formulations addressed by the Int-HWT library. Such open source  library consists of a set of tools for the development of numerical algorithms, integrating precision and automatic verification of the results, frequently applied in SC~\cite{cxsclink}.
+
+The compatibility between C++ and C-XSC library allows high level programming techniques for numerical applications~\cite{holbig05a}, aggregating other available libraries to support SC and also including additional packages in the source code~\cite{cxsc3}.
 
 \chapter{Interval Mathematics}\label{sec:intarit}
 
-\section{Concept of Interval Aritmethics}
+This Chapter presents the fundamental concepts of Interval Mathematics, by describing its interval aritmethics in Section~\ref{sec:int-arit}, and introduces interval extensions of several metrics related to image quality evaluation in Section~\ref{sec:metrics}. In addition, the C-XSC library for computation of interval arithmetics is introduced in Section~\ref{sec:intext}.
+
+\section{Concept of Interval Aritmethics}\label{sec:int-arit}
 
 Interval analysis was developed by Ramon Moore in the 1960's~\cite{Moore59a,MoorePhD}, when computers were still at an early stage of development and every additional cost associated with keeping track of the computational errors were considered as too high. Furthermore, the produced error bounds were overly pessimistic and therefore quite useless.
 
-Nowadays, the research for new interval methods have reached a high scientific level, producing tight error bounds faster than approximations of non-rigorous computations. Even in pure mathematics, non-trivial results have recently been proved using computer-aided methods based on interval techniques~\cite{Tucker11}. Additionally, scientific computations demanding rigor as well as speed from numerical computations should be performed based on  techniques for performing validated numerical calculations provided by interval methods.
+Nowadays, the research for new interval methods have reached a high scientific level, producing tight error bounds faster than approximations of non-rigorous computations. Even in pure mathematics, non-trivial results have recently been proved using computer-aided methods based on interval techniques~\cite{Tucker11}.
+
+Additionally, scientific computations demanding rigor as well as speed from numerical computations should be performed based on  techniques for performing validated numerical calculations provided by interval methods.
 
 Distinct approaches of arithmetic operations have been discussed in the literature, see for example \cite{Walster97a,Hickey2001a} and~\cite{FS04}.
 
@@ -119,6 +133,7 @@ Despite distinct approaches of arithmetic for  intervals, see e.g.~\cite{Walster
 %
 %\red{Temos mesmo que explicar tudo isso? Não podemos citar o trabalho quando necessário? Pilla}
 %
+
 In Moore arithmetic, an interval $X$ is a continuum subset of real numbers which is in the infimum-supremum representation given as:
 \begin{equation}
    X=\{x\in \mathbb{R} \colon a \leq x \leq b, a,b \in \mathbb{R}, a \leq b\}.
@@ -134,10 +149,9 @@ For an arithmetic operation $\ast: \mathbb{I}\mathbb{R}^2 \rightarrow \mathbb{I}
 the following property is valid for any two intervals $X$ and $Y$:
 $X\ast Y =\{x \ast y \colon x \in X \mbox { and } y \in Y\}$.
 
-Interval functions can be computed by performing arithmetic operations or by applying rational approximation methods~\cite{Walster97a}. The former identifies the class of rational interval functions and the latter, the class of irrational interval functions. Thus, Moore arithmetic guarantees correctness in the sense that any computation performed with standard floating-point methods can also be done with their interval version. By considering the set $\Re = [-\infty, \infty]$ of extended real numbers,  the related family of subintervals of $[a,b]$ is given as
-% \todo[inline]{OK.
-%Pela propriedade de fechamento de algumas operacoes sobre intervalos. Pessoal. O mesmo para %intervalos de extremos de numeros de maquinas.
-% Desculpa,  Uma duvida: Porque precisamos definir um conjunto de extended real numbers ? este %conjunto nao eh o conjunto dos reais?$\mathbb{R}$?}
+Interval functions can be computed by performing arithmetic operations or by applying rational approximation methods~\cite{Walster97a}. The former identifies the class of rational interval functions and the latter, the class of irrational interval functions.
+Thus, Moore arithmetic guarantees correctness in the sense that any computation performed with standard floating-point methods can also be done with their interval version. By considering the set $\Re = [-\infty, \infty]$ of extended real numbers,  the related family of subintervals of $[a,b]$ is given as
+
 \begin{equation}\label{eq-3}
 \mathbb{I}_{[a,b]} = \{[x,y]  \subseteq \Re \colon  a\leq x\leq y\leq b \}.
 \end{equation}
@@ -236,10 +250,11 @@ Additionally, an interval function preserving the partial order $\leq_{\mathbb{I
 %%%%%%%%%%%%
 \section{Interval Metrics}\label{sec:metrics}
 %%%%%%%%%%%%%%%%%%
-%Not only interval algorithms managing computation error  but also metrics for evaluation and %comparison of image evolved in the DWTs use concepts from Interval Mathematics \cite{Moore79} %to perform interval analysis.   , evolved in the DWTs
 
 Not only interval algorithms  but also metrics for evaluating procedure's accuracy can assume concepts from Interval Mathematics \cite{Moore79} to perform interval analysis efficiently managing computation errors.
+
 The motivation to consider numerical intervals instead of simple punctual values is linked to the capability of intervals to represent infinite punctual values. This sort of representation is very useful in SC when the accuracy of the input (or output) data is not granted. In these cases of uncertainty or inaccuracy the interval procedures should ensure that all possible punctual results belong to the interval results.
+
 In addition, due to memory limitation, it is also common to compute round (or simply truncated) values to store the result afterwards. This heuristic may result in different values, depending on the machine's configuration where the program has been executed. The metrics being used to measure result quality are presented below.
 
 \subsection{Euclidean Distance}
@@ -257,8 +272,10 @@ Analogously, $\tilde{\mathbb{Y}}= (\tilde{\mathbf{Y}})_{ij}$ is called an interv
 \end{equation}
 
 \subsection{Mean Squared Error}
- The  Mean Squared Error (MSE) is considered as a risk function, corresponding to the expected value of the squared error loss.
-It is an estimator measuring the average of the squares of the errors in SC, providing the difference between the estimator and what is estimated. MSE allows us to compare the pixel values of our original image to our degraded (noise) image based on the amount by which the values of the original image differ from the degraded image.
+ The  Mean Squared Error ($MSE$) is considered as a risk function, corresponding to the expected value of the squared error loss.
+It is an estimator measuring the average of the squares of the errors in SC, providing the difference between the estimator and what is estimated.
+
+The $MSE$ allows us to compare the pixel values of our original image to our degraded (noise) image based on the amount by which the values of the original image differ from the degraded image.
 
 Let $Y=(y)_{ij} \in \mathbb{R}^{n\times m}$ be the related matrix of true values $y_{ij}$.  The accuracy of $\tilde{Y} = (\tilde{y})_{ij}$ can be
 obtained by the application of an MSE operator as the following
@@ -271,15 +288,12 @@ Analogously, for all $\mathbb{Y}= (\mathbf{Y})_{ij}\in \mathbb{IR}^{n\times m}$ 
 \mathbf{MSE} (\tilde{\mathbf{Y}},\mathbf{Y}) = \frac{1}{mn}  \sqrt{\sum_{j=0}^{m}\sum_{i=0}^{n}(\tilde{\mathbf{Y}}_{ij} - \mathbf{Y}_{ij})^2}= \frac{1}{mn} \mathbf{D}(\tilde{\mathbb{Y}}, \mathbb{Y}) .
 \end{equation}
 
-%\red{Alice 6/10: Duvida aqui. as medidas MSE nao deveriam medir a qualidade dos valores estimados em relacao ao valores reais? Neste sentido, nao deveriamos escrever $\mathbf{MSE}(\tilde{\mathbf{Y}})  $???}
-
-% Vinícius { Alice, ? é a imagem aproximada e Y é a original, está correto dessa maneira!} -> aLICE:OK!!!
-
 \subsection{Peak signal-to-noise ratio}
-%
-%An important performance metric for evaluation and comparison of image or video codecs is 
-The Rate/Distortion (R/D) measures the image quality in terms of Peak Signal-to-Noise Ratio (${PSNR}$), expressing the ratio between the maximum possible power of a signal and the power of corrupting noise affecting the fidelity of its representation.  $PSNR$ is usually given by the logarithmic decibel scale and  most commonly used to measure the quality of reconstruction of lossy compression codecs. In image compression, the signal is the original data and the noise is the error introduced by compression. 
-%However, the range of validity of this metric is limited since it is only conclusively valid when used to compare results from the same content. 
+ 
+The Rate/Distortion (R/D) measures the image quality in terms of Peak Signal-to-Noise Ratio (${PSNR}$), expressing the ratio between the maximum possible power of a signal and the power of corrupting noise affecting the fidelity of its representation.
+
+The $PSNR$ is usually given by the logarithmic decibel scale and  most commonly used to measure the quality of reconstruction of lossy compression codecs. In image compression, the signal is the original data and the noise is the error introduced by compression. 
+
 Thus, the expression of ${PSNR}$ is most easily defined via the logarithmic decibel scale related to the $MSE$ as follows:
 \begin{equation}\label{eq-8a}
 PSNR (\tilde{Y},Y) = 10 \cdot \log_{10} \frac{MAX_I^2}{MSE(\tilde{Y},Y)} ,
@@ -291,11 +305,8 @@ Therefore, a natural interval extension of Eq.~(\ref{eq-8a}) is given as:
 \textbf{PSNR} (\tilde{\mathbf{Y}},\mathbf{Y}) = 10 \cdot \log_{10} \frac{[MAX_I,MAX_I]^2}{\mathbf{MSE}(\tilde{\mathbf{Y}}, \mathbf{Y})},
 \end{equation}
 when $[MAX_I,MAX_I]$ denotes the degenerate interval obtained by $MAX_I$ and $\mathbf{MSE}(\tilde{\mathbf{Y}}, \mathbf{Y})$ is the interval extension of $MSE(\tilde{Y},Y)$.
-%\red{alice 6/10 duvida. $[MAX_I,MAX_I]$ estah estranho aparecer I nos dois lados. um deles nao seria Y-intervalar?}
-% OI, VINICIUS. ESTA DÚVIDA ACIMA TAMBÉM FOI RESOLVIDA???.
 
-Finally, it should be noticed that a computation of the MSE between two identical images, the value will be zero and hence the PSNR will be undefined. Moreover, as the main limitation, both metrics relies strictly on numerical comparison, on which  exactly focuses our study in this paper.
-
+Finally, it should be noticed that a computation of the MSE between two identical images, the value will be zero and hence the $PSNR$ will be undefined. Moreover, as the main limitation, both metrics relies strictly on numerical comparison, on which  exactly focuses our study in this paper.
 
 \section{C-XSC Library} \label{sec:intext}
 
@@ -304,14 +315,18 @@ To make interval results able to contain all possible punctual results, algorith
 C-XSC is an extensive C++ class library  for SC including a set of basic data types (from intervals to multiple precision complex intervals) whose   high
 accuracy computation must be available for some basic arithmetic operations,
 mainly the operations that accomplish the summation and (optimize) dot
-product. Therefore, some concepts of Mathematics of Computation and
+product.
+
+Therefore, some concepts of Mathematics of Computation and
 Computational Arithmetic have been incorporated into this system,
 such as high accuracy arithmetic, interval mathematics and  automatic numerical verification.
+
 Besides,  C-XSC  is an open source library and available from \cite{cxsclink} adding  additional packages in the source code~\cite{cxsc3}.
 
 Function and operator overloading allow the common mathematical notation of expressions involving interval types. This is also true for (interval) matrix/vector expressions.
 Numerical verification methods, also called self-validating methods, are
 constructive and they allow to handle uncertain data with mathematical rigor.
+
 The C-XSC library provides support for users to develop efficient
 numerical verification methods to obtain  correct and self-validating numerical applications.
 
@@ -322,20 +337,31 @@ In the last years significant improvements have been made in parallelized versio
 % With the summarized background already presented, in the remainder of %the current study the extension of the Haar wavelet transform for the %interval context is obtained. Taking advantage of the interval %arithmetics some formulation simplifications are made in order to %improve the quality of the interval extensions of the transforms. As an application, image compression is also pointed out in the interval context.
 
 \chapter{Discrete Wavelet Transforms}
-\section{Haar Wavelet Transform}
+
+This Chapter introduces both Haar Wavelet Transform (HWT), presented in Section~\ref{sec:HWT}, and Daubechies Wavelet Transform (DaWT), Section~\ref{sec:DaWT}, and their interval formulations.
+
+\section{Haar Wavelet Transform}\label{sec:HWT}
+
+This Section describes both decimated and undecimated formulations of the HWT, presented in Sections~\ref{sec:hwt-decimated} and \ref{sec:hwt-undecimated} respectively.
 
 \subsection{Decimated Formulation}\label{sec:hwt-decimated}
 
-The Haar basis was proposed in 1910, introduced by the Hungarian mathematician Alfred Haar \cite{haara} in a diferent approach than the one considered by Daubechies in 1988, when she presented her orthogonal basis with compact support for the space of square integrable functions\cite{daubechies1992}, called wavelets. Nevertheless, through her work, the Haar functions started to be seen as a particular case of orthogonal wavelets. Nowadays, the HWT is well stated with some different fast algorithm formulations, been well established for many applications, specially those involving data compression, as considered by JPEG-2000 \cite{JPEG2000}.
+The Haar basis was proposed in 1910, introduced by the Hungarian mathematician Alfred Haar \cite{haara} in a different approach than the one considered by Daubechies in 1988, when she presented her orthogonal basis with compact support for the space of square integrable functions\cite{daubechies1992}, called wavelets.
+
+Nevertheless, through her work, the Haar functions started to be seen as a particular case of orthogonal wavelets. Nowadays, the HWT is well stated with some different fast algorithm formulations, been well established for many applications, specially those involving data compression, as considered by JPEG-2000 \cite{JPEG2000}.
 
 \subsubsection{One Dimensional}\label{sec:hwt1d_decimated}
 
 According to the description in \cite{stollnitz1995}, when assuming the decimated formulation of the transform and given an initial vector $C$ with $n$ punctual values, the one-dimensional HWT calculates the averages and differences of each pair of adjacent elements in the input vector $ C $, $(C_{2j-1}, C_{2j}), j=1,...,n/2$, generating therefore two output sets:  one for the scaling (averages) and another for the wavelets (differences) coefficients, both with $n_1= n/2$ points, half size of the original input vector C.
 
 Figure~\ref{fig:DandDS} presents the  $log_2(n)$ level decomposition of the Int-HWT algorithm,  formulated for the decimated case as an extension of the original algorithm presented in~\cite{stollnitz1995}.
-The novelty here on the interval code remains in the definition of vectors as interval vectors. Constants are defined as interval quantities and all arithmetics are treated as interval operations. In this sense, in Figure~\ref{fig:DandDS} the interval quantities  $h=( 1/\sqrt{[2;2]}, 1/\sqrt{[2;2]})$ and $g=( 1/\sqrt{[2;2]}, -1/\sqrt{[2;2]})$ are the  normalized interval filters associated to the Int-HWT, representing the interval extension of the standard algorithm. The discrete convolution from $C$ with $h$ generates the averages (scaling coefficients) and  for computing the differences (wavelet coefficients) the filter $g$ is considered.
+The novelty here on the interval code remains in the definition of vectors as interval vectors. Constants are defined as interval quantities and all arithmetics are treated as interval operations. 
 
-Since the HWT main feature is to decompose information in many resolution levels, assuming as input the set of the scaling coefficients that contains the $n_1$ previously computed averages, the next level of the decimated HWT produces a second pair of half-sized vectors, one for the new $n_2=n_1/2$ averages and other for the corresponding $n_2=n_1/2$ wavelet coefficients.  This procedure is recursively defined and can be applied until a specific level of coarser resolution is achieved or until a single scalar scaling coefficient is obtained. The whole process of the direct HWT is also called \textbf{decomposition}.
+In this sense, in Figure~\ref{fig:DandDS} the interval quantities  $h=( 1/\sqrt{[2;2]}, 1/\sqrt{[2;2]})$ and $g=( 1/\sqrt{[2;2]}, -1/\sqrt{[2;2]})$ are the  normalized interval filters associated to the Int-HWT, representing the interval extension of the standard algorithm. The discrete convolution from $C$ with $h$ generates the averages (scaling coefficients) and  for computing the differences (wavelet coefficients) the filter $g$ is considered.
+
+Since the HWT main feature is to decompose information in many resolution levels, assuming as input the set of the scaling coefficients that contains the $n_1$ previously computed averages, the next level of the decimated HWT produces a second pair of half-sized vectors, one for the new $n_2=n_1/2$ averages and other for the corresponding $n_2=n_1/2$ wavelet coefficients.
+
+This procedure is recursively defined and can be applied until a specific level of coarser resolution is achieved or until a single scalar scaling coefficient is obtained. The whole process of the direct HWT is also called \textbf{decomposition}.
 
 \begin{figure}[ht]
 	\centering
@@ -343,39 +369,6 @@ Since the HWT main feature is to decompose information in many resolution levels
     \caption{1D decimated Int-HWT using $h$ and $g$ filters.}
     \label{fig:DandDS}
  \end{figure}
-
-
-% \begin{algorithm}[H]
-% 	\SetKw{KwProcedure}{Procedure}
-%     \caption{1D decomposition step.}
-%     \label{alg:OriginalDecompositionStep1D}
-%     \KwProcedure{DStep($ C[1 .. n] $ : real)}
-
-%         \nl \For{$ \quad i \leftarrow 1 \quad $ \textbf{to} $ \quad n / 2 \quad $}
-%         {
-%             \nl $ C'[i] \leftarrow (C [2 i - 1] + C [2 i]) / \sqrt{2} $ \;
-%             \nl $ C'[i + n / 2] \leftarrow (C [2 i - 1] - C [2 i]) / \sqrt{2} $ \;
-%         }
-
-%         \nl $ C \leftarrow C' $
-
-% \end{algorithm}
-
-% \begin{algorithm}[H]
-% 	\SetKw{KwProcedure}{Procedure}
-%     \caption{1D decomposition process.}
-%     \label{alg:OriginalDecomposition1D}
-%     \KwProcedure{D($ C[1 .. n] $ : real)}
-
-%     	\nl $ C \leftarrow C / \sqrt{n} $ \;
-%         \nl \While{$ \quad n > 1 \quad $}
-%         {
-%             \nl $ DStep(C[1 .. n]) $ \;
-%             \nl $ n \leftarrow n / 2 $ \;
-%         }
-
-% \end{algorithm}
-
 
 Figure \ref{fig:ComparisonIntPonc} shows the comparison between the standard and the interval procedures of the one-dimensional HWT assuming $l=log_2 n$ decomposition levels.
 %
@@ -386,12 +379,16 @@ Figure \ref{fig:ComparisonIntPonc} shows the comparison between the standard and
     \label{fig:ComparisonIntPonc}
 \end{figure}
 %
-It is possible to notice in Figure~\ref{fig:ComparisonIntPonc} the care with the type of data being used in the formal parameters in both procedures. The constants must be expressed by intervals too. The instruction $sqrt(float(n))$, square root of punctual floating value, becames $sqrt(interval(n))$, square root of punctual interval. Inside the while loop the interval procedure calls another interval procedure, maintaining the compatibility of the data being calculated. The same type of code adaptation is considered for the rest of the punctual procedures, generating in this way the proposed interval extension.
+It is possible to notice in Figure~\ref{fig:ComparisonIntPonc} the care with the type of data being used in the formal parameters in both procedures.
 
+The constants must be expressed by intervals too. The instruction $sqrt(float(n))$, square root of punctual floating value, becomes $sqrt(interval(n))$, square root of punctual interval. Inside the while loop the interval procedure calls another interval procedure, maintaining the compatibility of the data being calculated.
+
+The same type of code adaptation is considered for the rest of the punctual procedures, generating in this way the proposed interval extension.
 
 Using the sets of all wavelet coefficients, resulted from the decomposition process, together with the averages in the lowest level of the direct decimated Int-HWT, it is possible to accurately perform the \textbf{inverse transformation} (also called \textbf{composition}), generating the exact reconstruction of the original vector, which is an important characteristic of the HWT.
 
 The pseudo-code that performs the level composition of  the 1D decimated Int-HWT is represented in Figure~\ref{fig:CandCS}. According to \cite{stollnitz1995}, in the composition process, starting from the coarsest resolution level of the transformation, the original values are restored level by level, combining the wavelet and scaling coefficients from the level immediately below.
+
 Therefore, the decomposition process is completely reversible, allowing the data reconstruction in each level of the transformation, until the end of the process is achieved, when finally the finest resolution level is exactly reconstructed.
 
 \begin{figure}[ht]
@@ -401,65 +398,19 @@ Therefore, the decomposition process is completely reversible, allowing the data
     \label{fig:CandCS}
  \end{figure}
 
-% \begin{algorithm}[H]
-% 	\SetKw{KwProcedure}{Procedure}
-%     \caption{1D composition step.}
-%     \label{alg:OriginalCompositionStep1D}
-%     \KwProcedure{CStep($ C[1 .. n] $ : real)}
-
-%     	\nl \For{$ \quad i \leftarrow 1 \quad $ \textbf{to} $ \quad n / 2 \quad $}
-%         {
-%             \nl $ C'[2 i - 1] \leftarrow (C [i] + C [i + n / 2]) / \sqrt{2} $ \;
-%             \nl $ C'[2 i] \leftarrow (C [i] - C [i + n / 2]) / \sqrt{2} $ \;
-%         }
-
-%         \nl $ C \leftarrow C' $
-
-% \end{algorithm}
-
-% \begin{algorithm}[H]
-% 	\SetKw{KwProcedure}{Procedure}
-%     \caption{1D composition process.}
-%     \label{alg:OriginalComposition1D}
-%     \KwProcedure{C($ C[1 .. n] $ : real)}
-
-%     	\nl $ i \leftarrow 2 $ \;
-%         \nl \While{$ \quad i < n \quad $}
-%         {
-%             \nl $ CStep(C[1 .. 2 i]) $ \;
-%             \nl $ i \leftarrow 2 i $ \;
-%         }
-
-%         \nl $ C \leftarrow C \sqrt{n} $ \;
-
-% \end{algorithm}
-
 \subsubsection{Two Dimensional}
 \label{sec:hwt2d}
 
-The HWT can be extended for two-dimensional vectors. According to the procedure described in \cite{stollnitz1995}, the fast algorithm for the 2D decimated HWT is obtained through the application of the one-dimensional transformation per direction (in all rows of the input matrix and after that, in all columns of the resulting one). In fact, the order how the many levels of the one-dimensional transformation are applied to the two-dimensional data generates different intermediate results and, therefore, distinct algorithms for the 2D transform.
+The HWT can be extended for two-dimensional vectors. According to the procedure described in \cite{stollnitz1995}, the fast algorithm for the 2D decimated HWT is obtained through the application of the one-dimensional transformation per direction (in all rows of the input matrix and after that, in all columns of the resulting one).
+
+\newpage
+
+In fact, the order how the many levels of the one-dimensional transformation are applied to the two-dimensional data generates different intermediate results and, therefore, distinct algorithms for the 2D transform.
 
 Following what was presented in \cite{stollnitz1995},  the 2D  decimated Int-HWT can be calculated through the standard method, showed in Figure~\ref{fig:SDandND}. In this formulation, the many levels of the one-dimensional transform are applied to all rows.
-After the $l=log_2 n$ decomposition levels of the 1D HWT were applied to the entire set of rows of the matrix, the same 1D procedure is applied to the columns to the resulting matrix, as many levels as done for the rows. This completes the 2D decimated transformation, assuming $l=log_2 n$ decomposition levels. Figure \ref{fig:DecompositionMethods} illustrates the application of this algorithm.
+After the $l=log_2 n$ decomposition levels of the 1D HWT were applied to the entire set of rows of the matrix, the same 1D procedure is applied to the columns to the resulting matrix, as many levels as done for the rows.
 
-
-% \begin{algorithm}[H]
-% 	\SetKw{KwProcedure}{Procedure}
-%     \caption{2D standard decomposition (SD).}
-%     \label{alg:StandardAlgorithm}
-%     \KwProcedure{SD($ C[1..h, 1..w] $ : real)}
-
-%     	\nl \For{ $ \quad row \leftarrow 1 \quad $ \textbf{to} $\quad  h \quad $ }
-%         {
-%         	\nl $ D(C[row, 1..w]) $ \;
-%         }
-
-%         \nl \For{ $ \quad col \leftarrow 1 \quad $ \textbf{to} $\quad  w \quad $ }
-%         {
-%         	\nl $ D(C[1..h, col]) $ \;
-%         }
-
-% \end{algorithm}
+This completes the 2D decimated transformation, assuming $l=log_2 n$ decomposition levels. Figure \ref{fig:DecompositionMethods} illustrates the application of this algorithm.
 
 \begin{figure}[ht]
     \centering
@@ -475,30 +426,11 @@ After the $l=log_2 n$ decomposition levels of the 1D HWT were applied to the ent
     \label{fig:DecompositionMethods}
  \end{figure}
 
- According to \cite{stollnitz1995} and shown in Figure \ref{fig:SDandND},the non-standard method is another option for the 2D decimated HWT, whose interval extension is also proposed here. In this formulation the operations by rows and columns through out each level of the transform are intercalated. Thereby, every row is decomposed in one level and right after that all columns are also decomposed in one level, completing one level of decomposition for the entire 2D data. In this non standard formulation of the 2D HWT, the resulting scaling coefficients after one decomposition level, which are one fourth of the entire initial data, are then considered as the input for the computation of the next decomposition level of the transform. The three remaining blocks with wavelet coefficients are not further decomposed. Each one also containing one fourth of the original data.  The complete process repeats itself until in the last level just a single scaling coefficient and just one wavelet coefficient for the remaining three sets are obtained. A representation of this formulation is presented in Figure~\ref{fig:DecompositionMethods}(right panel).
+ According to \cite{stollnitz1995} and shown in Figure \ref{fig:SDandND},the non-standard method is another option for the 2D decimated HWT, whose interval extension is also proposed here. In this formulation the operations by rows and columns through out each level of the transform are intercalated.
 
-%  \begin{algorithm}[H]
-% 	\SetKw{KwProcedure}{Procedure}
-%     \caption{2D nonstandard decomposition (ND).}
-%     \label{alg:NonstandardAlgorithm}
-%     \KwProcedure{ND($ C[1..h, 1..w] $ : real)}
+Thereby, every row is decomposed in one level and right after that all columns are also decomposed in one level, completing one level of decomposition for the entire 2D data. In this non standard formulation of the 2D HWT, the resulting scaling coefficients after one decomposition level, which are one fourth of the entire initial data, are then considered as the input for the computation of the next decomposition level of the transform.
 
-%     \nl $ C \leftarrow C / h $ \;
-%     \nl \While{$ \quad h > 1 \quad $}
-%     {
-%       \nl \For{ $ \quad row \leftarrow 1 \quad $ \textbf{to} $\quad  h \quad $ }
-%       {
-%           \nl $ D(C[row, 1..w]) $ \;
-%       }
-
-%       \nl \For{ $ \quad col \leftarrow 1 \quad $ \textbf{to} $\quad  w \quad $ }
-%       {
-%           \nl $ D(C[1..h, col]) $ \;
-%       }
-%       \nl $ h \leftarrow h / 2 $
-%     }
-
-% \end{algorithm}
+The three remaining blocks with wavelet coefficients are not further decomposed. Each one also containing one fourth of the original data.  The complete process repeats itself until in the last level just a single scaling coefficient and just one wavelet coefficient for the remaining three sets are obtained. A representation of this formulation is presented in Figure~\ref{fig:DecompositionMethods}(right panel).
 
   \begin{figure}[ht]
     \centering
@@ -507,19 +439,29 @@ After the $l=log_2 n$ decomposition levels of the 1D HWT were applied to the ent
     \label{fig:InverseSCandNSC}
  \end{figure}
 
-  The direct and inverse Int-HWT, Figures \ref{fig:DandDS}, \ref{fig:CandCS}, \ref{fig:SDandND} and \ref{fig:InverseSCandNSC}, can be thought as a convolution of the input data with a pair of filters , $h=(1/2, 1/2)$ and $g=(1/2,-1/2)$, that represent the transform \cite{stollnitz1995}.  The normalized Haar filters are $h=(1/\sqrt{2}, 1/\sqrt{2})$ and $g=(1/\sqrt{2},-1/\sqrt{2})$ and  the normalized transform preserves the energy of the entire set of coefficients obtained through the HWT. Therefore, according to \cite{stollnitz1995}, besides the standard and non-standard algorithms, the HWT can be performed using  normalized and non-normalized filters. Therefore combining the two possible algorithms with these two possible filter choices, there are four ways to compute the decimated 2D Int-HWT available: (i) non-standard, non-normalized; (ii) non-standard, normalized; (iii) standard, non-normalized; and (iv) standard, normalized.
+  The direct and inverse Int-HWT, Figures \ref{fig:DandDS}, \ref{fig:CandCS}, \ref{fig:SDandND} and \ref{fig:InverseSCandNSC}, can be thought as a convolution of the input data with a pair of filters , $h=(1/2, 1/2)$ and $g=(1/2,-1/2)$, that represent the transform \cite{stollnitz1995}.  The normalized Haar filters are $h=(1/\sqrt{2}, 1/\sqrt{2})$ and $g=(1/\sqrt{2},-1/\sqrt{2})$ and the normalized transform preserves the energy of the entire set of coefficients obtained through the HWT.
+
+\newpage
+
+Therefore, according to \cite{stollnitz1995}, besides the standard and non-standard algorithms, the HWT can be performed using  normalized and non-normalized filters.
+
+Thus combining the two possible algorithms with these two possible filter choices, there are four ways to compute the decimated 2D Int-HWT available: (i) non-standard, non-normalized; (ii) non-standard, normalized; (iii) standard, non-normalized; and (iv) standard, normalized.
 
 \subsection{Undecimated Formulation}
 \label{sec:hwt-undecimated}
 
-Another alternative version for the HWT is the undecimated approach, which avoids the decimation operation after the convolution with the filters has been computed. This undecimated transform has one well established formulation, called the {\it à trous} algorithm, which is considered in many astrophysical and statistical applications \cite{IEEE2007,kozakevicius2013}, specially for been a translation invariant transform.
+Another alternative version for the HWT is the undecimated approach, which avoids the decimation operation after the convolution with the filters has been computed.
+
+This undecimated transform has one well established formulation, called the {\it à trous} algorithm, which is considered in many astrophysical and statistical applications \cite{IEEE2007,kozakevicius2013}, specially for been a translation invariant transform.
 
 \subsubsection{One Dimensional}
 \label{sec:hwt1d-undecimated}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-According to what is shown in \cite{IEEE2007}, given an initial vector $ C^0 $ with $n_0=2^J$ punctual values, the vector $C^1$ that contains the first decomposition level of the 1D undecimated HWT (à-trous HWT) stores the averages for each pair of adjacent elements $(C^0_j,C^0_{j+1}), j=1,...,n_0$, (assuming $C^0_{n_0+1}=C^0_{0}$). The difference now with respect to the Cascade formulation is that the range of $j$ to select the values $C^0_j$ covers all positions $j=1,...,n_0$. This is exactly what avoids the decimation step and causes $C^1$ to have the same size as $C^0$. The way the wavelet coefficients are computed  also differs from the previous formulation. Now the vector with the differences $D^1$  is computed by $D^1_j=C^0_j -C^1_j, \ j=1,...,n_0$.
-%%%%%
+According to what is shown in \cite{IEEE2007}, given an initial vector $ C^0 $ with $n_0=2^J$ punctual values, the vector $C^1$ that contains the first decomposition level of the 1D undecimated HWT (à-trous HWT) stores the averages for each pair of adjacent elements $(C^0_j,C^0_{j+1}), j=1,...,n_0$, (assuming $C^0_{n_0+1}=C^0_{0}$).
+
+The difference now with respect to the Cascade formulation is that the range of $j$ to select the values $C^0_j$ covers all positions $j=1,...,n_0$. This is exactly what avoids the decimation step and causes $C^1$ to have the same size as $C^0$. The way the wavelet coefficients are computed  also differs from the previous formulation. Now the vector with the differences $D^1$  is computed by $D^1_j=C^0_j -C^1_j, \ j=1,...,n_0$.
+
 The  {\it à trous} HWT is again constructed recursively, until a certain decomposition level $0<l<log_2 n_0$ is achieved. In this sense, the vector of averages $C^j$  at a level $0< j \leq l$ is obtained from the set $C^{j-1}$, the averages at the previous level. Analogously, the vector with the wavelet coefficients is given by $D^j=C^{j-1}-C^j$.  This process is  again called Decomposition or Direct Transformation and it is illustrated in Figure~\ref{fig:DTAtrous} .
 
 %The operations over the last element of the vector are %performed using the first element from the same vector %to form its pair, avoiding the necessity of %extrapolation to deduce the next element after the end %of a vector.
@@ -554,7 +496,9 @@ also called Composition, which provides the exact reconstruction of the original
 \subsubsection{Two Dimensional}
 \label{sec:hwt2d-undecimated}
 
-According to \cite{IEEE2007}, the algorithm for the 2D à trous HWT is again obtained through the application of the one-dimensional transformation in all rows and columns of the input matrix, as done for the decimated version of the HWT. Analogously, Standard and Non-Standard procedures can be designed according to the order how the 1D à trous transforms are applied to the 2D data.
+According to \cite{IEEE2007}, the algorithm for the 2D à trous HWT is again obtained through the application of the one-dimensional transformation in all rows and columns of the input matrix, as done for the decimated version of the HWT.
+
+Analogously, Standard and Non-Standard procedures can be designed according to the order how the 1D à trous transforms are applied to the 2D data.
 
 \begin{figure}[h!]
 \includegraphics[width=15cm]{Imagens/HaarAtrousStandard.png}
@@ -571,7 +515,9 @@ According to \cite{IEEE2007}, the algorithm for the 2D à trous HWT is again obta
 
 \end{figure}
 
-The undecimated standard decomposition for the 1D Int-HWT, based on the Standard decimated decomposition, is performed by executing the 1D à trous Int-HWT for each row of the input matrix. This process is called Row~À-Trous~Transform~(\textit{RAT}), characterizing this procedure as a horizontal transformation. Considering $n$ decomposition levels, the RAT procedure is repeated $n$ times, generating matrices $ C^1_R $ ... $ C^n_R $ and $ D^1_R $ ... $ D^n_R $. After decomposing all rows from the input matrix, the decomposition of all its columns is performed, called Column~À-Trous~Transform~(\textit{CAT}), characterizing a vertical transformation and generating matrices $ C^{n+1}_C $ ... $ C^{n*2}_C $ and $ D^{n+1}_C $ ... $ D^{n*2}_C $.
+The undecimated standard decomposition for the 1D Int-HWT, based on the Standard decimated decomposition, is performed by executing the 1D à trous Int-HWT for each row of the input matrix. This process is called Row~À-Trous~Transform~(\textit{RAT}), characterizing this procedure as a horizontal transformation.
+
+Considering $n$ decomposition levels, the RAT procedure is repeated $n$ times, generating matrices $ C^1_R $ ... $ C^n_R $ and $ D^1_R $ ... $ D^n_R $. After decomposing all rows from the input matrix, the decomposition of all its columns is performed, called Column~À-Trous~Transform~(\textit{CAT}), characterizing a vertical transformation and generating matrices $ C^{n+1}_C $ ... $ C^{n*2}_C $ and $ D^{n+1}_C $ ... $ D^{n*2}_C $.
 
 The matrices $ C^j_R $ and $ C^j_C $  store scaling coefficients, while $ D^j_R $ and $ D^j_C $ store wavelet coefficients. A visual representation of the process is shown in Figure~\ref{fig:AtrousStandard}, and its pseudo algorithm is shown in Figure~\ref{fig:AtrousStandardPseudo}.
 
@@ -593,12 +539,17 @@ The matrices $ C^j_R $ and $ C^j_C $  store scaling coefficients, while $ D^j_R 
 
 \end{figure}
 
-The undecimated non-standard decomposition, based on the original non-standard algorithm from the Cascade approach, is performed by intercalating both \textit{RAT} and \textit{CAT} operations, extracting vertical and horizontal details for each level of decomposition, as shown in Figure~\ref{fig:AtrousNonStandard}. For each level $ j $ of decomposition the algorithm performs a \textit{RAT} step, generating matrices $ C^j_R $ and $ D^j_R $, and right after a \textit{CAT} is performed, generating matrices $ C^j_C $ and $ D^j_C $. Both $ C^j_R $ and $ C^j_C $ store scalar coefficients, while $ D^j_R $ and $ D^j_C $ hold wavelet coefficients, and those four matrices represent one level full decomposed. The À-trous Non Standard algorithm is shown in Figure~\ref{fig:AtrousStandardPseudo}
+The undecimated non-standard decomposition, based on the original non-standard algorithm from the Cascade approach, is performed by intercalating both \textit{RAT} and \textit{CAT} operations, extracting vertical and horizontal details for each level of decomposition, as shown in Figure~\ref{fig:AtrousNonStandard}.
 
-%\todo[inline]{Depois que falares dos algoritmos atrous 1d e 2d, podes entao entrar na questao da normalizacao, pois tanto no caso do algoritmo de cascata, quanto no algoritmo atrous, tu conseguiste as simplificaçoes que vao otimizar os codigos intervalares. acho mais prudente chamar de simplificação ao invés de otimizacao. \\
-%O parágrafo abaixo é um bom link entre seções. então, podes aproveitá-lo para a conexão entre a seção anterior e a próxima}
+For each level $ j $ of decomposition the algorithm performs a \textit{RAT} step, generating matrices $ C^j_R $ and $ D^j_R $, and right after a \textit{CAT} is performed, generating matrices $ C^j_C $ and $ D^j_C $.
 
-The same idea from the one-dimensional transform can be applied for both standard and non-standard sets of data to perform an inverse process, generating the input matrix. By using all matrices of wavelet coefficients resulted by the process of decomposition together with the averages in the lowest level of decomposition, it is possible to reconstruct, accurately. $MatrixComposition$ generates the exact reconstruction of the original input matrix of data. The algorithm describing its execution is shown in Figure~\ref{fig:ATrousMatrixComposition}.
+Both $ C^j_R $ and $ C^j_C $ store scalar coefficients, while $ D^j_R $ and $ D^j_C $ hold wavelet coefficients, and those four matrices represent one level full decomposed. The À-trous Non Standard algorithm is shown in Figure~\ref{fig:AtrousStandardPseudo}.
+
+The same idea from the one-dimensional transform can be applied for both standard and non-standard sets of data to perform an inverse process, generating the input matrix.
+
+\newpage
+
+By using all matrices of wavelet coefficients resulted by the process of decomposition together with the averages in the lowest level of decomposition, it is possible to reconstruct, accurately. $MatrixComposition$ generates the exact reconstruction of the original input matrix of data. The algorithm describing its execution is shown in Figure~\ref{fig:ATrousMatrixComposition}.
 
 \begin{figure}[h!]
 	\includegraphics[width=11cm]{Imagens/ATrousMatrixComposition.png}
@@ -607,118 +558,15 @@ The same idea from the one-dimensional transform can be applied for both standar
 
 \end{figure}
 
-\section{Daubechies Wavelet Transform}
+\newpage
+
+\section{Daubechies Wavelet Transform}\label{sec:DaWT}
+
+This Section introduces the Daubechies Wavelet Transform (DaWT) as described in the literature~\cite{DAUBTHESIS}, in addition to the proposed interval filters. The one and two transformation methods are presented in Subsections~\ref{sec:1DDaWT} and \ref{sec:2DDaWT} respectively.
 
 \subsection{One Dimensional}\label{sec:1DDaWT}
 
-According to the description in \cite{DAUBTHESIS}, when assuming the original formulation of the transform and given an initial vector $C$ with $n$ punctual values, the one-dimensional DaWT calculate scaling and wavelet coefficients of each pair of adjacent elements in the input vector $C$, $(C_{2j-1}, C_{2j}), j=1,...,n/2$, generating therefore two output sets: a vector containing the scaling and a second vector with wavelet coefficients, both with $n_1= n/2$ points, half size of the original input vector $C$.
-
-Figure~\ref{fig:DaubDandDS} presents the $log_2(n)$ level decomposition of the Int-DaWT algorithm,  formulated for the decimated case as an extension of the original algorithm presented in~\cite{DAUBTHESIS}. The novelty here on the interval code remains in the definition of vectors as interval vectors. Constants are defined as interval quantities and all arithmetics are treated as interval operations. In this sense, in Figure~\ref{fig:DaubDandDS}, the interval quantities  $h$ and $g$, shown in Figure~\ref{fig:IntDaWHFilters}, are the  normalized interval filters associated to the Int-DaWT, representing the interval extension of the original algorithm. The discrete convolution from $C$ with $h$ generates the next set of scaling coefficients and for computing the wavelet coefficients the filter $g$ is considered.
-
-\begin{figure}[h!]
-
-\begin{center}
-\Large
-$h = (
-\quad \frac{1+\sqrt{3}}{4\sqrt{2}},
-\quad \frac{3+\sqrt{3}}{4\sqrt{2}},
-\quad \frac{3-\sqrt{3}}{4\sqrt{2}},
-\quad \frac{1-\sqrt{3}}{4\sqrt{2}}
-\quad )$
-\end{center}
-
-\begin{center}
-\Large
-$g = (
-\quad \frac{1-\sqrt{3}}{4\sqrt{2}},
-\quad \frac{-3+\sqrt{3}}{4\sqrt{2}},
-\quad \frac{3+\sqrt{3}}{4\sqrt{2}},
-\quad \frac{-1-\sqrt{3}}{4\sqrt{2}}
-\quad )$
-\end{center}
-
-\caption{Scaling and Wavelet filters for the direct DaWT}
-\label{fig:DaubFilters}
-\end{figure}
-
-\begin{figure}[h!]
-
-\begin{center}
-\Large
-$h' = (
-\quad \frac{[1;1]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
-\quad \frac{[3;3]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
-\quad \frac{[3;3]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
-\quad \frac{[1;1]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}}
-\quad )$
-\end{center}
-
-\begin{center}
-\Large
-$g' = (
-\quad \frac{[1;1]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
-\quad \frac{-[3;3]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
-\quad \frac{[3;3]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
-\quad \frac{-[1;1]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}}
-\quad )$
-\end{center}
-
-\caption{Interval extension of the Scaling and Wavelet filters for the direct DaWT}
-\label{fig:IntDaWHFilters}
-\end{figure}
-
-\begin{figure}[h!]
-
-\begin{center}
-\Large
-$ih = (
-\quad \frac{3-\sqrt{3}}{4\sqrt{2}},
-\quad \frac{3+\sqrt{3}}{4\sqrt{2}},
-\quad \frac{1+\sqrt{3}}{4\sqrt{2}},
-\quad \frac{1-\sqrt{3}}{4\sqrt{2}}
-\quad )$
-\end{center}
-
-\begin{center}
-\Large
-$ig = (
-\quad \frac{1-\sqrt{3}}{4\sqrt{2}},
-\quad \frac{-1-\sqrt{3}}{4\sqrt{2}},
-\quad \frac{3+\sqrt{3}}{4\sqrt{2}},
-\quad \frac{-1+\sqrt{3}}{4\sqrt{2}}
-\quad )$
-\end{center}
-
-\caption{Scaling and Wavelet filters for the inverse DaWT}
-\label{fig:InvDaubFilters}
-\end{figure}
-
-\begin{figure}[h!]
-
-\begin{center}
-\Large
-$ih' = (
-\quad \frac{[3;3]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
-\quad \frac{[3;3]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
-\quad \frac{[1;1]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
-\quad \frac{[1;1]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}}
-\quad )$
-\end{center}
-
-\begin{center}
-\Large
-$ig' = (
-\enskip \frac{[1;1]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
-\quad \frac{-[1;1]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
-\quad \frac{[3;3]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
-\quad \frac{-[1;1]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}}
-\quad )$
-\end{center}
-
-\caption{Interval extension of the Scaling and Wavelet filters for the inverse DaWT}
-\end{figure}
-
-Since the DaWT main feature is to decompose information in many resolution levels, assuming as input the set of the scaling coefficients that contains the $n_1$ previously computed averages, the next decomposition level produces a second pair of half-sized vectors, one for the new $n_2=n_1/2$ scaling coefficients and other for the corresponding $n_2=n_1/2$ wavelet coefficients. This procedure is recursively defined and can be applied until a specific level of coarser resolution is achieved or until two scaling coefficients are obtained.
+According to the description in \cite{DAUBTHESIS}, when assuming the original formulation of the transform and given an initial vector $C$ with $n$ punctual values, the one-dimensional DaWT calculates scaling and wavelet coefficients of each pair of adjacent elements in the input vector $C$, $(C_{2j-1}, C_{2j}), j=1,...,n/2$, generating therefore two output sets: a vector containing the scaling and a second vector with wavelet coefficients, both with $n_1= n/2$ points, half size of the original input vector $C$.
 
 \begin{figure}[h!]
     \includegraphics[width=7.2cm]{Imagens/Daub_D.png}
@@ -726,51 +574,156 @@ Since the DaWT main feature is to decompose information in many resolution level
     \includegraphics[width=14cm]{Imagens/Daub_DStep.png}
     \caption{1D DaWT decomposition procedure.}
     \label{fig:DaubDandDS}
- \end{figure}
+\end{figure}
 
-Using the sets of all wavelet coefficients, resulted from the decomposition process, together with the scaling coefficients in the lowest level of the decomposed data, it is possible to perform the inverse transformation, also known as composition), reconstructing the original vector, which is an important characteristic of DWTs.
+\newpage
 
-The pseudo-code that performs the level composition of the 1D DaWT is represented in Figure~\ref{fig:DaubCandCS}. According to \cite{DAUBTHESIS}, in the composition process, starting from the coarsest resolution level of the transformation, the original values are restored level by level, combining the wavelet and scaling coefficients from the level immediately below. Therefore, the decomposition process is completely reversible, allowing the data reconstruction in each level of the transformation, until the end of the process is achieved, when finally the finest resolution level is exactly reconstructed.
+Figure~\ref{fig:DaubDandDS} presents the $log_2(n)$ level decomposition of the Int-DaWT algorithm, formulated as an extension of the original algorithm presented in~\cite{DAUBTHESIS}.
+
+Constants are defined as interval quantities and all arithmetics are treated as interval operations. In this sense the interval extension of the DaWT is performed by using the set of filters $h'$ and $g'$, shown in Eqs.~(\ref{eq:int-hfilters})~and~(\ref{eq:int-gfilters}), based on the original set of filters $h$ and $g$, shown in Eqs.~(\ref{eq:hfilters})~and~(\ref{eq:gfilters}), which are normalized filters associated to the Int-DaWT.
+
+The discrete convolution from $C$ with $h$ generates the next set of scaling coefficients and for computing the wavelet coefficients the filter $g$ is considered.
+
+%\begin{figure}[h!]
+%    \includegraphics[width=14cm]{Imagens/Daub_DStep.png}
+%    \caption{1D DaWT decomposition procedure.}
+%    \label{fig:DaubDS}
+% \end{figure}
+
+\setcounter{equation}{0}
+
+\begin{eqnarray}
+%\Large
+h' & = & (
+\frac{[1;1]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\enskip \frac{[3;3]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\enskip \frac{[3;3]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\enskip \frac{[1;1]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}}
+)\label{eq:int-hfilters}\\
+g' & = & (
+\frac{[1;1]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\enskip \frac{-[3;3]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\enskip \frac{[3;3]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\enskip \frac{-[1;1]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}}
+)\label{eq:int-gfilters}\\
+ih' & = & (
+\frac{[3;3]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\enskip \frac{[3;3]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\enskip \frac{[1;1]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\enskip \frac{[1;1]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}}
+)\label{eq:int-ihfilters}\\
+ig' & = & (
+\frac{[1;1]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\enskip \frac{-[1;1]-\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\enskip \frac{[3;3]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}},
+\enskip \frac{-[1;1]+\sqrt{[3;3]}}{[4;4]\sqrt{[2;2]}}
+)\label{eq:int-igfilters}
+\end{eqnarray}
+
+Since the DaWT main feature is to decompose information in many resolution levels, assuming as input the set of the scaling coefficients that contains the $n_1$ previously computed averages.
+
+The next decomposition level produces a second pair of half-sized vectors, one for the new $n_2=n_1/2$ scaling coefficients and other for the corresponding $n_2=n_1/2$ wavelet coefficients. This procedure is recursively defined and can be applied until a specific level of coarser resolution is achieved or until two scaling coefficients are obtained.
+
+\begin{eqnarray}
+%\Large
+h & = & (
+\quad \frac{1+\sqrt{3}}{4\sqrt{2}},
+\quad \frac{3+\sqrt{3}}{4\sqrt{2}},
+\quad \frac{3-\sqrt{3}}{4\sqrt{2}},
+\quad \frac{1-\sqrt{3}}{4\sqrt{2}}
+\quad )\label{eq:hfilters}\\
+g & = & (
+\quad \frac{1-\sqrt{3}}{4\sqrt{2}},
+\quad \frac{-3+\sqrt{3}}{4\sqrt{2}},
+\quad \frac{3+\sqrt{3}}{4\sqrt{2}},
+\quad \frac{-1-\sqrt{3}}{4\sqrt{2}}
+\quad )\label{eq:gfilters}\\
+ih & = & (
+\quad \frac{3-\sqrt{3}}{4\sqrt{2}},
+\quad \frac{3+\sqrt{3}}{4\sqrt{2}},
+\quad \frac{1+\sqrt{3}}{4\sqrt{2}},
+\quad \frac{1-\sqrt{3}}{4\sqrt{2}}
+\quad )\label{eq:ihfilters}\\
+ig & = & (
+\quad \frac{1-\sqrt{3}}{4\sqrt{2}},
+\quad \frac{-1-\sqrt{3}}{4\sqrt{2}},
+\quad \frac{3+\sqrt{3}}{4\sqrt{2}},
+\quad \frac{-1+\sqrt{3}}{4\sqrt{2}}
+\quad )\label{eq:igfilters}
+\end{eqnarray}
+
+Using the sets of all wavelet coefficients, resulted from the decomposition process, together with the scaling coefficients in the lowest level of the decomposed data, it is possible to perform the inverse transformation, also known as composition, reconstructing the original vector, which is an important characteristic of DWTs.
 
 \begin{figure}[h!]
     \includegraphics[width=7.1cm]{Imagens/Daub_C.png}
     
     \includegraphics[width=14cm]{Imagens/Daub_CStep.png}
-    \caption{Inverse 1D DaWT, Composition process to reconstruct $l=log_2 n$ levels.}
+	\caption{Inverse 1D DaWT, Composition process to reconstruct $l=log_2 n$ levels.}
     \label{fig:DaubCandCS}
- \end{figure}
+\end{figure}
+
+The pseudo-code that performs the level composition of the 1D DaWT is represented in Figure~\ref{fig:DaubCandCS}. The filter sets $ih'$ and $ig'$, presented in Eqs.~(\ref{eq:int-ihfilters})~and~(\ref{eq:int-igfilters}), are based on the original filter sets $ih$ and $ig$, described in Eqs.~(\ref{eq:ihfilters})~and~(\ref{eq:igfilters}).
+
+According to \cite{DAUBTHESIS}, in the composition process, starting from the coarsest resolution level of the transformation, the original values are restored level by level, combining the wavelet and scaling coefficients, calculated by using filter sets $ih'$ and $ig'$, from the level immediately below.
+
+Therefore, the decomposition process is completely reversible, allowing the data reconstruction in each level of the transformation, until the end of the process is achieved, when finally the finest resolution level is exactly reconstructed.
+
+%\begin{figure}[h!]
+%    \includegraphics[width=14cm]{Imagens/Daub_CStep.png}
+%    \caption{Inverse 1D DaWT, Step Composition process.}
+%    \label{fig:DaubCS}
+% \end{figure}
 
 \subsection{Two Dimensional}\label{sec:2DDaWT}
 
-The DaWT can be extended for two-dimensional vectors by using the same concept presented for the HWT in Section~\ref{sec:hwt2d}. According to the procedure described in \cite{DAUBTHESIS}, the fast algorithm for the 2D DaWT is obtained through the application of the one-dimensional transformation per direction (in all rows of the input matrix and after that, in all columns of the resulting one). In fact, the order how the many levels of the one-dimensional transformation are applied to the two-dimensional data generates different intermediate results and, therefore, distinct algorithms for the 2D transform.
+The DaWT can be extended for two-dimensional vectors by using the same concept presented for the HWT in Section~\ref{sec:hwt2d}. According to the procedure described in \cite{DAUBTHESIS}, the fast algorithm for the 2D DaWT is obtained through the application of the one-dimensional transformation per direction (in all rows of the input matrix and after that, in all columns of the resulting one).
 
-Following what was presented in \cite{DAUBTHESIS}, the 2D DaWT can be calculated through the standard method, showed in Figure~\ref{fig:SDandND}. In this formulation, the many levels of the one-dimensional transform are applied to all rows. After the $l=log_2 n$ decomposition levels of the 1D DaWT were applied to the entire set of rows of the matrix, the same 1D procedure is applied to the columns of the resulting matrix, as many levels as done for the rows. This completes the 2D transformation, assuming $l=log_2 n$ decomposition levels. Figure \ref{fig:DecompositionMethods} illustrates the application of this algorithm.
+In fact, the order how the many levels of the one-dimensional transformation are applied to the two-dimensional data generates different intermediate results and, therefore, distinct algorithms for the 2D transform.
 
-According to \cite{DAUBTHESIS} and shown in Figure \ref{fig:SDandND},the non-standard method is another option for the 2D DaWT. In this formulation the operations by rows and columns through out each level of the transform are intercalated. Thereby, every row is decomposed in one level and right after that all columns are also decomposed in one level, completing one level of decomposition for the entire 2D data. In this non standard formulation of the 2D DaWT, the resulting scaling coefficients after one decomposition level, which are one fourth of the entire initial data, are then considered as the input for the computation of the next decomposition level of the transform. The three remaining blocks with wavelet coefficients are not further decomposed. Each one also containing one fourth of the original data.  The complete process repeats itself until in the last level just a single scaling coefficient and just one wavelet coefficient for the remaining three sets are obtained. A representation of this formulation is presented in Figure~\ref{fig:DecompositionMethods}(right panel).
+Following what was presented in \cite{DAUBTHESIS}, the 2D DaWT can be calculated through the standard method, showed in Figure~\ref{fig:SDandND}. In this formulation, the many levels of the one-dimensional transform are applied to all rows.
 
-The direct and inverse of the DaWT, Figures \ref{fig:DaubDandDS}, \ref{fig:DaubCandCS}, \ref{fig:SDandND} and \ref{fig:InverseSCandNSC}, can be thought as a convolution of the input data with two normalized pairs of filters, $h$ and $g$ shown in Figure~\ref{fig:DaubFilters}, that represent the transform. The normalized transform preserves the energy of the entire set of coefficients obtained through the process. Therefore, by using the same strategy implemented for the HWT, besides the standard and non-standard algorithms, the DaWT can be performed using  normalized and non-normalized filters. Thus combining the two possible algorithms with these two possible filter choices, there are four ways to compute the decimated 2D DaWT available: (i) non-standard, non-normalized; (ii) non-standard, normalized; (iii) standard, non-normalized; and (iv) standard, normalized. The non-normalized filters are presented in Section~\ref{sec:Daub1DOptimization}.
+After the $l=log_2 n$ decomposition levels of the 1D DaWT were applied to the entire set of rows of the matrix, the same 1D procedure is applied to the columns of the resulting matrix, as many levels as done for the rows. This completes the 2D transformation, assuming $l=log_2 n$ decomposition levels. Figure \ref{fig:DecompositionMethods} illustrates the application of this algorithm.
+
+According to \cite{DAUBTHESIS} and shown in Figure \ref{fig:SDandND},the non-standard method is another option for the 2D DaWT. In this formulation the operations by rows and columns through out each level of the transform are intercalated.
+
+Thereby, every row is decomposed in one level and right after that all columns are also decomposed in one level, completing one level of decomposition for the entire 2D data. In this non standard formulation of the 2D DaWT, the resulting scaling coefficients after one decomposition level, which are one fourth of the entire initial data, are then considered as the input for the computation of the next decomposition level of the transform.
+
+The three remaining blocks with wavelet coefficients are not further decomposed. Each one also containing one fourth of the original data.  The complete process repeats itself until in the last level just a single scaling coefficient and just one wavelet coefficient for the remaining three sets are obtained. A representation of this formulation is presented in Figure~\ref{fig:DecompositionMethods}(right panel).
+
+The direct and inverse of the DaWT, Figures \ref{fig:DaubDandDS}, \ref{fig:DaubCandCS}, \ref{fig:SDandND} and \ref{fig:InverseSCandNSC}, can be thought as a convolution of the input data with two normalized pairs of filters, $h$ and $g$ shown in Eqs.~(\ref{eq:hfilters}) and (\ref{eq:gfilters}), that represent the transform.
+
+The normalized transform preserves the energy of the entire set of coefficients obtained through the process. Therefore, by using the same strategy implemented for the HWT, besides the standard and non-standard algorithms, the DaWT can be performed using  normalized and non-normalized filters.
+
+Thus combining the two possible algorithms with these two possible filter choices, there are four ways to compute the decimated 2D DaWT available: (i) non-standard, non-normalized; (ii) non-standard, normalized; (iii) standard, non-normalized; and (iv) standard, normalized. The non-normalized filters are presented in Section~\ref{sec:Daub1DOptimization}.
 
 \chapter{Developed Optimal Formulations}
 \label{sec:optintform}
 
-When the normalized filters are considered in the original algorithms of the HWT and DaWT \cite{stollnitz1995, IEEE2007, DAUBTHESIS},  divisions by  $ \sqrt{2} $  are executed in all iterations within the decomposition.
-Once  $ \sqrt{2} $   is not a computable value, each level of the decomposition or composition adds a certain degree of error into the data. The error generated in each iteration is then propagated through all levels until the end of the procedure.
+When the normalized filters are considered in the original algorithms of the HWT and DaWT \cite{stollnitz1995, IEEE2007, DAUBTHESIS}, divisions by  $ \sqrt{2} $  are executed in all iterations within the decomposition.
 
-The solution proposed to avoid this issue by performing algebraic simplifications in order to eliminate the computation of these non computable values, $2^{j/2}$ , whenever possible, reducing the error involved in the process. Therefore the developed algorithms produce more trustworthy results in comparison to the literature.
+Once  $ \sqrt{2} $ is not a computable value, each level of the decomposition or composition adds a certain degree of error into the data. The error generated in each iteration is then propagated through all levels until the end of the procedure.
 
-The basic idea for the algebraic simplifications is based on using the non-normalized transform, which introduces no computing errors for the HWT. By shifting the normalization step to the end of the transform, all operations with $ \sqrt{2} $ are applied only once, decreasing the error produced by its computation in each level of the decomposition or composition.
+The solution proposed to avoid this issue by performing algebraic simplifications in order to eliminate the computation of these non computable values, $2^{j/2}$ , whenever possible, reducing the error involved in the process.
+
+Therefore the developed algorithms produce more trustworthy results in comparison to the literature.
+
+The basic idea for the algebraic simplifications is based on using the non-normalized transform, which introduces no computing errors for the HWT.
+
+By shifting the normalization step to the end of the transform, all operations with $ \sqrt{2} $ are applied only once, decreasing the error produced by its computation in each level of the decomposition or composition.
 
 \section{Haar Wavelet Transform}
 
-\subsection{Decimated Formulation}
+This Section aims to describe the developed optimizations for the HWT where the optimized decimated formulation is presented in Section~\ref{sec:hwt-dec} and its undecimated form in Section~\ref{sec:hwt-undec}.
 
-\subsubsection{One Dimensional}
-\label{subsec:1DCascadeOpt}
+\subsection{Decimated Formulation}\label{sec:hwt-dec}
 
- The normalized decomposition procedure for the decimated version of the Int-HWT, either 1D or 2D, is executed in the following order: first a non-normalized decomposition is made, as indicated by the pseudo-code in Figure~\ref{fig:Fig4}; after this stage the normalization of all coefficients is performed, multiplying all of them by the normalization factor $ 2^{-j/2} $, where $ j $ is the resolution level of the coefficients through out the decomposition.
- 
- %\todo{De repente escrever como algoritmo? Pilla}
- % É uma boa idéia, vou deixar isso anotado aqui!
+This Section presents the developed optimizations for both one and two dimensional approaches of the HWT in Sections~\ref{subsec:1DCascadeOpt} and \ref{subsec:cascade2D_Opt_Haar}.
+
+\subsubsection{One Dimensional}\label{subsec:1DCascadeOpt}
+
+ The normalized decomposition procedure for the decimated version of the Int-HWT, either 1D or 2D, is executed in the following order: first a non-normalized decomposition is made, as indicated by the pseudo-code in Figure~\ref{fig:Fig4}.
+
+After this stage the normalization of all coefficients is performed, multiplying all of them by the normalization factor $ 2^{-j/2} $, where $ j $ is the resolution level of the coefficients through out the decomposition.
 
 Depending on $ j $, the computation of $ \sqrt{2} $ may not be necessary, avoiding  any computation error in this case. This process is illustrated in Figure \ref{fig:Fig4}, assuming 2 levels of the 1D HWT and considering the same example as presented in \cite{stollnitz1995}.
 
@@ -795,7 +748,11 @@ Looking at the original decomposition procedure, shown in Figure~\ref{fig:DandDS
     \label{fig:NewDandDS}
  \end{figure}
 
-The normalization procedure, presented in Figure~\ref{fig:1DNorm_and_Denorm}, performs the normalization step of all coefficients after their convolution using filters. Since it is executed once on every coefficient of a $n$ sized vector, its complexity can be $\BigO(n)$. By performing a non-normalized transform and the normalization procedure afterwards, the complexity is $\BigO(n\log(n) + n)$, which is the same complexity from the normalized transformation. The goal is therefore the gain on exactitude obtained by avoiding high number of divisions using $\sqrt{2}$ from the original $DecompositionStep$ algorithm, as shown in Figure~\ref{fig:test1-3}.
+The normalization procedure, presented in Figure~\ref{fig:1DNorm_and_Denorm}, performs the normalization step of all coefficients after their convolution using filters. Since it is executed once on every coefficient of a $n$ sized vector, its complexity can be $\BigO(n)$. 
+
+By performing a non-normalized transform and the normalization procedure afterwards, the complexity is $\BigO(n\log(n) + n)$, which is the same complexity from the normalized transformation.
+
+The goal is therefore the gain on accuracy obtained by avoiding high number of divisions using $\sqrt{2}$ from the original $DecompositionStep$ algorithm, as shown in Figure~\ref{fig:test1-3}.
 
 \begin{figure}[ht]
 	%\centering
@@ -804,23 +761,30 @@ The normalization procedure, presented in Figure~\ref{fig:1DNorm_and_Denorm}, pe
     \label{fig:1DNorm_and_Denorm}
  \end{figure}
 
-The normalized composition procedure follows the same basic idea to reduce computation of $\sqrt{2}$, it performs the non-normalized inverse transform, but this time a denormalization step, shown in Figure~\ref{fig:1DNorm_and_Denorm}, is executed before the transform begins. The original algorithms for composition and its step procedure, Figure~\ref{fig:CandCS}, behave similarly to decomposition. The complexity of the $Composition$ procedure is $\BigO(n\log(n) + n)$ if the normalized formulation is considered, otherwise it is $\BigO(n\log(n))$. The denormalization step, also shown in Figure~\ref{fig:1DNorm_and_Denorm}, is almost the same $Normalization$ algorithm, whose complexity is $\BigO(n)$. The difference is at line 6, where it is dividing each coefficient by the normalization factor, preparing the data to be transformed. Therefore the optimal composition has the complexity from the original version, $\BigO(n\log(n) + n)$, but its results are more exact due to the normalization step, avoiding the calculation of $\sqrt{2}$ on every iteration.
+The normalized composition procedure follows the same basic idea to reduce computation of $\sqrt{2}$, it performs the non-normalized inverse transform, but this time a denormalization step, shown in Figure~\ref{fig:1DNorm_and_Denorm}, is executed before the transform begins. 
+
+The original algorithms for composition and its step procedure, Figure~\ref{fig:CandCS}, behave similarly to decomposition. The complexity of the $Composition$ procedure is $\BigO(n\log(n) + n)$ if the normalized formulation is considered, otherwise it is $\BigO(n\log(n))$. The denormalization step, also shown in Figure~\ref{fig:1DNorm_and_Denorm}, is almost the same $Normalization$ algorithm, whose complexity is $\BigO(n)$.
+
+The difference is at line 6, where it is dividing each coefficient by the normalization factor, preparing the data to be transformed. Therefore the optimal composition has the complexity from the original version, $\BigO(n\log(n) + n)$, but its results are more exact due to the normalization step, avoiding the calculation of $\sqrt{2}$ on every iteration.
 
 
 
-\subsubsection{Two Dimensional}
-
-\label{subsec:cascade2D_Opt_Haar}
+\subsubsection{Two Dimensional}\label{subsec:cascade2D_Opt_Haar}
 %
 The simplifications implemented for the 2D int-HWT consider the same principle presented in the 1D case, i.e., the same strategy of multiplying the transformed values by the corresponding $2^{-j/2}$ normalization factor, where $j$ is the corresponding level. To compose or decompose a matrix the 1D transform is applied in all rows and in all columns of the input matrix.
 
-However, according to \cite{stollnitz1995}, there are two main algorithms for composition and decomposition of matrices, know as Standard and Non-Standard procedures, what suggests distinct normalization procedures for both approaches. During the study of the original algorithms~\cite{stollnitz1995}, patterns of normalization factors were recognized. These patterns were analysed and employed in the development of the normalization procedures for both algorithms, assuming the decimated version of the HWT.
+However, according to \cite{stollnitz1995}, there are two main algorithms for composition and decomposition of matrices, know as Standard and Non-Standard procedures, what suggests distinct normalization procedures for both approaches.
 
-These patterns are illustrated in Figure~\ref{fig:2DNormFactors}, where 3 decomposition levels are presented for 8x8 matrices. The parameters $ j' $ and $ j'' $ indicate the  normalization levels. The rule to calculate these normalization factors is described in the equation:
+The study of the original algorithms~\cite{stollnitz1995} helped to recognize patterns of normalization factors. These patterns were analysed and employed in the development of the normalization procedures for both algorithms, assuming the decimated version of the HWT.
+
+These patterns are illustrated in Figure~\ref{fig:2DNormFactors}, where 3 decomposition levels are presented for $8$x$8$ matrices. The parameters $ j' $ and $ j'' $ indicate the  normalization levels. The rule to calculate these normalization factors is described in the equation:
+
 \begin{center}
 	\LARGE $ 2^{\frac{-(j' + j'')}{2}} ,$
 \end{center}
+
 where $ 0 \leq j' , j'' \leq (\log_{2}n) -1 $ and $ n $ indicates the matrix order.
+
 \begin{figure}[ht]
   	\centering
   	\includegraphics[width=13.6cm]{Imagens/NormFactors.png}
@@ -828,7 +792,9 @@ where $ 0 \leq j' , j'' \leq (\log_{2}n) -1 $ and $ n $ indicates the matrix ord
 	\label{fig:2DNormFactors}
 \end{figure}
 
-By analyzing the original standard algorithm, Figure~\ref{fig:SDandND}, it depends on the original normalized decomposition procedure, whose complexity is $\BigO(n\log(n) + n)$, executing it for every row and column of the input matrix. Considering a $n$x$n$ matrix the complexity of the original standard algorithm is $\BigO(n(n\log(n) + n) + n(n\log(n) + n))$, therefore $\BigO(2n^2\log(n) + 2n^2)$. Performing the non-normalized decomposition algorithm, discussed in Section~\ref{subsec:1DCascadeOpt}, it reduces the calculations by avoiding intermediate normalization steps.
+By analyzing the original standard algorithm, Figure~\ref{fig:SDandND}, it depends on the original normalized decomposition procedure, whose complexity is $\BigO(n\log(n) + n)$, executing it for every row and column of the input matrix.
+
+Considering a $n$x$n$ matrix the complexity of the original standard algorithm is $\BigO(n(n\log(n) + n) + n(n\log(n) + n))$, therefore $\BigO(2n^2\log(n) + 2n^2)$. Performing the non-normalized decomposition algorithm, discussed in Section~\ref{subsec:1DCascadeOpt}, it reduces the calculations by avoiding intermediate normalization steps.
 
 \begin{figure}[ht]
   	\includegraphics[width=10cm]{Imagens/StandardNormalization.png}
@@ -836,11 +802,15 @@ By analyzing the original standard algorithm, Figure~\ref{fig:SDandND}, it depen
 	\label{fig:StandardNormAlg}
 \end{figure}
 
-The non-normalized standard decomposition is performed with $\BigO(2n^2\log(n))$, and the last step is to normalize the results using the $StandardNormalization$ algorithm, presented in Figure~\ref{fig:StandardNormAlg}, and since it is operating one time on each coefficient of the input matrix its complexity can be expressed by $\BigO(n^2)$. The complexity of performing the non-normalized standard decomposition and the standard normalization step can be expressed by $\BigO(2n^2\log(n) + n^2)$, which is faster than the original normalized procedure by avoiding a second iteration of $\BigO(n^2)$ on the input matrix.
+The non-normalized standard decomposition is performed with $\BigO(2n^2\log(n))$, and the last step is to normalize the results using the $StandardNormalization$ algorithm, presented in Figure~\ref{fig:StandardNormAlg}, and since it is operating one time on each coefficient of the input matrix its complexity can be expressed by $\BigO(n^2)$.
+
+The complexity of performing the non-normalized standard decomposition and the standard normalization step can be expressed by $\BigO(2n^2\log(n) + n^2)$, which is faster than the original normalized procedure by avoiding a second iteration of $\BigO(n^2)$ on the input matrix.
 
 The original normalized standard composition, presented in Figure~\ref{fig:InverseSCandNSC}, can be analyzed in the same way as its decomposition procedure since it performs the same number of operations but produces an approximation of the input matrix used for decomposition. The original version is executed in $\BigO(2n^2\log(n) + 2n^2)$ time, while its optimized version operates in $\BigO(2n^2\log(n) + n^2)$.
 
-Looking at the original non-standard algorithm, Figure~\ref{fig:SDandND}, it is executing a intermediate normalization at line 1, dividing each coefficient by the order of the input matrix, which configures a $\BigO(n^2)$ operation. Considering a quadratic matrix of order $n$, the rest of the algorithm operates in a $while$ loop which is executed $\log_2(n)$ times. For each $while$ loop there are two $for$ loops also executing $\log_2(n)$ times, each one performing the $DecompositionStep$ algorithm ($\BigO(n)$) on portions of the input matrix, depending on the level of transformation. The original non-standard decomposition is executed in $\BigO(n^2 + \log(\log(n) + \log(n)))$ time.
+Looking at the original non-standard algorithm, Figure~\ref{fig:SDandND}, it is executing a intermediate normalization at line 1, dividing each coefficient by the order of the input matrix, which configures a $\BigO(n^2)$ operation.
+
+Considering a quadratic matrix of order $n$, the rest of the algorithm operates in a $while$ loop which is executed $\log_2(n)$ times. For each $while$ loop there are two $for$ loops also executing $\log_2(n)$ times, each one performing the $DecompositionStep$ algorithm ($\BigO(n)$) on portions of the input matrix, depending on the level of transformation. The original non-standard decomposition is executed in $\BigO(n^2 + \log(\log(n) + \log(n)))$ time.
 
 \begin{figure}[ht]
   	\includegraphics[width=8.6cm]{Imagens/NonStandardNormalization.png}
@@ -848,39 +818,42 @@ Looking at the original non-standard algorithm, Figure~\ref{fig:SDandND}, it is 
 	\label{fig:NonStandardNormAlg}
 \end{figure}
 
-The non-normalized non-standard decomposition ( $\BigO(\log(\log(n) + \log(n)))$) does not need the normalization step,  and its $Non-StandardNormalization$ algorithm, shown in Figure~\ref{fig:NonStandardNormAlg}, is performed with complexity $\BigO(n^2)$. The overall complexity of these procedures is $\BigO(n^2 + \log(\log(n) + \log(n)))$, which is the same from the original normalized non-standard algorithm. The gain of time presented in Figure~\ref{fig:test2S-NS} was obtained performing simple divisions by $2$ which are faster than using $\sqrt{2}$ as divisor when analysing processor microinstructions.
+The non-normalized non-standard decomposition ( $\BigO(\log(\log(n) + \log(n)))$) does not need the normalization step,  and its $Non-StandardNormalization$ algorithm, shown in Figure~\ref{fig:NonStandardNormAlg}, is performed with complexity $\BigO(n^2)$.
 
-\subsection{Undecimated Formulation}
+The overall complexity of these procedures is $\BigO(n^2 + \log(\log(n) + \log(n)))$, which is the same from the original normalized non-standard algorithm. The gain of time presented in Figure~\ref{fig:test2S-NS} was obtained performing simple divisions by $2$ which are faster than using $\sqrt{2}$ as divisor when analysing processor microinstructions.
+
+\subsection{Undecimated Formulation}\label{sec:hwt-undec}
 
 
 The simplifications implemented for the 2D int-HWT consider the same principle presented in the 1D case, i.e., the same strategy of multiplying the transformed values by the corresponding $2^{-j/2}$ normalization factor, where $j$ is the corresponding level. To compose or decompose a matrix the 1D transform is applied in all rows and in all columns of the input matrix.
 
-However, according to what was discussed in Section~\ref{sec:hwt2d}, there are two algorithms for composition and decomposition of matrices, what suggests distinct normalization procedures for both approaches. During the study of the original algorithms~\cite{stollnitz1995}, a pattern of normalization factors was recognized. These patterns were analyzed and employed in the development of the normalization procedures for both standard and non-standard algorithms, assuming the decimated version of the HWT.
+However, according to what was discussed in Section~\ref{sec:hwt2d}, there are two algorithms for composition and decomposition of matrices, what suggests distinct normalization procedures for both approaches.
 
-These patterns are illustrated in Figure~\ref{fig:2DNormFactors}, where 3 decomposition levels are presented for 8x8 matrices. The parameters $ j' $ and $ j'' $ indicate the  normalization levels. The rule to calculate these normalization factors is described in the equation:
+The developed study of the original algorithms~\cite{stollnitz1995} showed a pattern of normalization factors. This pattern was analyzed and employed in the development of the normalization procedures for both standard and non-standard algorithms, assuming the decimated version of the HWT.
+
+These patterns are illustrated in Figure~\ref{fig:2DNormFactors}, where three decomposition levels are presented for $8$x$8$ matrices. The parameters $ j' $ and $ j'' $ indicate the  normalization levels. The rule to calculate these normalization factors is described in the equation:
 \begin{center}
 	\LARGE $ 2^{\frac{-(j' + j'')}{2}} ,$
 \end{center}
 where $ 0 \leq j' , j'' \leq (\log_{2}n) -1 $ and $ n $ indicates the matrix order.
 
+By analyzing the original standard algorithm, Figure~\ref{fig:SDandND}, it depends on the original normalized decomposition procedure, whose complexity is $\BigO(n\log(n) + n)$, executing it for every row and column of the input matrix.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\red{alice 12/10/2015 Pessoal: parei aqui. acho que é melhor o vinicius mexer agora, limpar as coisas que ficaram para tras ao longo do trabalho e depois entao, mexemos de novo no texto. Acho que precisaremos enxugar a discussao. está ficando longo e repetitivo. acho que devemos diminuir a parte inicial que está muito similar como que ja foi publicado e dar mais enfoque para a parte das complexidades e validacao em relacao à aplicacao. só que a meu ver, isso só pode ser feito, depois que chegarmos ao final dessa versao preliminar. nao sei quantas paginas ao certo ja temos, porque há ainda muitos comentarios e recados no texto. minha sugestão é que agora dvemos trabalhar para gerarmos uma versao limpa, daí repensamos o que fazer, dependendo da restricao de paginas da revista. alias, quantas sao???????? ate breve. alice}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Considering a $n$x$n$ matrix the complexity of the original standard algorithm is $\BigO(n(n\log(n) + n) + n(n\log(n) + n))$, therefore $\BigO(2n^2\log(n) + 2n^2)$. Performing the non-normalized decomposition algorithm, discussed in Section~\ref{subsec:1DCascadeOpt}, it reduces the calculations by avoiding intermediate normalization steps.
 
+The non-normalized standard decomposition is performed with $\BigO(2n^2\log(n))$, and the last step is to normalize the results using the $StandardNormalization$ algorithm, presented in Figure~\ref{fig:StandardNormAlg}, and since it is operating one time on each coefficient of the input matrix its complexity can be expressed by $\BigO(n^2)$.
 
-
-By analyzing the original standard algorithm, Figure~\ref{fig:SDandND}, it depends on the original normalized decomposition procedure, whose complexity is $\BigO(n\log(n) + n)$, executing it for every row and column of the input matrix. Considering a $n$x$n$ matrix the complexity of the original standard algorithm is $\BigO(n(n\log(n) + n) + n(n\log(n) + n))$, therefore $\BigO(2n^2\log(n) + 2n^2)$. Performing the non-normalized decomposition algorithm, discussed in Section~\ref{subsec:1DCascadeOpt}, it reduces the calculations by avoiding intermediate normalization steps.
-
-The non-normalized standard decomposition is performed with $\BigO(2n^2\log(n))$, and the last step is to normalize the results using the $StandardNormalization$ algorithm, presented in Figure~\ref{fig:StandardNormAlg}, and since it is operating one time on each coefficient of the input matrix its complexity can be expressed by $\BigO(n^2)$. The complexity of performing the non-normalized standard decomposition and the standard normalization step can be expressed by $\BigO(2n^2\log(n) + n^2)$, which is faster than the original normalized procedure by avoiding a second iteration of $\BigO(n^2)$ on the input matrix.
+The complexity of performing the non-normalized standard decomposition and the standard normalization step can be expressed by $\BigO(2n^2\log(n) + n^2)$, which is faster than the original normalized procedure by avoiding a second iteration of $\BigO(n^2)$ on the input matrix.
 
 The original normalized standard composition, presented in Figure~\ref{fig:InverseSCandNSC}, can be analyzed in the same way as its decomposition procedure since it performs the same number of operations but produces an approximation of the input matrix used for decomposition. The original version is executed in $\BigO(2n^2\log(n) + 2n^2)$ time, while its optimized version operates in $\BigO(2n^2\log(n) + n^2)$.
 
-Looking at the original non-standard algorithm, Figure~\ref{fig:SDandND}, it is executing a intermediate normalization at line 1, dividing each coefficient by the order of the input matrix, which configures a $\BigO(n^2)$ operation. Considering a quadratic matrix of order $n$, the rest of the algorithm operates in a $while$ loop which is executed $\log_2(n)$ times. For each $while$ loop there are two $for$ loops also executing $\log_2(n)$ times, each one performing the $DecompositionStep$ algorithm ($\BigO(n)$) on portions of the input matrix, depending on the level of transformation. The original non-standard decomposition is executed in $\BigO(n^2 + \log(\log(n) + \log(n)))$ time.
+Looking at the original non-standard algorithm, Figure~\ref{fig:SDandND}, it is executing a intermediate normalization at line 1, dividing each coefficient by the order of the input matrix, which configures a $\BigO(n^2)$ operation.
 
+Considering a quadratic matrix of order $n$, the rest of the algorithm operates in a $while$ loop which is executed $\log_2(n)$ times. For each $while$ loop there are two $for$ loops also executing $\log_2(n)$ times, each one performing the $DecompositionStep$ algorithm ($\BigO(n)$) on portions of the input matrix, depending on the level of transformation. The original non-standard decomposition is executed in $\BigO(n^2 + \log(\log(n) + \log(n)))$ time.
 
+The non-normalized non-standard decomposition ( $\BigO(\log(\log(n) + \log(n)))$) does not need the normalization step,  and its $Non-StandardNormalization$ algorithm, shown in Figure~\ref{fig:NonStandardNormAlg}, is performed with complexity $\BigO(n^2)$.
 
-The non-normalized non-standard decomposition ( $\BigO(\log(\log(n) + \log(n)))$) does not need the normalization step,  and its $Non-StandardNormalization$ algorithm, shown in Figure~\ref{fig:NonStandardNormAlg}, is performed with complexity $\BigO(n^2)$. The overall complexity of these procedures is $\BigO(n^2 + \log(\log(n) + \log(n)))$, which is the same from the original normalized non-standard algorithm. The gain of time presented in Figure~\ref{fig:test2S-NS} was obtained performing simple divisions by $2$ which is faster than using $\sqrt{2}$ as divisor.
+The overall complexity of these procedures is $\BigO(n^2 + \log(\log(n) + \log(n)))$, which is the same from the original normalized non-standard algorithm. The gain of time presented in Figure~\ref{fig:test2S-NS} was obtained performing simple divisions by $2$ which is faster than using $\sqrt{2}$ as divisor.
 
 \subsubsection{One Dimensional}
 
@@ -894,7 +867,9 @@ The complexities of both $ DecompositionStep $ and $ Decomposition $ procedures 
 	\label{fig:NewAtrousDS}
 \end{figure}
 
-The normalization procedure, presented in Figure~\ref{fig:Atrous1DNormalization}, performs the normalization step of all coefficients after the transform. In contrast with the decimated version, the undecimated approach deals with a set of vectors as result of the transform, and each resultant vector need to be normalized individually. The normalization procedure multiplies each scalar coefficient by its normalization factor $ 2^{i/2} $ for every resultant vector from the transform, configuring $ \BigO(n.Levels) $ from line 1 to 5 of the pseudo-code. With the new set of scalar values all wavelet coefficients are then recalculated, configuring $ \BigO(Levels.(n + 3) + 2) $ from line 6 to 16, which can be simplified to $ \BigO(n.Levels) $. The overall complexity of the procedure is $ \BigO(2n.Levels) $.
+The normalization procedure, presented in Figure~\ref{fig:Atrous1DNormalization}, performs the normalization step of all coefficients after the transform. In contrast with the decimated version, the undecimated approach deals with a set of vectors as result of the transform, and each resultant vector need to be normalized individually.
+
+The normalization procedure multiplies each scalar coefficient by its normalization factor $ 2^{i/2} $ for every resultant vector from the transform, configuring $ \BigO(n.Levels) $ from line 1 to 5 of the pseudo-code. With the new set of scalar values all wavelet coefficients are then recalculated, configuring $ \BigO(Levels.(n + 3) + 2) $ from line 6 to 16, which can be simplified to $ \BigO(n.Levels) $. The overall complexity of the procedure is $ \BigO(2n.Levels) $.
 
 \begin{figure}[ht]
   	\includegraphics[width=9cm]{Imagens/Atrous1DNormalization.png}
@@ -902,17 +877,25 @@ The normalization procedure, presented in Figure~\ref{fig:Atrous1DNormalization}
 	\label{fig:Atrous1DNormalization}
 \end{figure}
 
-By performing a non-normalized vector transform and the normalization procedure, the complexity is $\BigO(4n.Levels)$, which is more expensive than the original normalized formulation. The gain obtained with the new implementation is on the exactitude of results by avoiding high number of divisions using $\sqrt{2}$ from the original $DecompositionStep$ algorithm, as shown in Figure~\ref{fig:test1-3}.
+By performing a non-normalized vector transform and the normalization procedure, the complexity is $\BigO(4n.Levels)$, which is more expensive than the original normalized formulation. The gain obtained with the new implementation is on the accuracy of results by avoiding high number of divisions using $\sqrt{2}$ from the original $DecompositionStep$ algorithm, as shown in Figure~\ref{fig:test1-3}.
 
 The composition process, shown in Figure~\ref{fig:AtrousCompMethod}, starts with a copy of all scalar coefficients from the lowest level summing it with all wavelet vectors produced during decomposition. The complexity of this procedure is $ \BigO(n.Levels) $ and can be used for both normalized and non-normalized transformations, there is no need for optimization.
 
 \subsubsection{Two Dimension}
 
-As done for the decimated case, the undecimated transform, preformed by the à-trous algorithm, considers the same principle presented in the one-dimensional optimization, i.e., the same strategy of multiplying the transformed values by the corresponding $2^{j/2}$ normalization factor, where $j$ is the corresponding level. To decompose a data matrix the two-dimensional implementation creates a set of matrices carrying scalar coefficients and another set of matrices to store wavelet coefficients. The procedure is expensive on both performing and storing the results. Applying the same idea used in previous implementations, it is possible to reduce the error involved in the process.
+As done for the decimated case, the undecimated transform, preformed by the à-trous algorithm, considers the same principle presented in the one-dimensional optimization, i.e., the same strategy of multiplying the transformed values by the corresponding $2^{j/2}$ normalization factor, where $j$ is the corresponding level.
 
-In Figure~\ref{fig:AtrousStandardPseudo} the original standard procedure is presented. It performs the decomposition of every line and level of a $n$x$m$ matrix, configuring a complexity of $ \BigO(n.2m.Levels) $.  The analog procedure for all columns of the same matrix has $\BigO(m.2n.Levels)$. The entire procedure is expressed by $\BigO(n.2m.Levels + m.2n.Levels)$, which can be simplified to $\BigO(4n.m.Levels)$. The non-standard procedure executes the same amount of calculations, but intercalating the decomposition of rows and columns. Both standard and non-standard algorithms can be used in conjunction with $DecompositionStep$ shown in Figure~\ref{fig:NewDandDS}, so the complexity of executing the normalized and non-normalized are the same.
+In order to decompose a data matrix the two-dimensional implementation creates a set of matrices carrying scalar coefficients and another set of matrices to store wavelet coefficients. The procedure is expensive on both performing and storing the results. Applying the same idea used in previous implementations, it is possible to reduce the error involved in the process.
 
-The next step in order to normalize the transformed values is to perform the $A\-TrousMatrixNormalization$ procedure, shown in Figure~\ref{fig:AtrousMatrixNormalization}, which is executed in $\BigO(4n.m.Levels)$. Therefore, the optimized decomposition procedure developed costs $\BigO(8n.m.Levels)$, twice the cost of the original normalized formulation, but tests indicate that our approach results in more exact values as shown in Figure~\ref{fig:test4S-NS}.
+In Figure~\ref{fig:AtrousStandardPseudo} the original standard procedure is presented. It performs the decomposition of every line and level of a $n$x$m$ matrix, configuring a complexity of $ \BigO(n.2m.Levels) $.
+
+The analog procedure for all columns of the same matrix has $\BigO(m.2n.Levels)$. The entire procedure is expressed by $\BigO(n.2m.Levels + m.2n.Levels)$, which can be simplified to $\BigO(4n.m.Levels)$.
+
+The non-standard procedure executes the same amount of calculations, but intercalating the decomposition of rows and columns. Both standard and non-standard algorithms can be used in conjunction with $DecompositionStep$ shown in Figure~\ref{fig:NewDandDS}, so the complexity of executing the normalized and non-normalized are the same.
+
+The next step in order to normalize the transformed values is to perform the $A\-TrousMatrixNormalization$ procedure, shown in Figure~\ref{fig:AtrousMatrixNormalization}, which is executed in $\BigO(4n.m.Levels)$.
+
+Therefore, the optimized decomposition procedure developed costs $\BigO(8n.m.Levels)$, twice the cost of the original normalized formulation, but tests indicate that our approach results in more exact values as shown in Figure~\ref{fig:test4S-NS}.
 
 \begin{figure}[ht]
   	\includegraphics[width=11.5cm]{Imagens/ATrousMatrixNormalization.png}
@@ -924,25 +907,28 @@ The next step in order to normalize the transformed values is to perform the $A\
 
 \section{Daubechies Wavelet Transform}
 
-During further study it was observed that the same optimization strategies used for the decimated HWT, presented in Section~\ref{sec:hwt1d_decimated}, can be applied to the DaWT algorithms and its new set of filters. However the developed 2D DaWT algorithms do not behave the same way compared to the HWT due to the new optimal filters proposed in the following Section~\ref{sec:Daub1DOptimization}.
+This Section discribes the developed optimizations for both 1D and 2D DaWT, in addition to new filter sets for calculation accuracy, presented in Subsections~\ref{sec:Daub1DOptimization} and \ref{sec:Daub2DOptimization} respectively.
 
 \subsection{One Dimensional} \label{sec:Daub1DOptimization}
 
-The normalized decomposition procedure for the DaWT 1D is executed in the following order: first a non-normalized decomposition is made, as indicated by the pseudo-code in Figure~\ref{fig:Fig4}; after this stage the normalization of all coefficients is performed, multiplying all of them by the normalization factor $ 2^{j/2} $, where $ j $ is the resolution level of the coefficients through out the decomposition. This represents the same process used in the HWT presented in Figure~\ref{fig:Fig4}, depending on $ j $, the computation of $ \sqrt{2} $ may not be necessary, avoiding computing error in this case.
+The normalized decomposition procedure for the DaWT 1D is executed in the following order: first a non-normalized decomposition is made, as indicated by the pseudo-code in Figure~\ref{fig:Fig4}; after this stage the normalization of all coefficients is performed, multiplying all of them by the normalization factor $ 2^{j/2} $, where $ j $ is the resolution level of the coefficients through out the decomposition.
+
+This represents the same process used in the HWT presented in Figure~\ref{fig:Fig4}, depending on $ j $, the computation of $ \sqrt{2} $ may not be necessary, avoiding computing error in this case.
 
 The next step of the optimization is to reduce the number of operations using $\sqrt{3}$ used by the filters $h$, $g$, $ih$ and $ig$. The algebraic manipulations are presented in Equations \ref{eq:hOptFilter}, \ref{eq:gOptFilter}, \ref{eq:ihOptFilter} and \ref{eq:igOptFilter}, where $a$, $b$, $c$, and $d$ represent 4 different coefficients.
 
-\begin{myeqs}[h!] 
 \begin{eqnarray}
-	h & = & a\left(\frac{1+\sqrt{3}}{4\sqrt{2}}\right) + b\left(\frac{3+\sqrt{3}}{4\sqrt{2}}\right) + c\left(\frac{3-\sqrt{3}}{4\sqrt{2}}\right) + d\left(\frac{1-\sqrt{3}}{4\sqrt{2}}\right) \\
-	 & = & \frac{a\left(1+\sqrt{3}\right) + b\left(3+\sqrt{3}\right) + c\left(3-\sqrt{3}\right) + d\left(1-\sqrt{3}\right)}{4\sqrt{2}} \\
-	 & = & \frac{a+a\sqrt{3} + 3b+b\sqrt{3} + 3c-c\sqrt{3} + d-d\sqrt{3}}{4\sqrt{2}} \\
-	 & = & \frac{a + d + 3\left(b + c\right) + \sqrt{3}\left(a + b - c - d\right)}{4\sqrt{2}}
+	h & = & a\left(\frac{1+\sqrt{3}}{4\sqrt{2}}\right) + b\left(\frac{3+\sqrt{3}}{4\sqrt{2}}\right) + c\left(\frac{3-\sqrt{3}}{4\sqrt{2}}\right) + d\left(\frac{1-\sqrt{3}}{4\sqrt{2}}\right) \nonumber \\
+	 & = & \frac{a\left(1+\sqrt{3}\right) + b\left(3+\sqrt{3}\right) + c\left(3-\sqrt{3}\right) + d\left(1-\sqrt{3}\right)}{4\sqrt{2}} \nonumber \\
+	 & = & \frac{a+a\sqrt{3} + 3b+b\sqrt{3} + 3c-c\sqrt{3} + d-d\sqrt{3}}{4\sqrt{2}} \nonumber \\
+	 & = & \frac{a + d + 3\left(b + c\right) + \sqrt{3}\left(a + b - c - d\right)}{4\sqrt{2}} \label{eq:hOptFilter}
 \end{eqnarray}
-\caption{Minimizing $\sqrt{2}$ and $\sqrt{3}$ operations for filter set $h$.} \label{eq:hOptFilter}
-\end{myeqs}
 
-Looking at the original decomposition procedure, shown in Figure~\ref{fig:DaubDandDS}, the complexity of $DecompositionStep$ is $\BigO(3 + (n/2).4 + 3)$, which can be simplified to $\BigO(n)$, and for the main $Decomposition $ algorithm the complexity is $\BigO(1 + \log(n).(n + 1))$, that can be simplified to $\BigO(n\log(n))$. The complexity of the developed algorithms for decomposition, shown in Figure~\ref{fig:Daub_Opt_D_and_DStep}, are expressed by $\BigO(5 + (n/2).9 + 8)$, or just $\BigO(n)$, for the developed $DecompositionStep$ procedure and $\BigO(1 + \log(n).(n + 1))$, or just $\BigO(n\log(n))$ for the developed $Decomposition$ routine. Therefore both original and developed algorithms share the same complexity for normalized filters.
+Looking at the original decomposition procedure, shown in Figure~\ref{fig:DaubDandDS}, the complexity of $DecompositionStep$ is $\BigO(3 + (n/2).4 + 3)$, which can be simplified to $\BigO(n)$, and for the main $Decomposition $ algorithm the complexity is $\BigO(1 + \log(n).(n + 1))$, that can be simplified to $\BigO(n\log(n))$.
+
+The complexity of the developed algorithms for decomposition, shown in Figure~\ref{fig:Daub_Opt_D_and_DStep}, are expressed by $\BigO(5 + (n/2).9 + 8)$, or just $\BigO(n)$, for the developed $DecompositionStep$ procedure and $\BigO(1 + \log(n).(n + 1))$, or just $\BigO(n\log(n))$ for the developed $Decomposition$ routine.
+
+Therefore, both original and developed algorithms share the same complexity for normalized filters.
 
 \begin{figure}[h!]
     %\centering
@@ -955,37 +941,32 @@ Looking at the original decomposition procedure, shown in Figure~\ref{fig:DaubDa
     \label{fig:Daub_Opt_D_and_DStep}
  \end{figure}
 
-\begin{myeqs}[h!]
 \begin{eqnarray}
-	g & = & a\left(\frac{1-\sqrt{3}}{4\sqrt{2}}\right) + b\left(\frac{\sqrt{3}-3}{4\sqrt{2}}\right) + c\left(\frac{3+\sqrt{3}}{4\sqrt{2}}\right) + d\left(\frac{-1-\sqrt{3}}{4\sqrt{2}}\right) \\
-	 & = & \frac{a\left(1-\sqrt{3}\right) + b\left(\sqrt{3}-3\right) + c\left(3+\sqrt{3}\right) + d\left(-1-\sqrt{3}\right)}{4\sqrt{2}} \\
-	 & = & \frac{a-a\sqrt{3} + b\sqrt{3} - 3b + 3c+c\sqrt{3} - d - d\sqrt{3}}{4\sqrt{2}} \\
-	 & = & \frac{a - d + 3\left(c - b\right) + \sqrt{3}\left(b + c - a - d\right)}{4\sqrt{2}}
+	g & = & a\left(\frac{1-\sqrt{3}}{4\sqrt{2}}\right) + b\left(\frac{\sqrt{3}-3}{4\sqrt{2}}\right) + c\left(\frac{3+\sqrt{3}}{4\sqrt{2}}\right) + d\left(\frac{-1-\sqrt{3}}{4\sqrt{2}}\right) \nonumber \\
+	 & = & \frac{a\left(1-\sqrt{3}\right) + b\left(\sqrt{3}-3\right) + c\left(3+\sqrt{3}\right) + d\left(-1-\sqrt{3}\right)}{4\sqrt{2}} \nonumber \\
+	 & = & \frac{a-a\sqrt{3} + b\sqrt{3} - 3b + 3c+c\sqrt{3} - d - d\sqrt{3}}{4\sqrt{2}} \nonumber \\
+	 & = & \frac{a - d + 3\left(c - b\right) + \sqrt{3}\left(b + c - a - d\right)}{4\sqrt{2}} \label{eq:gOptFilter}
 \end{eqnarray}
-\caption{Minimizing $\sqrt{2}$ and $\sqrt{3}$ operations for filter set $g$.} \label{eq:gOptFilter}
-\end{myeqs}
 
-\begin{myeqs}[h!]
 \begin{eqnarray}
-	ih & = & a\left(\frac{3-\sqrt{3}}{4\sqrt{2}}\right) + b\left(\frac{3+\sqrt{3}}{4\sqrt{2}}\right) + c\left(\frac{1+\sqrt{3}}{4\sqrt{2}}\right) + d\left(\frac{1-\sqrt{3}}{4\sqrt{2}}\right) \\
-	 & = & \frac{a\left(3-\sqrt{3}\right) + b\left(3+\sqrt{3}\right) + c\left(1+\sqrt{3}\right) + d\left(1-\sqrt{3}\right)}{4\sqrt{2}} \\
-	 & = & \frac{3a-a\sqrt{3} + 3b+b\sqrt{3} + c+c\sqrt{3} + d-d\sqrt{3}}{4\sqrt{2}} \\
-	 & = & \frac{c + d + 3\left(a + b\right) + \sqrt{3}\left(b + c - a - d\right)}{4\sqrt{2}}
+	ih & = & a\left(\frac{3-\sqrt{3}}{4\sqrt{2}}\right) + b\left(\frac{3+\sqrt{3}}{4\sqrt{2}}\right) + c\left(\frac{1+\sqrt{3}}{4\sqrt{2}}\right) + d\left(\frac{1-\sqrt{3}}{4\sqrt{2}}\right) \nonumber \\
+	 & = & \frac{a\left(3-\sqrt{3}\right) + b\left(3+\sqrt{3}\right) + c\left(1+\sqrt{3}\right) + d\left(1-\sqrt{3}\right)}{4\sqrt{2}} \nonumber \\
+	 & = & \frac{3a-a\sqrt{3} + 3b+b\sqrt{3} + c+c\sqrt{3} + d-d\sqrt{3}}{4\sqrt{2}} \nonumber \\
+	 & = & \frac{c + d + 3\left(a + b\right) + \sqrt{3}\left(b + c - a - d\right)}{4\sqrt{2}} \label{eq:ihOptFilter}
 \end{eqnarray}
-\caption{Minimizing $\sqrt{2}$ and $\sqrt{3}$ operations for filter set $ih$.} \label{eq:ihOptFilter}
-\end{myeqs}
 
-\begin{myeqs}[h!]
 \begin{eqnarray}
-	ig & = & a\left(\frac{1-\sqrt{3}}{4\sqrt{2}}\right) + b\left(\frac{-1-\sqrt{3}}{4\sqrt{2}}\right) + c\left(\frac{3+\sqrt{3}}{4\sqrt{2}}\right) + d\left(\frac{\sqrt{3}-3}{4\sqrt{2}}\right) \\
-	 & = & \frac{a\left(1-\sqrt{3}\right) + b\left(-1-\sqrt{3}\right) + c\left(3+\sqrt{3}\right) + d\left(\sqrt{3}-3\right)}{4\sqrt{2}} \\
-	 & = & \frac{a-a\sqrt{3} - b-b\sqrt{3} + 3c+c\sqrt{3} - 3d+d\sqrt{3}}{4\sqrt{2}} \\
-	 & = & \frac{a - b + 3\left(c - d\right) + \sqrt{3}\left(c + d - a - b\right)}{4\sqrt{2}}
+	ig & = & a\left(\frac{1-\sqrt{3}}{4\sqrt{2}}\right) + b\left(\frac{-1-\sqrt{3}}{4\sqrt{2}}\right) + c\left(\frac{3+\sqrt{3}}{4\sqrt{2}}\right) + d\left(\frac{\sqrt{3}-3}{4\sqrt{2}}\right) \nonumber \\
+	 & = & \frac{a\left(1-\sqrt{3}\right) + b\left(-1-\sqrt{3}\right) + c\left(3+\sqrt{3}\right) + d\left(\sqrt{3}-3\right)}{4\sqrt{2}} \nonumber \\
+	 & = & \frac{a-a\sqrt{3} - b-b\sqrt{3} + 3c+c\sqrt{3} - 3d+d\sqrt{3}}{4\sqrt{2}} \nonumber \\
+	 & = & \frac{a - b + 3\left(c - d\right) + \sqrt{3}\left(c + d - a - b\right)}{4\sqrt{2}} \label{eq:igOptFilter}
 \end{eqnarray}
-\caption{Minimizing $\sqrt{2}$ and $\sqrt{3}$ operations for filter set $ig$.} \label{eq:igOptFilter}
-\end{myeqs}
 
-The optimization step to avoid calculations of $\sqrt{2}$ the non-normalized decomposition is performed by using $4$ instead of $4\sqrt(2)$ as divider in filters $h$ and $g$. The next step is to normalize the coefficients after their convolution using the pseudo-code presented in Figure~\ref{fig:Daub_1D_Normalization}. Since it is executed once on every coefficient of a $n$ sized vector, its complexity is expressed by $\BigO(n)$. By performing a non-normalized transformation and the normalization procedure afterwards, the complexity is $\BigO(n\log(n) + n)$, making the developed optimization slower than the original formulation. The goal is therefore the gain on exactitude obtained by avoiding high number of operation using $\sqrt{2}$ and $\sqrt{3}$ from the original $DecompositionStep$ algorithm, as shown in Figure~\ref{fig:DaubDandDS}.
+The optimization step to avoid calculations of $\sqrt{2}$ is to perform a non-normalized decomposition by using $4$ instead of $4\sqrt{2}$ as divider in filters $h$ and $g$. The next step is to normalize the coefficients after their convolution using the pseudo-code presented in Figure~\ref{fig:Daub_1D_Normalization}.
+
+Since it is executed once on every coefficient of a $n$ sized vector, its complexity is expressed by $\BigO(n)$. Performing a non-normalized transformation and the normalization procedure afterwards, the complexity is $\BigO(n\log(n) + n)$, making the developed optimization slower than the original formulation.
+
+The goal is therefore the gain on accuracy obtained by avoiding a high number of operations using $\sqrt{2}$ and $\sqrt{3}$ from the original $DecompositionStep$ algorithm, as shown in Figure~\ref{fig:DaubDandDS}.
 
 \begin{figure}[h!]
 	%\centering
@@ -994,7 +975,9 @@ The optimization step to avoid calculations of $\sqrt{2}$ the non-normalized dec
     \label{fig:Daub_1D_Normalization}
  \end{figure}
 
-As presented in Section~\ref{sec:hwt1d_decimated} for the HWT, the optimized composition procedure follows the same basic idea to reduce computation of $\sqrt{2}$, it performs the non-normalized inverse transform by using a denormalization step, shown in Figure~\ref{fig:1DNorm_and_Denorm} before the transformation begins. In contrast to the HWT optimization strategy for composing the results the DaWT has to use normalized filters excluding the denormalization step. It is due to the order of coefficients that the inverse DaWT calculates, shown in Figure~\ref{fig:Daub_Opt_CStep}, which needs the values to be normalized in order to scale the signals properly. 
+As presented in Section~\ref{sec:hwt1d_decimated} for the HWT, the optimized composition procedure follows the same basic idea to reduce computation of $\sqrt{2}$, it performs the non-normalized inverse transform by using a denormalization step, shown in Figure~\ref{fig:1DNorm_and_Denorm} before the transformation begins.
+
+In contrast to the HWT optimization strategy for composing the results, the DaWT has to use normalized filters excluding the denormalization step. It is due to the order of coefficients which are calculated by the inverse DaWT, shown in Figure~\ref{fig:Daub_Opt_CStep}, which needs the values to be normalized in order to scale the signals properly. 
 
 \begin{figure}[h!]
 	%\centering
@@ -1005,7 +988,9 @@ As presented in Section~\ref{sec:hwt1d_decimated} for the HWT, the optimized com
 
 %\includegraphics[width=10cm]{Imagens/Daub_Opt_CStep.png}
 
-During the study The original algorithms for composition and its step procedure, Figure~\ref{fig:DaubCandCS}, behave similarly to decomposition where its complexity is expressed by $\BigO(n\log(n))$. The developed optimal $Composition$ procedure, shown in Figure~\ref{fig:Daub_Opt_C}, shares the same complexity of $\BigO(n\log(n))$, but its results are more exact due to the simplified filters, avoiding the not necessary calculation of $\sqrt{2}$ and $\sqrt{3}$ on every iteration.
+In the 1D DaWT composition procedure and its step procedure, as shown in Figure~\ref{fig:DaubCandCS}, behave similarly to decomposition where its complexity is expressed by $\BigO(n\log(n))$.
+
+The developed optimal $Composition$ procedure, shown in Figure~\ref{fig:Daub_Opt_C}, shares the same complexity of $\BigO(n\log(n))$, but its results are more exact due to the simplified filters, avoiding the unnecessary calculation of $\sqrt{2}$ and $\sqrt{3}$ on every iteration.
 
 \begin{figure}[h!]
 	%\centering
@@ -1018,24 +1003,25 @@ During the study The original algorithms for composition and its step procedure,
 
 \subsection{Two Dimensional} \label{sec:Daub2DOptimization}
 
-The simplifications implemented for the 2D DaWT consider the same principle presented in the 1D case, i.e., the same strategy of multiplying the transformed values by the corresponding $2^{-j/2}$ normalization factor, where $j$ is the corresponding level. To compose or decompose a matrix the 1D transform is applied in all rows and in all columns of the input matrix. However, according to \cite{stollnitz1995}, there are two main algorithms for composition and decomposition of matrices, know as Standard and Non-Standard procedures.
+The simplifications implemented for the 2D DaWT consider the same principle presented in the 1D case, i.e., the same strategy of multiplying the transformed values by the corresponding $2^{-j/2}$ normalization factor, where $j$ is the corresponding level.
 
-\newpage
+In order to compose or decompose a matrix, the 1D transform is applied in all rows and in all columns of the input matrix in sequence. However, according to \cite{stollnitz1995}, there are two main algorithms for composition and decomposition of matrices, known as Standard and Non-Standard procedures.
 
 During the study of the original DaWT formulation~\cite{DAUBTHESIS}, patterns of normalization factors were recognized. These patterns were analysed and employed in the development of the normalized procedures for the Standard algorithm. In contrast to the 2D HWT optimization, the DaWT Non-Standard procedure does not use the normalization step due to its behavior.
 
-The normalization patterns are illustrated in Figure~\ref{fig:Daub2DNormFactors}, where 3 decomposition levels are presented for 16x16 matrices. The parameters $ j' $ and $ j'' $ indicate the  normalization levels. The rule to calculate these normalization factors is described in the equation:
+The normalization patterns are illustrated in Figure~\ref{fig:Daub2DNormFactors}, where three decomposition levels are presented for $16$x$16$ matrices. The parameters $ j' $ and $ j'' $ indicate the  normalization levels. The rule to calculate these normalization factors is expressed by $R$ defined in Eq.~(\ref{eq:NormFac}):
 
-\begin{center}
-	\LARGE $ 2^{\frac{-(j' + j'')}{2}} ,$
-\end{center}
+\begin{equation}
+	\large
+	R = 2^{\frac{-(j' + j'')}{2}} \label{eq:NormFac}
+\end{equation}
 
 where $ 0 \leq j' , j'' \leq (\log_{2}n) -1 $ and $ n $ indicates the matrix order.
 
 \begin{figure}[h!]
   	\centering
   	\includegraphics[width=9cm]{Imagens/DaubNormFactors.png}
-  	\caption{DaWT (a) Standard normalization pattern, (b) rule for normalization factors.}
+  	\caption{DaWT (a) Standard normalization pattern, (b) level combinations.}
 	\label{fig:Daub2DNormFactors}
 \end{figure}
 
@@ -1045,47 +1031,44 @@ where $ 0 \leq j' , j'' \leq (\log_{2}n) -1 $ and $ n $ indicates the matrix ord
 	\label{fig:DaubOptStandard}
 \end{figure}
 
-\newpage
-
-By analyzing the original Standard algorithm inherited from the HWT, Figure~\ref{fig:SDandND}, it depends on the original normalized decomposition procedure, whose complexity is $\BigO(n\log(n))$, executing it for every row and column of the input matrix. Considering a $n$x$n$ matrix the complexity of the original standard algorithm is $\BigO(n(n\log(n)) + n(n\log(n)))$, or just $\BigO(n^2\log(n))$.
+The analysis of the original Standard algorithm inherited from the HWT depends on the original normalized decomposition procedure, as shown in Figure~\ref{fig:SDandND}. By executing such algorithm for every row and column of the input matrix, one can observe the corresponding complexity analysis as $\BigO(n\log(n))$. Considering a matrix $C_{N \times N}$, the complexity of the original standard algorithm is $\BigO(n(n\log(n)) + n(n\log(n)))$, or just $\BigO(n^2\log(n))$.
 
 \begin{figure}[h!]
   	\includegraphics[width=10cm]{Imagens/Daub_StandardStepNorm.png}
   	\caption{DaWT 2D Standard normalization step decomposition process.}
-	\label{fig:StandardNormAlg}
+	\label{fig:DaubStandardStepNormAlg}
 \end{figure}
 
-In oposition to the HWT, the optimal normalized DaWT Standard decomposition has to performe its normalization step, shown in Figure~\ref{fig:StandardNormAlg}, in between the decomposition of rows and columns, and a second time at the ending of the procedure, as presented in Figure~\ref{fig:DaubOptStandard}. Since the normalization step procedure is a kernel that will apply the right normalization factor to each coefficient in a $n$x$n$ matrix, its complexity can be expressed as $\BigO(n^2)$. Therefore the developed optimal Standard normalized decomposition procedure is performed with complexity of $\BigO(n^2\log(n) + n^2)$, or $\BigO(n^2(1 + \log(n)))$. Considering this, the developed procedure is slower than the original but is more accurated due to the new set of filter proposed.
+In opposition to the HWT, the optimal normalized DaWT Standard decomposition has to perform its normalization step, shown in Figure~\ref{fig:DaubStandardStepNormAlg}, in between the decomposition of rows and columns, and a second time at the end of the procedure, as presented in Figure~\ref{fig:DaubOptStandard}.
 
-The Non-Standard procedure has the same limitation from the Standard where the column operations depend on normalized row operations. Considering this limitation the Non-Standard algorithm would have to normalize each step level of decomposition before the next opetation. Instead of adding a normalization step in between each row or column decomposition it is better to perform a normalized procedure using the new set of filters. This way the Non-Standard algorithm has the same complexity as the same developed procedure from the HWT, as seen in Section~\ref{subsec:cascade2D_Opt_Haar}.
+Since the normalization step procedure is a kernel that will apply the right normalization factor to each coefficient in a $n$x$n$ matrix, its complexity can be expressed as $\BigO(n^2)$. Therefore, the developed optimal Standard normalized decomposition procedure is performed with complexity of $\BigO(n^2\log(n) + n^2)$, or $\BigO(n^2(1 + \log(n)))$. 
 
-By the same reason that the 1D DaWT does not use any denormalization procedure, the 2D Standard and Non-Standard DaWT also not perform denormalization of its coefficients before composition. Both approaches inherit the 2D HWT composition procedures, keeping their original complexity as discussed in Section~\ref{subsec:cascade2D_Opt_Haar}. However the developed 2D DaWT Composition routines in Int-DWTs library present better results as consequence of using the new set of simplified filters, as discussed in Section~\ref{sec:Daub1DOptimization}.
+Considering this, the developed procedure is slower than the original but it is more accurated due to the new proposed filter set.
+
+The Non-Standard procedure has the same limitation from the Standard where the column operations depend on normalized row operations.
+
+Because of this limitation the Non-Standard algorithm would have to normalize each step level of decomposition before the next operation, instead of adding a normalization step in between each row or column decomposition it is better to perform a normalized procedure using the new set of filters.
+
+This way the Non-Standard algorithm has the same complexity as the same developed procedure from the HWT, as seen in Section~\ref{subsec:cascade2D_Opt_Haar}.
+
+By the same reason that the 1D DaWT does not use any denormalization procedure, the 2D Standard and Non-Standard DaWT does not perform denormalization of its coefficients before composition either.
+
+Both approaches inherit the 2D HWT composition procedures, keeping their original complexity as discussed in Section~\ref{subsec:cascade2D_Opt_Haar}. However, the developed 2D DaWT Composition routines in Int-DWTs library present better results as consequence of using the new set of simplified filters, as discussed in Section~\ref{sec:Daub1DOptimization}.
 
 \section{Interval Compression}
 \label{sec:compress}
 
-The main goal of compression procedures is to express an initial data set with the smaller amount of points as possible, this task can be done either with or without loss of information~\cite{stollnitz1995},~\cite{kozakevicius2014}. In the wavelet context, the wavelet expansion of the initial data is analysed in order to decide which wavelet coefficients are more significant then others. Therefore, keeping only the most significant ones, the truncated series represents the compressed(or filtered) data. In~\cite{perin2013} ECG signals were analysed assuming adaptive compression techniques.
+The main goal of compression procedures is to express an initial data set with the smaller number of points as possible, this task can be done either with or without loss of information~\cite{stollnitz1995},~\cite{kozakevicius2014}.
+
+In the wavelet context, the wavelet expansion of the initial data is analysed in order to decide which wavelet coefficients are more significant than others. Therefore, keeping only the most significant ones, the truncated series represents the compressed data. In~\cite{perin2013} ECG signals were analysed assuming adaptive compression techniques.
 
 In many signal analysis applications, the significant wavelet coefficients are then used  to draw further conclusions about the original data, as for example in~\cite{mohammad2013}, where micro-calcifications in mammograms were detected based on the truncated wavelet representation of the images.
 
 The significance of the coefficients is judged by a threshold value, which can be obtained based on many types of heuristics, linear as the Universal threshold proposed by~\cite{donoho1995} or adaptive as proposed in \cite{bayer2010}. For a review about the many possibilities for choosing threshold values see  \cite{kozakevicius2014}.
 
-By ignoring (and excluding) non significant wavelet coefficients from the wavelet expansion, this strategy turns  the method into a lossy compression procedure. This procedure is called hard thresholding, according to \cite{donoho1995}. The result is an approximation of the original function.  Figure~\ref{fig:compression}, wich can be found in \cite{stollnitz1995}, shows a sequence of approximations, generated by varying the compression rate $s/N$, where $s$ is the number of significant coefficients, and $N$ the total amount of points in the initial data representation.
+By ignoring (and excluding) non significant wavelet coefficients from the wavelet expansion, this strategy turns  the method into a lossy compression procedure. This procedure is called hard thresholding, according to \cite{donoho1995}.
 
-%  \begin{algorithm}[H]
-%     \caption{Punctual compression method.}
-%     \label{alg:realcompression}
-%     \KwData{$ C[0...n] $ : real}
-%     $ i \leftarrow 0 $ \;
-%     \For{$ i < n $}
-%     {
-%         \If{$ |C[i]| < \tau $}
-%         {
-%             $ C[i] = 0 $ \;
-%         }
-%         $ i = i + 1 $ \;
-%     }
-% \end{algorithm}
+The result is an approximation of the original function.  Figure~\ref{fig:compression}, which can be found in \cite{stollnitz1995}, shows a sequence of approximations, generated by varying the compression rate $s/N$, where $s$ is the number of significant coefficients, and $N$ the total amount of points at the initial data representation.
 
 \begin{figure}[ht]
     \centering
@@ -1094,17 +1077,9 @@ By ignoring (and excluding) non significant wavelet coefficients from the wavele
     \label{fig:compression}
 \end{figure}
 
-%\todo[inline]{2) !!!!!!!!!!!!!cuidado!!!!!!!!!!!esta figura 4 está igual ao que foi feito no paper a primer... sugiro pegar uma curva seno(2pix) em [0,1] + uma pequena perturbacao, pode ser uma funcao gausseana centrada no 0.5, que varia de .045 a 0.55. daí, coloque o numero de pontos muito maior do que 16. podes colocar 1024 pontos. daí sim, compare a soft decision e a hard decision e mostre para cada gráfico a taxa de compressao e o erro (distancia euclidiana entre as curvas) daí sim, a análise fica completa e a gente aproveita tudo o que afigura tem pra dar. coloque também as marcacoes das escalas no eixo ox e no oy.}
+The hard thresholding is trivial for punctual data, but it can not be applied in the same way to interval information. The punctual algorithm for compression uses a real value $ \tau $ as threshold value, and the decision of the details details which must be ignored, considers a set of simple punctual comparisons.
 
-The hard thresholding is trivial for punctual data, but it can not be applied in the same way to interval information. The punctual algorithm for compression uses a real value $ \tau $ as threshold VALUE, and the decision of which details must be ignored is a set of simple punctual comparisons.
-
-%\todo[inline]{(((!!!!!!!!!!!!ESTA PARTE  SOBRE A COMPRESSAO INTERVALAR É NOVA!!!!!!!!!!!!!!!!EXCELENTE!!!!!!!!!!!MAIS ALGUÉM JÁ FEZ ISSO??? AQUI É PRECISO FAZER UMA BUSCA PARA SABER SE MAIS ALGUÉM TOCOU NESTA QUESTÃO ANTES...SE JÁ FOI FEITO, TEMOS QUE FAZER A CITACAO, E APONTAR DIFERENCAS OU SIMILARIDADES ENTRE O NOSSO E O ANTERIORMENTE PUBLICADO!)\\
-
-%CASO ISSO SEJA INÉDITO...ESSE PEIXE TEM QUE SER VENDIDO LÁ NA INTRODUCAO))))))))))))))))}
-
-
-
-When treating with interval data, $ \tau $ turn to be also an interval, carrying the error in the threshold calculus. This way the compress decision can not be evaluated with the same punctual comparison as before~\cite{Moore79}. Two solutions were developed to manage the decision in this interval extension, the first was named as Hard Decision and the second as Soft Decision, inspired by the nomenclature considerd by Donoho for its threshold operators.
+When treating with interval data, the parameter $ \tau $ becomes an interval, carrying the error in the threshold calculus. This way the compress decision can not be evaluated with the same punctual comparison as before~\cite{Moore79}. Two solutions were developed to manage the decision in this interval extension, the first was named as Hard Decision and the second as Soft Decision, inspired by the nomenclature considered by \cite{donoho1995} for its threshold operators.
 
 \begin{figure}[ht]
     \centering
@@ -1113,41 +1088,9 @@ When treating with interval data, $ \tau $ turn to be also an interval, carrying
     \label{fig:C_SDC_HDC}
 \end{figure}
 
-The Hard Decision is made by verifying if the interval data is entirely less than $ \tau $, comparing the left bound of the information and the right bound of the threshold. This procedure grants that every possible punctual coefficient is less than all possible punctual values belonging to $ \tau $.
+The Hard Decision is made by verifying if the interval data is entirely less than $ \tau $, comparing the left bound of the information and the right bound of the interval parameter. This procedure grants that every possible punctual coefficient is less than all possible punctual values belonging to $ \tau $.
 
-% \begin{algorithm}[H]
-%     \caption{Hard Decision method.}
-%     \label{alg:harddecision}
-%     \KwData{$ C[0...n] $ : interval}
-%     $ i \leftarrow 0 $ \;
-%     \For{$ i < n $}
-%     {
-%         \If{$ \overline{C[i]} < \underline{\tau} $}
-%         {
-%             $ C[i] = [0:0] $ \;
-%         }
-%         $ i = i + 1 $ \;
-%     }
-% \end{algorithm}
-
-The Soft Decision is made by verifying if most of the interval data is less than the midpoint of $ \tau $, comparing the left bound of the information and the center of the threshold. This procedure grants that most possible punctual coefficients are less than the midpoint of $ \overline{\tau} $ and $ \underline{\tau} $.
-
-% \begin{algorithm}[H]
-%     \caption{Soft Decision method.}
-%     \label{alg:softdecision}
-%     \KwData{$ C[0...n] $ : interval}
-%     $ mid\tau =  ( \overline{\tau} + \underline{\tau} ) / 2 $ \;
-%     $ i \leftarrow 0 $ \;
-%     \For{$ i < n $}
-%     {
-%     	$ midC =  ( \overline{C[i]} + \underline{C[i]} ) / 2 $ \;
-%         \If{$ midC < mid\tau $}
-%         {
-%             $ C[i] = [0:0] $ \;
-%         }
-%         $ i = i + 1 $ \;
-%     }
-% \end{algorithm}
+The Soft Decision is made by verifying if most of the interval data is less than the midpoint of $ \tau $, comparing the left bound of the information and the center of the threshold. This procedure grants that most possible punctual coefficients are between the punctual values of $ \overline{\tau} $ and $ \underline{\tau} $.
 
 \chapter{Tests and Results}
 \label{sec:tests}
@@ -1164,7 +1107,15 @@ In order to compute tests using the 1D HWT and its interval extension, a vector 
 
 \subsection{One Dimensional}
 
-The results shown in Figure~\ref{fig:Dec1DHWT} describe the performance of both decomposition and composition procedures from Section~\ref{subsec:1DCascadeOpt}, targeting the decimated and undecimated 1D HWT. The data indicate that the decimated algorithms developed in this work are $46\%$ faster than the results found in \cite{stollnitz1995}, when composing the results from decomposing the input. Decomposition, Composition and the combination of both operations, are executed $30\times$, taking $15.46ms$, $16.4317ms$ and $31.1012ms$ with standard deviations of $0.757038ms$, $0.155433ms$ and $0.117835ms$ respectively. The accuracy gain is from $95\%$ up to $99.8\%$, meaning that the developed algorithms generate much more exact results compared to those from the literature. Euclidean Distance (EUC) and Mean Square Error (MSE) are around $99.8\%$ of gain, and Peak-to-Noise Ratio (PSNR) is about $24.4\%$.
+The results shown in Figure~\ref{fig:Dec1DHWT} describe the performance of both decomposition and composition procedures from Section~\ref{subsec:1DCascadeOpt}, targeting the decimated and undecimated 1D HWT.
+
+The data indicates that the decimated algorithms developed in this work are $46\%$ faster than the results found in \cite{stollnitz1995}, when composing the results from decomposing the input.
+
+Decomposition, Composition and the combination of both operations, are executed $30\times$, taking $15.46ms$, $16.4317ms$ and $31.1012ms$ with standard deviations of $0.757038ms$, $0.155433ms$ and $0.117835ms$ respectively.
+
+The accuracy gained is from $95\%$ up to $99.8\%$, meaning that the developed algorithms generate much more exact results compared to those from the literature.
+
+Euclidean Distance ($EUC$) and Mean Square Error ($MSE$) are around $99.8\%$ of gain, and Peak-to-Noise Ratio ($PSNR$) is about $24.4\%$.
 
 \begin{figure}[h!]
   \centering
@@ -1182,13 +1133,19 @@ The results shown in Figure~\ref{fig:Dec1DHWT} describe the performance of both 
   \label{fig:test1-3}
 \end{figure}
 
-The data also indicate that the developed undecimated algorithms are about 30\% slower than the original formulations \cite{IEEE2007} when composing the results from the decomposition step, shown in Figure~\ref{fig:Und1DHWT}. The average times of execution for decomposition, composition and the combination of both are respectively $43.4929ms$, $12.0031ms$ and $55.0647ms$, and   the corresponding  standard deviation are  $0.385967ms$, $0.440633ms$ and $0.371797ms$ . 
+The data also indicate that the developed undecimated algorithms are about 30\% slower than the original formulations \cite{IEEE2007} when composing the results from the decomposition step, shown in Figure~\ref{fig:Und1DHWT}.
 
-The undecimated formulation adds no error to calculations on the composition step, considering that the input does not contain errors, which explains the lack of bars in Figure~\ref{fig:Und1DHWT}. The accuracy gain when performing the combination of both decomposition and composition is around $81\%$. The EUC is about $54.5\%$, and MSE is $79.3\%$, while PSNR is $2.15\%$. These results show that despite the loss of performance the developed algorithms are more accurate than the algorithms from the literature~\cite{IEEE2007}.
+The average times of execution for decomposition, composition and the combination of both are respectively $43.4929ms$, $12.0031ms$ and $55.0647ms$, and   the corresponding  standard deviation are  $0.385967ms$, $0.440633ms$ and $0.371797ms$ . 
+
+The undecimated formulation adds no error to calculations on the composition step, considering that the input does not contain errors, which explains the lack of bars in Figure~\ref{fig:Und1DHWT}. The accuracy gain when performing the combination of both decomposition and composition is around $81\%$.
+
+The $EUC$ is about $54.5\%$, and $MSE$ is $79.3\%$, while $PSNR$ is $2.15\%$. These results show that despite the loss of performance, the developed algorithms are more accurate than the algorithms from the literature~\cite{IEEE2007}.
 
 \subsection{Two Dimensional}
 
-\subsubsection{Decimated}
+This Section presents the results of both decimated and undecimated formulations of the HWT in Sections~\ref{sec:results-hwt-2D-dec} and \ref{sec:results-hwt-2D-undec} respectively.
+
+\subsubsection{Decimated}\label{sec:results-hwt-2D-dec}
 
 \begin{figure}[h!]
   \centering
@@ -1206,11 +1163,11 @@ The undecimated formulation adds no error to calculations on the composition ste
   \label{fig:test2S-NS}
 \end{figure}
 
-Data from Figure~\ref{fig:test2S-NS} show the performance of both standard and non-standard approaches for the decimated 2D HWT. The results presented in \mbox{Figure}~\ref{fig:Dec2DSHWT} show a performance boost of $58,1\%$ during the composition step. The average time of execution of the decomposition, composition and the combination of both are $42.2897ms$, $32.5122ms$ and $74.6253ms$, and their standard deviations are $0.271538ms$, $0.487003ms$ and $0.314095ms$ respectively. The accuracy gain of decomposition, composition and the combination of both are $99.8\%$, $93.5\%$ and $98.3\%$, meaning that the results provided from the developed algorithms are much more exact compared to the literatureliterature~\cite{stollnitz1995}. The EUC, MSE and PSNR metrics are $99.8\%$, $99.9\%$ and $19.2\%$, showing that the developed algorithms are more accurate than the algorithms from the literature~\cite{stollnitz1995}.
+Data from Figure~\ref{fig:test2S-NS} show the performance of both standard and non-standard approaches for the decimated 2D HWT. The results presented in \mbox{Figure}~\ref{fig:Dec2DSHWT} show a performance boost of $58,1\%$ during the composition step. The average time of execution of the decomposition, composition and the combination of both are $42.2897ms$, $32.5122ms$ and $74.6253ms$, and their standard deviations are $0.271538ms$, $0.487003ms$ and $0.314095ms$ respectively. The accuracy gain of decomposition, composition and the combination of both are $99.8\%$, $93.5\%$ and $98.3\%$, meaning that the results provided from the developed algorithms are much more exact compared to the literature~\cite{stollnitz1995}. The EUC, MSE and PSNR metrics are $99.8\%$, $99.9\%$ and $19.2\%$, showing that the developed algorithms are more accurate than the algorithms from the literature~\cite{stollnitz1995}.
 
-Figure~\ref{fig:Dec2DNSHWT} shows the performance, accuracy and metric gains for the decimated 2D non-standard HWT comparing to the original algorithms found in~\cite{stollnitz1995}. The average time of execution for decomposition, composition and both operations are $37.8028ms$, $49.1ms$ and $86.0812ms$, and their standard deviations are respectively $0.985911ms$, $0.362122ms$ and $0.255491ms$. It is important to verify that, as shown in Figure~\ref{fig:2DNormFactors}, the developed non-standard method do not need to perform calculations of $ \sqrt{2} $ due to the implemented algebraic simplifications. Therefore, the corresponding calculations do not increase the error during this process, indicated by accuracy values at $100\%$ for all three methods. Due to the lack of error, the EUC and MSE are also shown at $100\%$. The PSNR metric cannot be calculated due to division by $0$, since it uses MSE as divisor and its value is $0$.
+Figure~\ref{fig:Dec2DNSHWT} shows the performance, accuracy and metric gains for the decimated 2D non-standard HWT comparing to the original algorithms found in~\cite{stollnitz1995}. The average time of execution for decomposition, composition and both operations are $37.8028ms$, $49.1ms$ and $86.0812ms$, and their standard deviations are respectively $0.985911ms$, $0.362122ms$ and $0.255491ms$. It is important to verify that, as shown in Figure~\ref{fig:2DNormFactors}, the developed non-standard method does not need to perform calculations of $ \sqrt{2} $ due to the implemented algebraic simplifications. Therefore, the corresponding calculations do not increase the error during this process, indicated by accuracy values at $100\%$ for all three methods. Due to the lack of error, the EUC and MSE are also shown at $100\%$. The PSNR metric cannot be calculated due to division by $0$, since it uses MSE as divisor and its value is $0$.
 
-\subsubsection{Undecimated}
+\subsubsection{Undecimated}\label{sec:results-hwt-2D-undec}
 
 \begin{figure}[h!]
   \centering
@@ -1228,12 +1185,19 @@ Figure~\ref{fig:Dec2DNSHWT} shows the performance, accuracy and metric gains for
   \label{fig:test4S-NS}
 \end{figure}
 
-Figure~\ref{fig:test4S-NS} shows the performance impact of both standard and non-standard approaches for the undecimated 2D HWT. The performance shown in Figure~\ref{fig:Und2DSHWT} and Figure~\ref{fig:Und2DNSHWT} indicates that the developed algorithms are at least $10\%$ slower than the originals, despite the composition step which has a little advantage of $5\%$ on the standard method.
-For the standard approach, the average execution time for decomposition, composition and the combination of both are $195.461ms$, $290.717ms$ and $200.601ms$, and their standard deviations $3.43775ms$, $10.5094ms$, $3.13332ms$. For the non-standard approach execution time averages  are $173.385ms$, $286.755ms$ and $192.677ms$, and their standard deviations are $3.03845ms$, $4.40987ms$ and $2.65613ms$. Both approaches also share the same percentage of accuracy gain, $92.6\%$ and $87.4\%$ respectively for decomposition and the combination of both algorithms performing together. The EUC, MSE and PSNR of both approaches are around $51\%$, $76\%$ and $2\%$ respectively.
+Figure~\ref{fig:test4S-NS} shows the performance impact of both standard and non-standard approaches for the undecimated 2D HWT.
+
+The performance shown in Figure~\ref{fig:Und2DSHWT} and Figure~\ref{fig:Und2DNSHWT} indicates that the developed algorithms are at least $10\%$ slower than the originals, despite the composition step which has a little advantage of $5\%$ on the standard method.
+
+For the standard approach, the average execution time for decomposition, composition and the combination of both are $195.461ms$, $290.717ms$ and $200.601ms$, and their standard deviations $3.43775ms$, $10.5094ms$, $3.13332ms$.
+
+For the non-standard approach execution time averages  are $173.385ms$, $286.755ms$ and $192.677ms$, and their standard deviations are $3.03845ms$, $4.40987ms$ and $2.65613ms$.
+
+Both approaches also share the same percentage of accuracy gain, $92.6\%$ and $87.4\%$ respectively for decomposition and the combination of both algorithms performing together. The $EUC$, $MSE$ and $PSNR$ of both approaches are around $51\%$, $76\%$ and $2\%$ respectively.
 
 \section{Daubechies Wavelet Transform}
 
-In order to avaluate the 1D DaWT and its interval extension, 3 tests were are executed using vectors filled with 1048576, 4194304 and 16777216 random values as input respectively. For tests using 2D DaWT algorithms, the inputs were generated from 1024x1024, 2048x2048 and 4096x4096 mtrices of random values.
+In order to evaluate the 1D DaWT and its interval extension, three tests are executed using vectors filled with $1048576$, $4194304$ and $16777216$ random values as input respectively. For tests using 2D DaWT algorithms, the inputs were generated from $1024$x$1024$, $2048$x$2048$ and $4096$x$4096$ matrices of random values.
 
 \subsection{One Dimensinal}
 
@@ -1258,13 +1222,23 @@ In order to avaluate the 1D DaWT and its interval extension, 3 tests were are ex
   \label{fig:test5}
 \end{figure}
 
-The results shown in Figure~\ref{fig:test5} describe the performance of both decomposition and composition procedures from Section~\ref{sec:1DDaWT}, targeting the one dimensional DaWT. The data indicate that the developed algorithms are $35\%$, $26\%$ and $26\%$ slower than the results based in~\cite{DAUBTHESIS}, when decomposing the vectors, and its coefficient of variation (CV) are $13.6\%$, $22.4\%$ and $17.6\%$ respectively. The Composition tests indicates that the developed algorithms are $84\%$, $78\%$ and $68\%$ slower than the algorithms in the literature~\cite{DAUBTHESIS}, its CV are $5.7\%$, $5.3\%$ and $9.8\%$. The combination of both Decomposition and Composition operations are $64\%$, $53\%$ and $49\%$ and its CV are $7.5\%$, $9.4\%$ and $9.7\%$.
+The results shown in Figure~\ref{fig:test5} describe the performance of both decomposition and composition procedures from Section~\ref{sec:1DDaWT}, targeting the one dimensional DaWT. 
 
-The interval extension shows that the results are $343$x, $22$x and $203629$x less accurate, meaning that the developed algorithms generate much larger intervals compared to the original formulation of the DaWT, its due to the proposed filter presented in Section~\ref{sec:1DDaWT}. The results from EUC are $68.3\%$, $68.3\%$ and $68.3\%$, data from MSE indicate gains of $89.9\%$, $91.4\%$ and $91.9\%$, and PSNR gains are $13.7\%$, $18.1\%$ and $22.4\%$. The results from EUC, MSE and PSNR shows a very good gain over the original formulations of the DaWT.
+The data indicate that the developed algorithms are $35\%$, $26\%$ and $26\%$ slower than the results based in~\cite{DAUBTHESIS}, when decomposing the vectors, and its coefficient of variation (CV) are $13.6\%$, $22.4\%$ and $17.6\%$ respectively.
+
+The Composition tests indicates that the developed algorithms are $84\%$, $78\%$ and $68\%$ slower than the algorithms in the literature~\cite{DAUBTHESIS}, its CV are $5.7\%$, $5.3\%$ and $9.8\%$.
+
+The combination of both Decomposition and Composition operations are $64\%$, $53\%$ and $49\%$ and its CV are $7.5\%$, $9.4\%$ and $9.7\%$.
+
+The interval extension shows that the results are $343$x, $22$x and $203629$x less accurate, meaning that the developed algorithms generate much larger intervals compared to the original formulation of the DaWT, its due to the proposed filter presented in Section~\ref{sec:1DDaWT}.
+
+The results from $EUC$ are $68.3\%$, $68.3\%$ and $68.3\%$, data from $MSE$ indicate gains of $89.9\%$, $91.4\%$ and $91.9\%$, and $PSNR$ gains are $13.7\%$, $18.1\%$ and $22.4\%$. The results from $EUC$, $MSE$ and $PSNR$ show a very good gain over the original formulations of the DaWT.
 
 \subsection{Two Dimensinal}
 
-\subsubsection{Standard}
+This Section presents the results of both Standard and Non-Standard approaches of the DaWT in Sections~\ref{sec:DaWT-results-Standard} and \ref{sec:DaWT-results-Non-Standard} respectively.
+
+\subsubsection{Standard}\label{sec:DaWT-results-Standard}
 
 \begin{figure}[h!]
   \centering
@@ -1289,9 +1263,9 @@ The interval extension shows that the results are $343$x, $22$x and $203629$x le
 
 The results shown in Figure~\ref{fig:test6S} describe the performance of both decomposition and composition procedures from Section~\ref{sec:2DDaWT}, targeting the two dimensional Standard DaWT. The data indicate that the developed algorithms are $25\%$, $23\%$ and $17\%$ slower than the results based in~\cite{DAUBTHESIS}, when decomposing the vectors, and its coefficient of variation (CV) are $7.5\%$, $10.5\%$ and $2.2\%$ respectively. The Composition tests indicates that the developed algorithms are $63\%$, $56\%$ and $39\%$ slower than the algorithms in the literature~\cite{DAUBTHESIS}, its CV are $4\%$, $9.6\%$ and $1.6\%$. The combination of both Decomposition and Composition operations are $44\%$, $40\%$ and $28\%$ and its CV are $3.3\%$, $7.1\%$ and $3.3\%$.
 
-The interval extension shows that the results are $220$x, $18$x and $80236$x less accurate, meaning that the developed algorithms generate much larger intervals compared to the original formulation of the DaWT. The results from EUC are $66.4\%$, $70\%$ and $70\%$, data from MSE indicate gains of $88.7\%$, $90.8\%$ and $91.2\%$, and PSNR gains are $3.2\%$, $3.6\%$ and $3.6\%$. The results from EUC, MSE and PSNR shows a very good gain over the original formulations of the DaWT.
+The interval extension shows that the results are $220$x, $18$x and $80236$x less accurate, meaning that the developed algorithms generate much larger intervals compared to the original formulation of the DaWT. The results from EUC are $66.4\%$, $70\%$ and $70\%$, data from MSE indicate gains of $88.7\%$, $90.8\%$ and $91.2\%$, and PSNR gains are $3.2\%$, $3.6\%$ and $3.6\%$. The results from EUC, MSE and PSNR show a very good gain over the original formulations of the DaWT.
 
-\subsubsection{Non Standard}
+\subsubsection{Non Standard}\label{sec:DaWT-results-Non-Standard}
 
 \begin{figure}[h!]
   \centering
@@ -1314,24 +1288,30 @@ The interval extension shows that the results are $220$x, $18$x and $80236$x les
   \label{fig:test6NS}
 \end{figure}
 
-The results shown in Figure~\ref{fig:test6NS} describe the performance of both decomposition and composition procedures from Section~\ref{sec:2DDaWT}, targeting the two dimensional Standard DaWT. The data indicate that the developed algorithms are $40\%$, $34\%$ and $21\%$ slower than the results based in~\cite{DAUBTHESIS}, when decomposing the vectors, and its coefficient of variation (CV) are $6.3\%$, $7.1\%$ and $3\%$ respectively. The Composition tests indicates that the developed algorithms are $29\%$, $25\%$ and $15\%$ slower than the algorithms in the literature~\cite{DAUBTHESIS}, its CV are $4.7\%$, $15.6\%$ and $2.3\%$. The combination of both Decomposition and Composition operations are $34\%$, $28\%$ and $18\%$ and its CV are $4\%$, $6.7\%$ and $2.7\%$.
+The results shown in Figure~\ref{fig:test6NS} summarize the performance of both decomposition and composition procedures from Section~\ref{sec:2DDaWT}, targeting the two dimensional Standard DaWT.
 
-The interval extension shows that the results are $3034$x, $67$x and $5916370$x less accurate, meaning that the developed algorithms generate much larger intervals compared to the original formulation of the DaWT. The results from EUC are $47\%$, $43.3\%$ and $45\%$, data from MSE indicate gains of $71.9\%$, $67.6\%$ and $70\%$, and PSNR gains are $1.8\%$, $1.6\%$ and $1.7\%$. The results from EUC, MSE and PSNR shows a very good gain over the original formulations of the DaWT.
+The data indicate that the developed algorithms are $40\%$, $34\%$ and $21\%$ slower than the results based in~\cite{DAUBTHESIS}, when decomposing the vectors, and its coefficient of variation (CV) are $6.3\%$, $7.1\%$ and $3\%$ respectively.
+
+The Composition tests indicate that the developed algorithms are $29\%$, $25\%$ and $15\%$ slower than the algorithms in the literature~\cite{DAUBTHESIS}, its CV are $4.7\%$, $15.6\%$ and $2.3\%$. The combination of both Decomposition and Composition operations are $34\%$, $28\%$ and $18\%$ and their CV are $4\%$, $6.7\%$ and $2.7\%$.
+
+The interval extension shows that the results are $3034$x, $67$x and $5916370$x less accurate, meaning that the developed algorithms generate much larger intervals compared to the original formulation of the DaWT.
+
+The results from $EUC$ are $47\%$, $43.3\%$ and $45\%$, data from $MSE$ indicate gains of $71.9\%$, $67.6\%$ and $70\%$, and $PSNR$ gains are $1.8\%$, $1.6\%$ and $1.7\%$. The results from $EUC$, $MSE$ and $PSNR$ show a very good gain over the original formulations of the DaWT.
 
 \chapter{Conclusion}
 \label{sec:conclusion}
 
-This work presented an interval implementation of the Haar Wavelet Transform (HWT), for both decimated and undecimated approaches and covering all cases of study. The same study and optimization strategies were applied on the Daubechies Wavelet Transform (DaWT) with success.
+This work presented an interval implementation of the Haar Wavelet Transform (HWT), previously published in~\cite{7}, for both decimated~\cite{weit2013} and undecimated~\cite{sim2015} approaches and covering all study cases. The same study and optimization strategies were applied on the Daubechies Wavelet Transform (DaWT) with success.
 
-The optimization for the decimated HWT made possible a gain of both accuracy of results and performance on performing the calculations, as it was expected. The same optimization was applied to the undecimated HWT, also know as À-Trous approach, and good results were obtained from the results accuracy, but there were performance loss due to the addition of operations on top of the original formation from the literature~\cite{stollnitz1995}.
+The optimization for the decimated HWT made possible a gain of both accuracy of results and accuracy on performing the calculations, as it was expected. The same optimization was applied to the undecimated HWT, also know as À-Trous approach, and good results were obtained from the accuracy analysis, but there were performance loss due to the addition of operations on top of the original formation from the literature~\cite{stollnitz1995}.
 
-A new set of filters was proposed by simplifying the DaWT original filters~\cite{DAUBTHESIS} in order to increase accurary of results. The algebraic manipulation of its filters made possible a gain in terms of accuracy of results in both 1D and 2D procedures. However there was a need to add normalization steps on the top of the original DaWT formulation which resulted in a loss of performance.
+A new set of filters was proposed by simplifying the DaWT original filters~\cite{DAUBTHESIS} in order to increase accuracy of results. The algebraic manipulation of its filters made possible a gain in terms of accuracy of results in both 1D and 2D procedures. However, there was a need to add normalization steps on the top of the original DaWT formulation which resulted in a loss of performance.
 
-Good results related to error analysis were obtained, that is, the optimizations improve accuracy. The metrics used in this work helped to avaluate the accuracy of all presented implementations.
+Good results related to error analysis were obtained, that is, the optimizations improve accuracy. The metrics used in this work helped to evaluate the accuracy of all presented implementations.
 
 As the wavelet transforms are appropriated to data analysis in contexts that the scales of representation are relevant to the problem, the accuracy gain obtained with the proposed simplifications in this work represent a significant contribution to this research area.
 
-Further research considers the study of other Discrete Wavelet Transforms (DWTs), together with the corresponding parallel and/or distribution of the Int-DWTs Library, making the usage of massive parallel architectural of GPUs and considering CUDA programming language for fast computation.
+Further research considers the study of other Discrete Wavelet Transforms (DWTs), together with the corresponding parallel and/or distribution of the Int-DWTs Library, using massive parallel architectural of GPUs and considering CUDA programming language for fast computation.
 
 
 \bibliography{bibliografia}
