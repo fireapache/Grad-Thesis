@@ -49,7 +49,7 @@
 
 \begin{abstract}
 
-Este trabalho descreve o desenvolvimento e análise de resultados para consolidação da biblioteca Int-DWTs contendo Métodos Intervalares para Transformadas Discretas Wavelet. Os métodos presentes em Int-DWTs incluem estensões intervalares e suas correspondentes otimizações para Transformadas Discretas Wavelet (TDWs), mais especificamente para as Transformadas Wavelet de Haar e Daubechies. As otimizações implementadas promoveram simplificações algébricas visando o incremento de desempenho e a garantia de exatidão das TDWs estudadas. COnsiderando compressão de imagens como uma das relevantes aplicações para TDWs, a qualidade de resultados é analisada ao comparar três usuais métricas: $EUC$ (Euclidean Distance), MSE (\textit{Mean Squared Error}) e $PSNR$ (\textit{peak signal-to-noise ratio}). O nível de erro produzido pelas formulações intervalares, como também os desempenhos obtidos através das simplificações propostas, são analisadas e comparadas com resultados baseados na literatura. O uso de técnicas intervalares, viabilizou uma análise eficiente de erros com validação automática para os métodos da Int-DWTs. Em contextos onde que as escalas de representação são relevantes para o problema, o ganho de exatidão obitido com a otimizações propostas representam uma contribuição significativa para a área de Computação Científica.
+Este trabalho descreve a modelagem e o desenvolvimento de metodologia bem como a análise de resultados para consolidação da biblioteca Int-DWTs, contendo Métodos Intervalares para Transformadas Discretas Wavelet. Os métodos presentes em Int-DWTs incluem estensões intervalares e suas correspondentes otimizações para Transformadas Discretas Wavelet (TDWs), mais especificamente para as Transformadas Wavelet de Haar e Daubechies. As otimizações implementadas promoveram simplificações algébricas visando o incremento de desempenho e a garantia de exatidão das TDWs estudadas. Considerando a área de compressão de imagens como uma das relevantes aplicações para TDWs, a qualidade de resultados é analisada ao comparar três usuais métricas: $EUC$ (Euclidean Distance), MSE (\textit{Mean Squared Error}) e $PSNR$ (\textit{peak signal-to-noise ratio}). O nível de erro produzido pelas formulações intervalares, como também os desempenhos obtidos através das simplificações propostas, são analisadas e comparadas com resultados baseados na literatura. O uso de técnicas intervalares viabilizou uma análise eficiente de erros com validação automática para os métodos da Int-DWTs. Em contextos onde que as escalas de representação são relevantes para o problema, o ganho de exatidão obtido com a otimizações propostas representam uma contribuição significativa para a área de Computação Científica.
 
 %são implementadas utilizando a biblioteca de aritimética intervalar C-XSC.
 
@@ -911,12 +911,31 @@ This Section discribes the developed optimizations for both 1D and 2D DaWT, in a
 
 \subsection{One Dimensional} \label{sec:Daub1DOptimization}
 
-The normalized decomposition procedure for the DaWT 1D is executed in the following order: first a non-normalized decomposition is made, as indicated by the pseudo-code in Figure~\ref{fig:Fig4}; after this stage the normalization of all coefficients is performed, multiplying all of them by the normalization factor $ 2^{j/2} $, where $ j $ is the resolution level of the coefficients through out the decomposition.
+The normalized decomposition procedure for the DaWT 1D is executed in the following order: 
+\begin{description}
+\item (i) firstly,  a non-normalized decomposition is made, as indicated by the pseudo-code in Figure~\ref{fig:Fig4}; and, 
 
-This represents the same process used in the HWT presented in Figure~\ref{fig:Fig4}, depending on $ j $, the computation of $ \sqrt{2} $ may not be necessary, avoiding computing error in this case.
+\item (ii) the normalization of all coefficients is performed, multiplying all of them by the normalization factor $ 2^{j/2} $, where $ j $ is the resolution level of the coefficients through out the decomposition.
+\end{description}
 
-The next step of the optimization is to reduce the number of operations using $\sqrt{3}$ used by the filters $h$, $g$, $ih$ and $ig$. The algebraic manipulations are presented in Equations \ref{eq:hOptFilter}, \ref{eq:gOptFilter}, \ref{eq:ihOptFilter} and \ref{eq:igOptFilter}, where $a$, $b$, $c$, and $d$ represent 4 different coefficients.
+The last one stage represents the same process used in the HWT presented in Figure~\ref{fig:Fig4}, depending on $j$, the computation of $\sqrt{2}$ may not be necessary, avoiding computing error in this case.
 
+As presented in Figure~\ref{fig:Daub_Opt_D_and_DStep}, in the decomposition steps there are calculations involving irrational numbers.
+
+\begin{figure}[h!]
+    %\centering
+    \includegraphics[width=8cm]{Imagens/Daub_Opt_D.png}
+    
+    \vspace{0.5cm}
+    
+    \includegraphics[width=12cm]{Imagens/Daub_Opt_DStep.png}
+    \caption{DaWT Decomposition pseudo-code for normalized and non-normalized transformations.}
+    \label{fig:Daub_Opt_D_and_DStep}
+ \end{figure}
+ 
+The next step of the optimization is to reduce the number of operations using $\sqrt{3}$ by considering the filters $h$, $g$, $ih$ and $ig$, described in the following paragraphs. 
+
+Firstly, the algebraic manipulations  presented in Eq.(\ref{eq:hOptFilter}), express the simplifications related to parameter $h$, expressed by Eq.(\ref{eq:hfilters}), by taking  $a$, $b$, $c$, and $d$ as different  different coefficients.
 \begin{eqnarray}
 	h & = & a\left(\frac{1+\sqrt{3}}{4\sqrt{2}}\right) + b\left(\frac{3+\sqrt{3}}{4\sqrt{2}}\right) + c\left(\frac{3-\sqrt{3}}{4\sqrt{2}}\right) + d\left(\frac{1-\sqrt{3}}{4\sqrt{2}}\right) \nonumber \\
 	 & = & \frac{a\left(1+\sqrt{3}\right) + b\left(3+\sqrt{3}\right) + c\left(3-\sqrt{3}\right) + d\left(1-\sqrt{3}\right)}{4\sqrt{2}} \nonumber \\
@@ -924,22 +943,8 @@ The next step of the optimization is to reduce the number of operations using $\
 	 & = & \frac{a + d + 3\left(b + c\right) + \sqrt{3}\left(a + b - c - d\right)}{4\sqrt{2}} \label{eq:hOptFilter}
 \end{eqnarray}
 
-Looking at the original decomposition procedure, shown in Figure~\ref{fig:DaubDandDS}, the complexity of $DecompositionStep$ is $\BigO(3 + (n/2).4 + 3)$, which can be simplified to $\BigO(n)$, and for the main $Decomposition $ algorithm the complexity is $\BigO(1 + \log(n).(n + 1))$, that can be simplified to $\BigO(n\log(n))$.
+In the sequence, Eq.(\ref{eq:gOptFilter}) provides the main simplifications related to parameter $g$, based on previous expression in Eq.(\ref{eq:gfilters}):
 
-The complexity of the developed algorithms for decomposition, shown in Figure~\ref{fig:Daub_Opt_D_and_DStep}, are expressed by $\BigO(5 + (n/2).9 + 8)$, or just $\BigO(n)$, for the developed $DecompositionStep$ procedure and $\BigO(1 + \log(n).(n + 1))$, or just $\BigO(n\log(n))$ for the developed $Decomposition$ routine.
-
-Therefore, both original and developed algorithms share the same complexity for normalized filters.
-
-\begin{figure}[h!]
-    %\centering
-    \includegraphics[width=8cm]{Imagens/Daub_Opt_D.png}
-    
-    \vspace{0.2cm}
-    
-    \includegraphics[width=12cm]{Imagens/Daub_Opt_DStep.png}
-    \caption{DaWT Decomposition pseudo-code for normalized and non-normalized transformations.}
-    \label{fig:Daub_Opt_D_and_DStep}
- \end{figure}
 
 \begin{eqnarray}
 	g & = & a\left(\frac{1-\sqrt{3}}{4\sqrt{2}}\right) + b\left(\frac{\sqrt{3}-3}{4\sqrt{2}}\right) + c\left(\frac{3+\sqrt{3}}{4\sqrt{2}}\right) + d\left(\frac{-1-\sqrt{3}}{4\sqrt{2}}\right) \nonumber \\
@@ -947,6 +952,8 @@ Therefore, both original and developed algorithms share the same complexity for 
 	 & = & \frac{a-a\sqrt{3} + b\sqrt{3} - 3b + 3c+c\sqrt{3} - d - d\sqrt{3}}{4\sqrt{2}} \nonumber \\
 	 & = & \frac{a - d + 3\left(c - b\right) + \sqrt{3}\left(b + c - a - d\right)}{4\sqrt{2}} \label{eq:gOptFilter}
 \end{eqnarray}
+
+Other ones are described by  (\ref{eq:ihOptFilter}) and (\ref{eq:igOptFilter}), according with their previous definitions in Eqs.(\ref{eq:ihfilters}) and Eq.(\ref{eq:igfilters}), respectively: 
 
 \begin{eqnarray}
 	ih & = & a\left(\frac{3-\sqrt{3}}{4\sqrt{2}}\right) + b\left(\frac{3+\sqrt{3}}{4\sqrt{2}}\right) + c\left(\frac{1+\sqrt{3}}{4\sqrt{2}}\right) + d\left(\frac{1-\sqrt{3}}{4\sqrt{2}}\right) \nonumber \\
@@ -962,7 +969,20 @@ Therefore, both original and developed algorithms share the same complexity for 
 	 & = & \frac{a - b + 3\left(c - d\right) + \sqrt{3}\left(c + d - a - b\right)}{4\sqrt{2}} \label{eq:igOptFilter}
 \end{eqnarray}
 
-The optimization step to avoid calculations of $\sqrt{2}$ is to perform a non-normalized decomposition by using $4$ instead of $4\sqrt{2}$ as divider in filters $h$ and $g$. The next step is to normalize the coefficients after their convolution using the pseudo-code presented in Figure~\ref{fig:Daub_1D_Normalization}.
+Looking at the original decomposition procedure, shown in Figure~\ref{fig:DaubDandDS}, the complexity of $DecompositionStep$ is $\BigO(3 + (n/2).4 + 3)$, which can be simplified to $\BigO(n)$, and for the main $Decomposition $ algorithm the complexity is $\BigO(1 + \log(n).(n + 1))$, that can be simplified to $\BigO(n\log(n))$.
+
+The complexity of the developed algorithms for decomposition, shown in Figure~\ref{fig:Daub_Opt_D_and_DStep}, are expressed by $\BigO(5 + (n/2).9 + 8)$, or just $\BigO(n)$, for the developed $DecompositionStep$ procedure and $\BigO(1 + \log(n).(n + 1))$, or just $\BigO(n\log(n))$ for the developed $Decomposition$ routine.
+
+Therefore, both original and developed algorithms share the same complexity for normalized filters.
+
+The optimization step to avoid calculations of $\sqrt{2}$ is to perform a non-normalized decomposition by using $4$ instead of $4\sqrt{2}$ as divider in filters $h$ and $g$. 
+
+
+
+The next step is to normalize the coefficients after their convolution using the pseudo-code presented in Figure~\ref{fig:Daub_1D_Normalization}.
+
+
+
 
 Since it is executed once on every coefficient of a $n$ sized vector, its complexity is expressed by $\BigO(n)$. Performing a non-normalized transformation and the normalization procedure afterwards, the complexity is $\BigO(n\log(n) + n)$, making the developed optimization slower than the original formulation.
 
