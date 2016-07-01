@@ -49,7 +49,7 @@
 
 \begin{abstract}
 
-Este trabalho descreve a modelagem e o desenvolvimento de metodologia bem como a análise de resultados para consolidação da biblioteca Int-DWTs, contendo Métodos Intervalares para Transformadas Discretas Wavelet. Os métodos presentes em Int-DWTs incluem estensões intervalares e suas correspondentes otimizações para Transformadas Discretas Wavelet (TDWs), mais especificamente para as Transformadas Wavelet de Haar e Daubechies. As otimizações implementadas promoveram simplificações algébricas visando o incremento de desempenho e a garantia de exatidão das TDWs estudadas. Considerando a área de compressão de imagens como uma das relevantes aplicações para TDWs, a qualidade de resultados é analisada ao comparar três usuais métricas: $EUC$ (Euclidean Distance), MSE (\textit{Mean Squared Error}) e $PSNR$ (\textit{peak signal-to-noise ratio}). O nível de erro produzido pelas formulações intervalares, como também os desempenhos obtidos através das simplificações propostas, são analisadas e comparadas com resultados baseados na literatura. O uso de técnicas intervalares viabilizou uma análise eficiente de erros com validação automática para os métodos da Int-DWTs. Em contextos onde que as escalas de representação são relevantes para o problema, o ganho de exatidão obtido com a otimizações propostas representam uma contribuição significativa para a área de Computação Científica.
+Este trabalho descreve a modelagem e o desenvolvimento de metodologia bem como a análise de resultados para consolidação da biblioteca Int-DWTs, contendo Métodos Intervalares para Transformadas Discretas Wavelet. Os métodos presentes em Int-DWTs incluem estensões intervalares e suas correspondentes otimizações para Transformadas Discretas Wavelet (TDWs), mais especificamente para as Transformadas Wavelet de Haar e Daubechies. As otimizações implementadas promoveram simplificações algébricas visando o incremento de desempenho e a garantia de exatidão das TDWs estudadas. Considerando a área de compressão de imagens como uma das relevantes aplicações para TDWs, a qualidade de resultados é analisada ao comparar três usuais métricas: $EUC$ (Euclidean Distance), $MSE$ (\textit{Mean Squared Error}) e $PSNR$ (\textit{peak signal-to-noise ratio}). O nível de erro produzido pelas formulações intervalares, como também os desempenhos obtidos através das simplificações propostas, são analisadas e comparadas com resultados baseados na literatura. O uso de técnicas intervalares viabilizou uma análise eficiente de erros com validação automática para os métodos da Int-DWTs. Em contextos onde que as escalas de representação são relevantes para o problema, o ganho de exatidão obtido com a otimizações propostas representam uma contribuição significativa para a área de Computação Científica.
 
 %são implementadas utilizando a biblioteca de aritimética intervalar C-XSC.
 
@@ -777,11 +777,12 @@ However, according to \cite{stollnitz1995}, there are two main algorithms for co
 
 The study of the original algorithms~\cite{stollnitz1995} helped to recognize patterns of normalization factors. These patterns were analysed and employed in the development of the normalization procedures for both algorithms, assuming the decimated version of the HWT.
 
-These patterns are illustrated in Figure~\ref{fig:2DNormFactors}, where 3 decomposition levels are presented for $8$x$8$ matrices. The parameters $ j' $ and $ j'' $ indicate the  normalization levels. The rule to calculate these normalization factors is described in the equation:
+These patterns are illustrated in Figure~\ref{fig:2DNormFactors}, where 3 decomposition levels are presented for $8$x$8$ matrices. The parameters $ j' $ and $ j'' $ indicate the  normalization levels. The rule to calculate these normalization factors is expressed by $R$ defined in Eq.~(\ref{eq:NormFac}):
 
-\begin{center}
-	\LARGE $ 2^{\frac{-(j' + j'')}{2}} ,$
-\end{center}
+\begin{equation}
+	\large
+	R = 2^{\frac{-(j' + j'')}{2}} \label{eq:NormFac}
+\end{equation}
 
 where $ 0 \leq j' , j'' \leq (\log_{2}n) -1 $ and $ n $ indicates the matrix order.
 
@@ -831,11 +832,7 @@ However, according to what was discussed in Section~\ref{sec:hwt2d}, there are t
 
 The developed study of the original algorithms~\cite{stollnitz1995} showed a pattern of normalization factors. This pattern was analyzed and employed in the development of the normalization procedures for both standard and non-standard algorithms, assuming the decimated version of the HWT.
 
-These patterns are illustrated in Figure~\ref{fig:2DNormFactors}, where three decomposition levels are presented for $8$x$8$ matrices. The parameters $ j' $ and $ j'' $ indicate the  normalization levels. The rule to calculate these normalization factors is described in the equation:
-\begin{center}
-	\LARGE $ 2^{\frac{-(j' + j'')}{2}} ,$
-\end{center}
-where $ 0 \leq j' , j'' \leq (\log_{2}n) -1 $ and $ n $ indicates the matrix order.
+These patterns are illustrated in Figure~\ref{fig:2DNormFactors}, where three decomposition levels are presented for $8$x$8$ matrices. The parameters $ j' $ and $ j'' $ indicate the  normalization levels. The rule to calculate these normalization factors is expressed by $R$ defined in Eq.~(\ref{eq:NormFac})
 
 By analyzing the original standard algorithm, Figure~\ref{fig:SDandND}, it depends on the original normalized decomposition procedure, whose complexity is $\BigO(n\log(n) + n)$, executing it for every row and column of the input matrix.
 
@@ -1029,14 +1026,7 @@ In order to compose or decompose a matrix, the 1D transform is applied in all ro
 
 During the study of the original DaWT formulation~\cite{DAUBTHESIS}, patterns of normalization factors were recognized. These patterns were analysed and employed in the development of the normalized procedures for the Standard algorithm. In contrast to the 2D HWT optimization, the DaWT Non-Standard procedure does not use the normalization step due to its behavior.
 
-The normalization patterns are illustrated in Figure~\ref{fig:Daub2DNormFactors}, where three decomposition levels are presented for $16$x$16$ matrices. The parameters $ j' $ and $ j'' $ indicate the  normalization levels. The rule to calculate these normalization factors is expressed by $R$ defined in Eq.~(\ref{eq:NormFac}):
-
-\begin{equation}
-	\large
-	R = 2^{\frac{-(j' + j'')}{2}} \label{eq:NormFac}
-\end{equation}
-
-where $ 0 \leq j' , j'' \leq (\log_{2}n) -1 $ and $ n $ indicates the matrix order.
+The normalization patterns are illustrated in Figure~\ref{fig:Daub2DNormFactors}, where three decomposition levels are presented for $16$x$16$ matrices. The parameters $ j' $ and $ j'' $ indicate the  normalization levels. The rule to calculate these normalization factors is expressed by $R$ defined in Eq.~(\ref{eq:NormFac}).
 
 \begin{figure}[h!]
   	\centering
