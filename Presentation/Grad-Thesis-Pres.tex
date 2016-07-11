@@ -1,0 +1,816 @@
+\documentclass[10pt]{beamer}
+\usepackage{amsmath,amssymb}
+\usepackage[latin1]{inputenc}
+\usepackage[portuges]{babel}
+\usepackage{graphicx}
+\usepackage{pxfonts,txfonts}
+\usepackage{beamerthemesplit}
+\usepackage{multirow}
+\usepackage{geometry}
+\usepackage[linesnumbered]{algorithm2e}
+
+\usefonttheme{structurebold}
+\usetheme{Warsaw}
+%\setbeamercovered{transparent}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{navigation symbols}{}
+
+\usefonttheme[onlymath]{serif}
+
+\title[]{Int-DWTs Library - Algebraic Simplifications \\ Increasing Performance and Accuracy\\ of Discrete Wavelet Transforms}
+
+\author[]{Orientando: \textbf{Vinícius Rodrigues dos Santos} \\ Orientador: \textbf{Renata Hax Sander Reiser} \\ Coorientador: \textbf{Maurício Lima Pilla} \\  Colaborador: \textbf{Alice de Jesus Kozakevicius}}
+
+\institute[]{Universidade Federal de Pelotas \\ Ciência da Computação \\ Centro de Desenvolvimento Tecnológico}
+
+\date[]{\begin{footnotesize}11/07/2015 - PELOTAS / RS\end{footnotesize}}
+
+\begin{document}
+
+\frame{\titlepage}
+\frame{\tableofcontents}
+
+\section{Introdução}
+
+\subsection*{Aritmética Intervalar}
+
+%%%%%%%%%%%%%%%%%%% SLIDE %%%%%%%%%%%%%%%%%%%
+\frame{
+	\frametitle{Matemática Intervalar}
+	\small{
+	\begin{block}{Vantagens - \textbf{Aritmética Intervalar} (Moore/$1959$  e Sunaga/$1958$) }
+		\begin{itemize}
+			\item Tecnicas Intervalares são aplicadas na representação de dados inexatos, aproximações e erros  nos procedimentos computacionais.
+			\item Tem alcançado resultados significativos:
+ \begin{itemize}
+ \item \textbf{controle automático} para o limite dos erros;
+ \item  \textbf{algoritmos numéricos autovalidáveis};
+  \item \textbf{tratamento da precisão} em sistema de ponto flutuante;
+  \item  garantindo representação com a \textbf{máxima exatidão};
+  \item  \textbf{maior confiabilidade} em relação aos erros de propagação, de arredondamentos e truncamentos.
+ \end{itemize}
+		\end{itemize}
+	\end{block}	
+
+\begin{block}{Principais Aplicações - Computação Científica}
+		\begin{itemize}
+			\item  \textbf{representação de valores contínuos} (números irracionais );
+			\item  \textbf{modelagem de parâmetros} (medidas obtidas por instrumentos de precisão limitada).
+		\end{itemize}
+	\end{block}	
+}}
+
+\frame
+{
+	\frametitle{Biblioteca C-XSC}
+	
+    \begin{block}{}
+		\begin{itemize}
+		\item Biblioteca para manipulação de intervalos numéricos.
+			\item C-XSC foi elaborada em C++ e é direcionada ao desenvolvimento de algoritmos que necessitam de validação de resultados.
+            \item Possibilidade de paralelização das operações intervalares.
+            \item Exemplos de estruturas presentes na biblioteca:
+
+            \begin{itemize}
+                \item \textbf{interval} (intervalo de reais).
+                \item \textbf{complex} (número complexo).
+                \item \textbf{rvector} (vetor de números reais).
+                \item \textbf{dotprecision} (acumulador real de alta precisão).
+            \end{itemize}
+		\end{itemize}
+	\end{block}	
+}
+
+\subsection*{Contextualização}
+%%%%%%%%%%%%%%%%%%% SLIDE %%%%%%%%%%%%%%%%%%%
+\frame{
+	\frametitle{Introdução}
+	
+	\begin{block}{Transformadas Wavelets}
+		\begin{itemize}
+			\item As Transformadas Wavelets (TWs) são ferramentas matemáticas para a decomposição hierárquica de funções.
+            \item São utilizadas em análise de sinais para identificação de detalhes.
+            \item Uma característica importante das TWs é a composição (transformação inversa) dos sinais transformados para os originais.
+		\end{itemize}
+	\end{block}
+
+\begin{block}{Aplicações}
+		\begin{itemize}
+			\item As Transformadas Wavelets são aplicadas para resolução de problemas relacionados com, por exemplo:
+            \begin{itemize}
+                \item \textbf{compressão de imagens},
+                \item controle automatizado de nível de detalhe,
+                \item renderização de curvas.
+            \end{itemize}
+		\end{itemize}
+	\end{block}	
+}
+
+
+
+
+%%%%%%%%%%%%%%%%%%% SLIDE %%%%%%%%%%%%%%%%%%%
+\frame{
+	\frametitle{}
+	
+	\includegraphics[width=11cm]{Imagens/compress.png}
+	
+}
+
+
+\subsection*{Objetivos}
+
+%%%%%%%%%%%%%%%%%%% SLIDE %%%%%%%%%%%%%%%%%%%
+\frame{
+	\frametitle{}
+	\begin{block}{\textbf{Principal Contribuição} \\ Técnicas intervalares integradas às Transformadas Discretas Wavelets}
+	\small
+	\begin{itemize}
+	\item Desenvolver a biblioteca \textbf{Int-DWTs} com as implementações intervalares das TDWs, utilizando C-XSC.
+    \item Prover resultados intervalares confiáveis e automaticamente validados às aplicações que necessitam das Transformadas Discretas Wavelets (TDW).
+\end{itemize}	
+	\end{block}
+
+\begin{block}{\textbf{Objetivo}}
+	\small
+	\begin{itemize}
+	\item Estudo, análise e \textbf{implementação da extensão intervalar} das Transformadas Wavelet de Haar (TWH) e de Daubechies (TWD).
+	
+	\item Implementar as seguintes abordagens:
+	\begin{itemize}
+	\item \textbf{Abordagens}: não-normalizada não-padrão, não-normalizada padrão, normalizada não-padrão e normalizada padrão;
+	\item \textbf{Etapas}: transformação direta (decomposição) e de transformação inversa (composição).	
+	\end{itemize}
+
+\end{itemize}	
+	\end{block}
+}
+
+
+%\subsection*{Evolução do trabalho}
+
+%\frame
+%{
+%    \begin{block}{Principais Publicações 2013}
+%		\begin{itemize}
+%			\item  \textbf{ERAD 2013}: Int-Haar: Extensão Intervalar da Transformada de Haar
+%            \item  \textbf{WEIT 2013}: Otimizações na Biblioteca Int-Haar Para Aumento de Exatidão de Cálculo
+%            \item  \textbf{WSCAD WIC 2013}: Otimizações na Biblioteca Int-Haar
+%		\end{itemize}
+%	\end{block}
+%
+%    \begin{block}{Principais Publicações 2014}
+%		\begin{itemize}
+%			\item  \textbf{CNMAC 2014}: Int-DWTs: Simplificações Algébricas para Aumento de Exatidão em Transformadas Wavelets
+%            \item  \textbf{ERAD 2014}: Otimizações na Biblioteca Int-Haar Visando Aumento de Exatidão de Cálculo
+%            \item  \textbf{WSCAD WIC 2014}: Estudo de Desempenho sobre a Biblioteca Int-Haar
+%		\end{itemize}
+%	\end{block}
+%}
+
+%\frame
+%{
+%    \begin{block}{Principais Publicações 2015-2016}
+%		\begin{itemize}
+%			\item  \textbf{ERAD 2015}: Estudo de Desempenho sobre a Biblioteca Int-Haar
+%            \item  \textbf{SIM 2015}: Int-HWT: Increasing Performance and Exactitude of 1D and 2D Haar Wavelet Transforms
+%            \item  \textbf{WEIT 2015}: Transformada de Haar Não Decimada Otimizada e sua Extensão Intervalar
+%            \item  \textbf{ERAD 2016}: Transformada de Haar À Trous Otimizada e Análise de Desempenho
+%		\end{itemize}
+%	\end{block}
+%	
+%	\begin{block}{Próximas Publicações}
+%	\begin{itemize}
+%		\item Int-HWT: Algebraic Simplifications Increasing Performance And Exactitude of the Haar Wavelet Transforms
+%		\item Int-DWTs Library: Algebraic Simplifications Increasing Performance and Accuracy of Discrete Wavelet Transforms
+%	\end{itemize}
+%	\end{block}
+%}
+
+\section{Transformadas Wavelet}
+
+\subsection*{TWH Cascata}
+
+\frame
+{
+    \centering
+    \huge
+    Transformada Wavelet de Haar
+}
+
+\frame
+{
+    \centering
+    \Huge
+    Cascata\\
+    \vspace{2cm}\Large... ou Decimada
+}
+
+%%%%%%%%%%%%%%%%%%%% SLIDE %%%%%%%%%%%%%%%%%%%
+\frame{
+	%\frametitle{Descrição do Funcionamento do Algoritmo}
+	\small
+%	\begin{block}{}
+%		\begin{itemize}
+%			\item O algoritmo computacional da Transformada Wavelet de Haar (TWD) unidimensional calcula médias e diferenças de cada par de elementos adjacentes de um vetor, %gerando assim dois conjuntos de coeficientes: de escala (médias) e wavelets (diferenças).
+%        \end{itemize}
+%	\end{block}
+
+\begin{table}[ht]
+  \centering
+  \begin{large}
+    \begin{tabular}{|l|l|}
+        \hline
+        Decomposição & Composição
+        \cr \hline
+            C'[i] = (C[2i] + C[2i + 1]) / 2 & C'[2*i] = C[i] + C[n + i]
+        \cr C'[n/2 + i] = (C[2i] - C[2i + 1]) / 2 & C'[2*i + 1] = C[i] - C[n + i]
+        \cr \hline
+    \end{tabular}
+    \begin{footnotesize}n = tamanho do vetor; i = 0... n/2 - 1;\end{footnotesize}
+  \end{large}
+\end{table}
+
+\begin{table}[ht]
+  \centering
+  \begin{Large}
+    \begin{tabular}{c c c}
+           \small{|} & \small{(de escala)} & \small{(wavelets)}
+      \cr  Nível & Médias & Diferenças
+      \cr  2 & [ 9 7 3 5 ] & -
+      \cr  1 & [ 8 4 ] & [ \textcolor[rgb]{0.00,0.00,1.00}{1 -1} ]
+      \cr  0 & [ \textcolor[rgb]{1.00,0.00,0.00}{6} ] & [ \textcolor[rgb]{1.00,0.50,0.00}{2} ]
+    \end{tabular}
+  \end{Large}
+  \label{table:nonlin}
+\end{table}
+
+\begin{block}{}
+		\begin{itemize}
+            \begin{large}
+			\item Vetor original:     [ 9 7 3 5 ]
+            \item Vetor transformado: [ \textcolor[rgb]{1.00,0.00,0.00}{6} \textcolor[rgb]{1.00,0.50,0.00}{2} \textcolor[rgb]{0.00,0.00,1.00}{1 -1} ]
+            \end{large}
+        \end{itemize}
+	\end{block}
+}
+
+
+\frame
+{
+\frametitle{Extensão Intervalar do Algoritmo da TWH}
+    \includegraphics[width=11cm]{Imagens/INT_Haar_DecompositionStep.png}
+}
+
+\frame
+{
+    \includegraphics[width=9cm]{Imagens/Haar_Decomposition.png}
+}
+
+\subsection*{TWH À-Trous}
+
+\frame
+{
+    \centering
+    \Huge
+    À-Trous\\
+    \vspace{2cm}\Large... ou Não Decimada
+}
+
+%%%%%%%%%%%%%%%%%%%% SLIDE %%%%%%%%%%%%%%%%%%%
+\frame{
+	\small
+
+\begin{table}[ht]
+  \centering
+  \begin{large}
+    \begin{tabular}{|l|l|}
+        \hline
+        Decomposição & Composição
+        \cr \hline
+            $ C^j[i] = (C^{j-1}[i] + C^{j-1}[i + 1]) / 2 $ & C = $C^n + \sum\limits_{i=1}^n D^i $
+        \cr $ D^j[i] = (C^{j-1}[i] - C^j[i]) $ &
+        \cr \hline
+    \end{tabular}
+    \begin{footnotesize} \\ n = tamanho do vetor; i = 0... n/2 - 1;\end{footnotesize}
+  \end{large}
+\end{table}
+
+\begin{table}[ht]
+  \centering
+  \begin{Large}
+    \begin{tabular}{c c c}
+           \small{|} & \small{de escala (C)} & \small{wavelets (D)}
+      \cr  Nível & Médias & Diferenças
+      \cr  0 & [ 9 7 3 5 ] & -
+      \cr  1 & [ 8 6 4 6 ] & [ 1 1 1 -3 ]
+      \cr  2 & [ 7 5 5 7 ] & [ 1 1 -1 -1 ]
+    \end{tabular}
+  \end{Large}
+  \label{table:nonlin}
+\end{table}
+
+\begin{block}{}
+		\begin{itemize}
+            \begin{large}
+			\item Vetor original: $ C^0 $ = [ 9 7 3 5 ]
+            \item Resultado: $ C^2, D^1, D^2 $
+            \end{large}
+        \end{itemize}
+	\end{block}
+}
+
+\subsection*{O Problema}
+
+%%%%%%%%%%%%
+
+\frame{
+
+%\frametitle{Pseudo-Código da TWH 1D Decimada Normalizada}
+
+\includegraphics[width=10cm]{Imagens/Problema.png}
+
+}
+
+%%%%%%%%%%%%%%%%%%%%
+
+
+
+\subsection*{TWD}
+
+\frame
+{
+    \centering
+    \LARGE
+    Transformada Wavelet de Daubechies
+}
+
+\addtolength{\jot}{0.6cm}
+
+\frame
+{
+	\begin{eqnarray}
+	\Huge
+	h & = & \left(
+	\quad \frac{1+\sqrt{3}}{4\sqrt{2}},
+	\quad \frac{3+\sqrt{3}}{4\sqrt{2}},
+	\quad \frac{3-\sqrt{3}}{4\sqrt{2}},
+	\quad \frac{1-\sqrt{3}}{4\sqrt{2}}
+	\quad \right)\label{eq:hfilters}\\
+	g & = & \left(
+	\quad \frac{1-\sqrt{3}}{4\sqrt{2}},
+	\quad \frac{-3+\sqrt{3}}{4\sqrt{2}},
+	\quad \frac{3+\sqrt{3}}{4\sqrt{2}},
+	\quad \frac{-1-\sqrt{3}}{4\sqrt{2}}
+	\quad \right)\label{eq:gfilters}\\
+	ih & = & \left(
+	\quad \frac{3-\sqrt{3}}{4\sqrt{2}},
+	\quad \frac{3+\sqrt{3}}{4\sqrt{2}},
+	\quad \frac{1+\sqrt{3}}{4\sqrt{2}},
+	\quad \frac{1-\sqrt{3}}{4\sqrt{2}}
+	\quad \right)\label{eq:ihfilters}\\
+	ig & = & \left(
+	\quad \frac{1-\sqrt{3}}{4\sqrt{2}},
+	\quad \frac{-1-\sqrt{3}}{4\sqrt{2}},
+	\quad \frac{3+\sqrt{3}}{4\sqrt{2}},
+	\quad \frac{-1+\sqrt{3}}{4\sqrt{2}}
+	\quad \right)\label{eq:igfilters}
+	\end{eqnarray}
+}
+
+\frame
+{
+	\includegraphics[width=10cm]{Imagens/daubechiesDStep.pdf}
+}
+
+\subsection*{Outro problema}
+
+\frame
+{
+	\begin{eqnarray}
+	h & = & a\left(\frac{1+\sqrt{3}}{4\sqrt{2}}\right) + b\left(\frac{3+\sqrt{3}}{4\sqrt{2}}\right) + c\left(\frac{3-\sqrt{3}}{4\sqrt{2}}\right) + d\left(\frac{1-\sqrt{3}}{4\sqrt{2}}\right) \\
+	g & = & a\left(\frac{1-\sqrt{3}}{4\sqrt{2}}\right) + b\left(\frac{\sqrt{3}-3}{4\sqrt{2}}\right) + c\left(\frac{3+\sqrt{3}}{4\sqrt{2}}\right) + d\left(\frac{-1-\sqrt{3}}{4\sqrt{2}}\right) \\
+	ih & = & a\left(\frac{3-\sqrt{3}}{4\sqrt{2}}\right) + b\left(\frac{3+\sqrt{3}}{4\sqrt{2}}\right) + c\left(\frac{1+\sqrt{3}}{4\sqrt{2}}\right) + d\left(\frac{1-\sqrt{3}}{4\sqrt{2}}\right) \\
+	ig & = & a\left(\frac{1-\sqrt{3}}{4\sqrt{2}}\right) + b\left(\frac{-1-\sqrt{3}}{4\sqrt{2}}\right) + c\left(\frac{3+\sqrt{3}}{4\sqrt{2}}\right) + d\left(\frac{\sqrt{3}-3}{4\sqrt{2}}\right)
+\end{eqnarray}
+}
+
+\section{Otimizações}
+
+\frame
+{
+    \centering
+    \Huge
+    Otimização
+}
+
+\subsection*{Base de Otimização}
+
+\frame
+{
+    \begin{center}
+      \LARGE $ R = 2^{\frac{-j}{2}} $
+    \end{center}
+
+    \frametitle{Exemplificação}
+    \includegraphics[width=11cm]{Imagens/procedimento.png}
+}
+
+\subsection*{TWH Cascata}
+
+%\frame
+%{
+%    \frametitle{TWH 2D}
+%
+%    \begin{block}{Transformação Bidimensional}
+%		\begin{itemize}
+%			\item A Transformada de Haar Bidimensional é computada ao realizar-se as transformações em todas as linhas e colunas da matriz numérica.
+%            \item Existem dois algoritmos para esse procedimento, os quais se diferenciam pela ordem de aplicação da transformação entre as linhas e colunas da matriz:
+%
+%            \begin{itemize}
+%                \item TWH 2D Padrão
+%                \item TWH 2D Não-Padrão
+%            \end{itemize}
+%        \end{itemize}
+%	\end{block}
+%}
+
+\frame
+{
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{c c}
+
+        \cr \includegraphics[width=5cm]{Imagens/standard.png} & \includegraphics[width=5cm]{Imagens/nonstandard.png}
+
+        \cr (a) TWH 2D Padrão & (b) TWH 2D Não-Padrão
+
+    \end{tabular}
+    \label{table:nonlin}
+\end{table}
+}
+
+\frame
+{
+    \frametitle{Padrão de fatores de normalização (TWH 2D Cascata)}
+
+    \includegraphics[width=11cm]{Imagens/Otimizacao.png}
+    
+    Níveis de aplicação para (a) algorítmo Padrão, (b) algorítmo Não-Padrão e (c) regra de normalização de coeficientes bidimensionais.
+}
+
+\subsection*{TWH À-Trous}
+
+\frame
+{
+	\centering
+
+	%\hspace{-1.1cm}
+	\includegraphics[width=11.25cm]{Imagens/HaarAtrousStandard.png}
+	
+	\vspace{0.5cm}	
+	
+	TWH 2D Padrão
+	
+	\vspace{1cm}
+	
+	\includegraphics[width=11.25cm]{Imagens/HaarAtrousNonStandard.png}
+	
+	\vspace{0.5cm}		
+	
+	TWH 2D Não Padrão
+}
+
+\subsection*{TWD}
+
+\frame
+{
+	\begin{eqnarray}
+	h & = & a\left(\frac{1+\sqrt{3}}{4\sqrt{2}}\right) + b\left(\frac{3+\sqrt{3}}{4\sqrt{2}}\right) + c\left(\frac{3-\sqrt{3}}{4\sqrt{2}}\right) + d\left(\frac{1-\sqrt{3}}{4\sqrt{2}}\right) \nonumber \\
+	 & = & \frac{a\left(1+\sqrt{3}\right) + b\left(3+\sqrt{3}\right) + c\left(3-\sqrt{3}\right) + d\left(1-\sqrt{3}\right)}{4\sqrt{2}} \nonumber \\
+	 & = & \frac{a+a\sqrt{3} + 3b+b\sqrt{3} + 3c-c\sqrt{3} + d-d\sqrt{3}}{4\sqrt{2}} \nonumber \\
+	 & = & \frac{a + d + 3\left(b + c\right) + \sqrt{3}\left(a + b - c - d\right)}{4\sqrt{2}} \label{eq:hOptFilter}
+\end{eqnarray}
+}
+
+\frame
+{
+\begin{eqnarray}
+	g & = & a\left(\frac{1-\sqrt{3}}{4\sqrt{2}}\right) + b\left(\frac{\sqrt{3}-3}{4\sqrt{2}}\right) + c\left(\frac{3+\sqrt{3}}{4\sqrt{2}}\right) + d\left(\frac{-1-\sqrt{3}}{4\sqrt{2}}\right) \nonumber \\
+	 & = & \frac{a\left(1-\sqrt{3}\right) + b\left(\sqrt{3}-3\right) + c\left(3+\sqrt{3}\right) + d\left(-1-\sqrt{3}\right)}{4\sqrt{2}} \nonumber \\
+	 & = & \frac{a-a\sqrt{3} + b\sqrt{3} - 3b + 3c+c\sqrt{3} - d - d\sqrt{3}}{4\sqrt{2}} \nonumber \\
+	 & = & \frac{a - d + 3\left(c - b\right) + \sqrt{3}\left(b + c - a - d\right)}{4\sqrt{2}} \label{eq:gOptFilter}
+\end{eqnarray}
+}
+
+\frame
+{
+\begin{eqnarray}
+	ih & = & a\left(\frac{3-\sqrt{3}}{4\sqrt{2}}\right) + b\left(\frac{3+\sqrt{3}}{4\sqrt{2}}\right) + c\left(\frac{1+\sqrt{3}}{4\sqrt{2}}\right) + d\left(\frac{1-\sqrt{3}}{4\sqrt{2}}\right) \nonumber \\
+	 & = & \frac{a\left(3-\sqrt{3}\right) + b\left(3+\sqrt{3}\right) + c\left(1+\sqrt{3}\right) + d\left(1-\sqrt{3}\right)}{4\sqrt{2}} \nonumber \\
+	 & = & \frac{3a-a\sqrt{3} + 3b+b\sqrt{3} + c+c\sqrt{3} + d-d\sqrt{3}}{4\sqrt{2}} \nonumber \\
+	 & = & \frac{c + d + 3\left(a + b\right) + \sqrt{3}\left(b + c - a - d\right)}{4\sqrt{2}} \label{eq:ihOptFilter}
+\end{eqnarray}
+}
+
+\frame
+{
+\begin{eqnarray}
+	ig & = & a\left(\frac{1-\sqrt{3}}{4\sqrt{2}}\right) + b\left(\frac{-1-\sqrt{3}}{4\sqrt{2}}\right) + c\left(\frac{3+\sqrt{3}}{4\sqrt{2}}\right) + d\left(\frac{\sqrt{3}-3}{4\sqrt{2}}\right) \nonumber \\
+	 & = & \frac{a\left(1-\sqrt{3}\right) + b\left(-1-\sqrt{3}\right) + c\left(3+\sqrt{3}\right) + d\left(\sqrt{3}-3\right)}{4\sqrt{2}} \nonumber \\
+	 & = & \frac{a-a\sqrt{3} - b-b\sqrt{3} + 3c+c\sqrt{3} - 3d+d\sqrt{3}}{4\sqrt{2}} \nonumber \\
+	 & = & \frac{a - b + 3\left(c - d\right) + \sqrt{3}\left(c + d - a - b\right)}{4\sqrt{2}} \label{eq:igOptFilter}
+\end{eqnarray}
+}
+
+\frame
+{
+	\frametitle{Padrão de fatores de normalização (TWD 2D Padrão)}
+	\centering
+	\includegraphics[width=10cm]{Imagens/DaubNormFactors.png}
+	\small
+	
+	(a) níveis de aplicação, (b) combinação de níveis, (c) regra de normalização.
+	
+}
+
+\section{Testes e Resultados}
+
+\subsection*{Configuração de testes}
+%%%%%%%%%%%%%%%%%% SLIDE %%%%%%%%%%%%%%%%%%%%%
+\frame{
+    \frametitle{Casos de Estudo}
+    \begin{block}{}
+    	Estudo de caso:
+    	\begin{itemize}
+    		\item \textbf{Performance}: Relação de desempenho das execuções.
+    		\item \textbf{Accuracy}: Relação entre o maior diâmetro de intervalo de erro na computação.
+    		\item \textbf{Metrics}: Aplicação de métricas (EUC, MSE e PSNR) para medição de qualidade.
+    	\end{itemize}
+    	\vspace{-0.4cm}
+    	\addtolength{\jot}{-0.4cm}
+    	\begin{footnotesize}
+    	\begin{eqnarray}
+			\mathbf{EUC}(\tilde{\mathbf{Y}}, \mathbf{Y}) =  \sqrt{\sum_{j=0}^{m}\sum_{i=0}^{n} \left( \tilde{\mathbf{Y}_{ij}} - \mathbf{Y}_{ij} \right)^2} \\
+			\mathbf{MSE} (\tilde{\mathbf{Y}}, \mathbf{Y}) = \frac{1}{nm}  \sum_{j=0}^{m}\sum_{i=0}^{n}(\tilde{\mathbf{Y}}_{ij} - \mathbf{Y}_{ij})^2 \\
+			\textbf{PSNR} (\tilde{\mathbf{Y}}, \mathbf{Y}_{ij}) = 10 \cdot \log_{10} \frac{MAX^2}{\mathbf{MSE}(\tilde{\mathbf{Y}},\mathbf{Y})}
+		\end{eqnarray}
+    	\end{footnotesize}
+				    	
+    	
+	\end{block}
+}
+
+\frame
+{
+	\frametitle{Configuração da Máquina}
+	\begin{block}{Desktop PC}
+		\begin{tabular}{ll}
+		\textbf{Processador}: & Intel~\textsuperscript{\textregistered} Core~\textsuperscript{\texttrademark} i7 950 Processor @ 3.07GHz \\
+		\textbf{Memória}: & 6GB DDR3 @ 1066MHz \\
+		\textbf{SO}: & Windows 10 \\
+		\textbf{Compilador}: & Microsoft Visual C++ VS2013 (x64 Release) \\
+		\end{tabular}
+	\end{block}
+}
+
+\subsection*{Resultados}
+
+\frame
+{
+	\begin{block}{Parâmetros de teste para a TWH}
+		\begin{itemize}
+			\item \textbf{TWH 1D}
+			\begin{itemize}
+				\item \textbf{Cascata}: 1048576 valores aleatórios
+				\item \textbf{À-Trous}: 1048576 valores aleatórios e 4 iterações
+			\end{itemize}
+			\item \textbf{TWH 2D}
+			\begin{itemize}
+				\item \textbf{Cascata}: 1024x1024 valores aleatórios
+				\item \textbf{À-Trous}: 1024x1024 valores aleatórios e 4 iterações
+			\end{itemize}
+		\end{itemize}
+	\end{block}
+}
+
+\subsection*{TWH 1D}
+
+\frame
+{
+	\centering
+    \includegraphics[width=11.4cm]{Imagens/test1-3.png}
+    
+    \small
+    Testes para a \textbf{TWH 1D Cascata} e \textbf{À-Trous} utilizando 1048576 valores aleatórios.
+}
+
+\subsection*{TWH 2D}
+
+\frame
+{
+    \centering
+    \includegraphics[width=11.4cm]{Imagens/test2S-NS.png}
+    
+    \small
+    Testes para a \textbf{TWH 2D Cascata} utilizando 1024x1024 valores aleatórios.
+}
+
+\frame
+{
+    \centering
+    \includegraphics[width=11.4cm]{Imagens/test4S-NS.png}
+    
+    \footnotesize
+    Testes para a \textbf{TWH 2D À-Trous} utilizando 1024x1024 valores aleatórios e 4 iterações.
+}
+
+\subsection*{TWD 1D}
+
+\frame
+{
+	\begin{block}{Parâmetros de teste para a TWD}
+		\begin{itemize}
+			\item \textbf{TWD 1D}
+			\begin{itemize}
+				\item \textbf{Teste \#1}: 1048576 valores aleatórios
+				\item \textbf{Teste \#2}: 4194304 valores aleatórios
+				\item \textbf{Teste \#3}: 16777216 valores aleatórios
+			\end{itemize}
+			\item \textbf{TWD 2D}
+			\begin{itemize}
+				\item \textbf{Teste \#1}: 1024x1024 valores aleatórios
+				\item \textbf{Teste \#2}: 2048x2048 valores aleatórios
+				\item \textbf{Teste \#3}: 4096x4096 valores aleatórios
+			\end{itemize}
+		\end{itemize}
+	\end{block}
+}
+
+\frame
+{
+    \centering
+    \includegraphics[width=5.5cm]{Imagens/test5-1048576.png}
+    \includegraphics[width=5.5cm]{Imagens/test5-4194304.png}
+    
+    \footnotesize
+    Testes \#1 e \#2 para a \textbf{TWD 1D} utilizando 1048576 e 4194304 valores aleatórios.
+}
+
+\frame
+{
+	\centering
+	\includegraphics[width=6cm]{Imagens/test5-16777216.png}
+	
+	\footnotesize
+    Teste \#3 para a \textbf{TWD 1D} utilizando 16777216 valores aleatórios.
+}
+
+\subsection*{TWD 2D}
+
+\frame
+{
+    \centering
+    \includegraphics[width=5.5cm]{Imagens/test6NS-1024.png}
+    \includegraphics[width=5.5cm]{Imagens/test6NS-2048.png}
+    
+    \scriptsize
+    Testes \#1 e \#2 para a \textbf{TWD 2D Não-Padrão} utilizando 1024x1024 e 2048x2048 valores aleatórios.
+}
+
+\frame
+{
+	\centering
+	\includegraphics[width=6cm]{Imagens/test6NS-4096.png}
+	
+	\footnotesize
+    Teste \#3 para a \textbf{TWD 2D Não-Padrão} utilizando 4096x4096 valores aleatórios.
+}
+
+\frame
+{
+    \centering
+    \includegraphics[width=5.5cm]{Imagens/test6S-1024.png}
+    \includegraphics[width=5.5cm]{Imagens/test6S-2048.png}
+    
+    \scriptsize
+    Testes \#1 e \#2 para a \textbf{TWD 2D Padrão} utilizando 1024x1024 e 2048x2048 valores aleatórios.
+}
+
+\frame
+{
+	\centering
+	\includegraphics[width=6cm]{Imagens/test6S-4096.png}
+	
+	\footnotesize
+    Teste \#3 para a \textbf{TWD 2D Padrão} utilizando 4096x4096 valores aleatórios
+}
+
+%%%%%%%%%%%%%%%%%% SLIDE %%%%%%%%%%%%%%%%%%%%%
+\section{Considerações Finais}
+
+\subsection*{Evolução do Trabalho}
+
+\frame
+{
+	%\frametitle{Evolução do Trabalho}
+    \begin{block}{Principais Publicações 2015-2016}
+		\begin{itemize}
+			\item  \textbf{ERAD 2015}: Estudo de Desempenho sobre a Biblioteca Int-Haar
+            \item  \textbf{SIM 2015}: Int-HWT: Increasing Performance and Exactitude of 1D and 2D Haar Wavelet Transforms
+            \item  \textbf{WEIT 2015}: Transformada de Haar Não Decimada Otimizada e sua Extensão Intervalar
+            \item  \textbf{ERAD 2016}: Transformada de Haar À Trous Otimizada e Análise de Desempenho
+            \item \textbf{CNMAC 2016}: Otimização para Aumento de Exatidão da Transformada Wavelet de Haar À-Trous
+		\end{itemize}
+	\end{block}
+	
+	\begin{block}{Próximas Publicações}
+	\begin{itemize}
+		\item \textbf{WSCAD-WIC 2016}: Simplificações de filtros e Análise de Desempenho para Transformada Wavelet de Daubechies
+		\item Int-HWT: Algebraic Simplifications Increasing Performance And Exactitude of the Haar Wavelet Transforms
+		%\item Int-DWTs Library: Algebraic Simplifications Increasing Performance and Accuracy of Discrete Wavelet Transforms
+	\end{itemize}
+	\end{block}
+}
+
+\subsection*{Conclusão}
+
+\frame{
+    \frametitle{Conclusão}
+    \begin{block}{}
+    	\begin{itemize}
+    		\item As otimizações propostas para ambas transformadas foram implementadas e validadas com sucesso.
+            \item A TWH Cascata apresentou ganhos tanto em desempenho quanto em exatidão dos cálculos.
+            \item Ambas TWH À-Trous e TWD obtiveram perdas de desempenho porém com ganhos quanto a exatidão.
+            \item Não foi possível viabilizar as implementações concorrentes das transformadas utilizando GPU, porém serão os próximos objetivos do trabalho.
+    		\item Na continuidade, busca-se a extensão intervalar e otimização de outras TDWs.
+    	\end{itemize}
+    \end{block}
+}
+
+%%%%%%%%%%%%%%%%%% SLIDE %%%%%%%%%%%%%%%%%%%%%
+%\frame{
+%	\frametitle{Agradecimento e Perguntas}
+%	\begin{block}{Agradecimentos}
+%		\begin{itemize}
+%			\item PROBIT/FAPERGS (08/2015 a 07/2016)
+%			\item Projeto PqG/2013 FAPERGS
+%		\end{itemize}
+%	\end{block}
+%	\begin{block}{Dúvidas}
+%		Contatos:
+%		\begin{itemize}
+%			\item vrdsantos@inf.ufpel.edu.br
+%		\end{itemize}
+%	\end{block}
+%}
+
+\frame{\titlepage}
+
+\frame
+{
+    \centering
+    \Huge
+    Métricas
+}
+
+%\subsection*{Métricas}
+
+\frame
+{
+    \frametitle{Error}
+
+    \begin{center}
+    \includegraphics[width=11cm]{Imagens/Error.png}
+    \end{center}
+}
+
+\frame
+{
+    \frametitle{Distância Euclidiana}
+	\huge    
+    \begin{equation}
+    \label{eq-5}
+        \mathbf{EUC}(\tilde{\mathbf{Y}}, \mathbf{Y}) =  \sqrt{\sum_{j=0}^{m}\sum_{i=0}^{n} \left( \tilde{\mathbf{Y}_{ij}} - \mathbf{Y}_{ij} \right)^2}. \nonumber
+    \end{equation}
+}
+
+\frame
+{
+    \frametitle{Mean Squared Error}
+	\huge
+    \begin{equation}
+    \mathbf{MSE} (\tilde{\mathbf{Y}}, \mathbf{Y}) = \frac{1}{nm}  \sum_{j=0}^{m}\sum_{i=0}^{n}(\tilde{\mathbf{Y}}_{ij} - \mathbf{Y}_{ij})^2 \nonumber
+    \end{equation}
+}
+
+\frame
+{
+    \frametitle{Peak Noise-To-Signal}
+	\huge
+    \begin{equation}\label{eq-8b}
+    \textbf{PSNR} (\tilde{\mathbf{Y}}, \mathbf{Y}_{ij}) = 10 \cdot \log_{10} \frac{MAX^2}{\mathbf{MSE}(\tilde{\mathbf{Y}},\mathbf{Y})}. \nonumber
+    \end{equation}
+}
+
+\end{document}
