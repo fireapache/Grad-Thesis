@@ -86,7 +86,7 @@ This project describes the main results consolidating the Interval Methods of Di
 
 The quality of numerical results in Scientific Computing (SC) depends on understanding the different error causes and on controlling their propagation,  as well as improving  computations upon the involved procedures.
 
-This study considers the Interval Mathematics (IM) approach and proposes a solution based on Moore's arithmetic~\cite{Moore79} for the implementation of the Haar wavelet transform (HWT), considering two well established algorithms, Cascade and {\it à trous}, and their standard formulations assuming point values as input data, being the first step on the development of the Int-DWT library that will provide interval results for several Discrete Wavelet Transforms (DWTs).
+This study considers the Interval Mathematics (IM) approach and proposes a solution based on Moore's arithmetic~\cite{Moore79} for the implementation of the Haar wavelet transform (HWT), considering two well established algorithms, Cascade and {\it À-Trous}, and their standard formulations assuming point values as input data, being the first step on the development of the Int-DWT library that will provide interval results for several Discrete Wavelet Transforms (DWTs).
 
 Interval results carry over the safety of their quality together with the degree of their uncertainty~\cite{Moore79}. The diameter of the interval solution represents with fidelity the uncertainties of input parameters, being also an indicative of the error influence and of the extension of its propagation within the incoming data. Interval solutions also indicate truncation and rounding errors contained in the computed results.
 
@@ -452,17 +452,17 @@ Thus combining the two possible algorithms with these two possible filter choice
 
 Another alternative version for the HWT is the undecimated approach, which avoids the decimation operation after the convolution with the filters has been computed.
 
-This undecimated transform has one well established formulation, called the {\it à trous} algorithm, which is considered in many astrophysical and statistical applications \cite{IEEE2007,kozakevicius2013}, specially for been a translation invariant transform.
+This undecimated transform has one well established formulation, called the {\it À-Trous} algorithm, which is considered in many astrophysical and statistical applications \cite{IEEE2007,kozakevicius2013}, specially for been a translation invariant transform.
 
 \subsubsection{One Dimensional}
 \label{sec:hwt1d-undecimated}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-According to what is shown in \cite{IEEE2007}, given an initial vector $ C^0 $ with $n_0=2^J$ punctual values, the vector $C^1$ that contains the first decomposition level of the 1D undecimated HWT (à-trous HWT) stores the averages for each pair of adjacent elements $(C^0_j,C^0_{j+1}), j=1,...,n_0$, (assuming $C^0_{n_0+1}=C^0_{0}$).
+According to what is shown in \cite{IEEE2007}, given an initial vector $ C^0 $ with $n_0=2^J$ punctual values, the vector $C^1$ that contains the first decomposition level of the 1D undecimated HWT (À-Trous HWT) stores the averages for each pair of adjacent elements $(C^0_j,C^0_{j+1}), j=1,...,n_0$, (assuming $C^0_{n_0+1}=C^0_{0}$).
 
 The difference now with respect to the Cascade formulation is that the range of $j$ to select the values $C^0_j$ covers all positions $j=1,...,n_0$. This is exactly what avoids the decimation step and causes $C^1$ to have the same size as $C^0$. The way the wavelet coefficients are computed  also differs from the previous formulation. Now the vector with the differences $D^1$  is computed by $D^1_j=C^0_j -C^1_j, \ j=1,...,n_0$.
 
-The  {\it à trous} HWT is again constructed recursively, until a certain decomposition level $0<l<log_2 n_0$ is achieved. In this sense, the vector of averages $C^j$  at a level $0< j \leq l$ is obtained from the set $C^{j-1}$, the averages at the previous level. Analogously, the vector with the wavelet coefficients is given by $D^j=C^{j-1}-C^j$.  This process is  again called Decomposition or Direct Transformation and it is illustrated in Figure~\ref{fig:DTAtrous} .
+The  {\it À-Trous} HWT is again constructed recursively, until a certain decomposition level $0<l<log_2 n_0$ is achieved. In this sense, the vector of averages $C^j$  at a level $0< j \leq l$ is obtained from the set $C^{j-1}$, the averages at the previous level. Analogously, the vector with the wavelet coefficients is given by $D^j=C^{j-1}-C^j$.  This process is  again called Decomposition or Direct Transformation and it is illustrated in Figure~\ref{fig:DTAtrous} .
 
 %The operations over the last element of the vector are %performed using the first element from the same vector %to form its pair, avoiding the necessity of %extrapolation to deduce the next element after the end %of a vector.
 
@@ -473,14 +473,14 @@ The  {\it à trous} HWT is again constructed recursively, until a certain decompo
           $C^{0} = [9 \quad 7 \quad 5 \quad 3] \quad \rightarrow $ & $ C^1 = [8 \quad 6 \quad 4 \quad 6] \quad \rightarrow $ & $ C^{2} =  [7 \quad 5 \quad 5 \quad 7] \quad \rightarrow \enskip ... $  \\
           $ $ & $ D^1 = [1 \quad 1 \quad 1 -3] $ & $ D^{2} =  [1 \quad 1 -1 -1] $
       \end{tabular}
-      \caption{1D à trous HWT: example with 2 decomposition levels}
+      \caption{1D À-Trous HWT: example with 2 decomposition levels}
     \label{fig:DTAtrous}
     \vspace{-0.3cm}
 \end{figure}
 
 \begin{figure}[ht]
 \includegraphics[width=9cm]{Imagens/Atrous_D_and_DStep.png}
-	\caption{1D à-Trous HWT- Decomposition algorithm.}
+	\caption{1D À-Trous HWT- Decomposition algorithm.}
     \label{fig:AtrousDecompMethods}
 \end{figure}
 
@@ -489,20 +489,20 @@ also called Composition, which provides the exact reconstruction of the original
 
 \begin{figure}[ht]
 \includegraphics[width=7cm]{Imagens/Atrous_C.png}
-	\caption{1D à-Trous HWT- Composition algorithm.}
+	\caption{1D À-Trous HWT- Composition algorithm.}
     \label{fig:AtrousCompMethod}
 \end{figure}
 
 \subsubsection{Two Dimensional}
 \label{sec:hwt2d-undecimated}
 
-According to \cite{IEEE2007}, the algorithm for the 2D à trous HWT is again obtained through the application of the one-dimensional transformation in all rows and columns of the input matrix, as done for the decimated version of the HWT.
+According to \cite{IEEE2007}, the algorithm for the 2D À-Trous HWT is again obtained through the application of the one-dimensional transformation in all rows and columns of the input matrix, as done for the decimated version of the HWT.
 
-Analogously, Standard and Non-Standard procedures can be designed according to the order how the 1D à trous transforms are applied to the 2D data.
+Analogously, Standard and Non-Standard procedures can be designed according to the order how the 1D À-Trous transforms are applied to the 2D data.
 
 \begin{figure}[h!]
 \includegraphics[width=15cm]{Imagens/HaarAtrousStandard.png}
-	\caption{2D à trous HWT- standard algorithm for matrix decomposition.}
+	\caption{2D À-Trous HWT- standard algorithm for matrix decomposition.}
     \label{fig:AtrousStandard}
 \end{figure}
 
@@ -510,12 +510,12 @@ Analogously, Standard and Non-Standard procedures can be designed according to t
 
 \includegraphics[width=10cm]{Imagens/HaarAtrousStandardPseudo.png}
 
-	\caption{2D à trous HWT: Pseudo code for the standard matrix decomposition.}
+	\caption{2D À-Trous HWT: Pseudo code for the standard matrix decomposition.}
     \label{fig:AtrousStandardPseudo}
 
 \end{figure}
 
-The undecimated standard decomposition for the 1D Int-HWT, based on the Standard decimated decomposition, is performed by executing the 1D à trous Int-HWT for each row of the input matrix. This process is called Row~À-Trous~Transform~(\textit{RAT}), characterizing this procedure as a horizontal transformation.
+The undecimated standard decomposition for the 1D Int-HWT, based on the Standard decimated decomposition, is performed by executing the 1D À-Trous Int-HWT for each row of the input matrix. This process is called Row~À-Trous~Transform~(\textit{RAT}), characterizing this procedure as a horizontal transformation.
 
 Considering $n$ decomposition levels, the RAT procedure is repeated $n$ times, generating matrices $ C^1_R $ ... $ C^n_R $ and $ D^1_R $ ... $ D^n_R $. After decomposing all rows from the input matrix, the decomposition of all its columns is performed, called Column~À-Trous~Transform~(\textit{CAT}), characterizing a vertical transformation and generating matrices $ C^{n+1}_C $ ... $ C^{n*2}_C $ and $ D^{n+1}_C $ ... $ D^{n*2}_C $.
 
@@ -543,7 +543,7 @@ The undecimated non-standard decomposition, based on the original non-standard a
 
 For each level $ j $ of decomposition the algorithm performs a \textit{RAT} step, generating matrices $ C^j_R $ and $ D^j_R $, and right after a \textit{CAT} is performed, generating matrices $ C^j_C $ and $ D^j_C $.
 
-Both $ C^j_R $ and $ C^j_C $ store scalar coefficients, while $ D^j_R $ and $ D^j_C $ hold wavelet coefficients, and those four matrices represent one level full decomposed. The À-trous Non Standard algorithm is shown in Figure~\ref{fig:AtrousStandardPseudo}.
+Both $ C^j_R $ and $ C^j_C $ store scalar coefficients, while $ D^j_R $ and $ D^j_C $ hold wavelet coefficients, and those four matrices represent one level full decomposed. The À-Trous Non Standard algorithm is shown in Figure~\ref{fig:AtrousStandardPseudo}.
 
 The same idea from the one-dimensional transform can be applied for both standard and non-standard sets of data to perform an inverse process, generating the input matrix.
 
@@ -553,7 +553,7 @@ By using all matrices of wavelet coefficients resulted by the process of decompo
 
 \begin{figure}[h!]
 	\includegraphics[width=11cm]{Imagens/ATrousMatrixComposition.png}
-	\caption{Pseudo code for À-trous matrix composition.}
+	\caption{Pseudo code for À-Trous matrix composition.}
     \label{fig:ATrousMatrixComposition}
 
 \end{figure}
@@ -880,7 +880,7 @@ The composition process, shown in Figure~\ref{fig:AtrousCompMethod}, starts with
 
 \subsubsection{Two Dimension}
 
-As done for the decimated case, the undecimated transform, preformed by the à-trous algorithm, considers the same principle presented in the one-dimensional optimization, i.e., the same strategy of multiplying the transformed values by the corresponding $2^{j/2}$ normalization factor, where $j$ is the corresponding level.
+As done for the decimated case, the undecimated transform, preformed by the À-Trous algorithm, considers the same principle presented in the one-dimensional optimization, i.e., the same strategy of multiplying the transformed values by the corresponding $2^{j/2}$ normalization factor, where $j$ is the corresponding level.
 
 In order to decompose a data matrix the two-dimensional implementation creates a set of matrices carrying scalar coefficients and another set of matrices to store wavelet coefficients. The procedure is expensive on both performing and storing the results. Applying the same idea used in previous implementations, it is possible to reduce the error involved in the process.
 
