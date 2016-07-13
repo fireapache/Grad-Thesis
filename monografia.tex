@@ -49,7 +49,7 @@
 
 \begin{abstract}
 
-Este trabalho descreve a modelagem e o desenvolvimento de metodologia bem como a análise de resultados para consolidação da biblioteca Int-DWTs, contendo Métodos Intervalares para Transformadas Discretas Wavelet. Os métodos presentes em Int-DWTs incluem estensões intervalares e suas correspondentes otimizações para Transformadas Discretas Wavelet (TDWs), mais especificamente para as Transformadas Wavelet de Haar e Daubechies. As otimizações implementadas promoveram simplificações algébricas visando o incremento de desempenho e a garantia de exatidão das TDWs estudadas. Considerando a área de compressão de imagens como uma das relevantes aplicações para TDWs, a qualidade de resultados é analisada ao comparar três usuais métricas: $EUC$ (Euclidean Distance), $MSE$ (\textit{Mean Squared Error}) e $PSNR$ (\textit{peak signal-to-noise ratio}). O nível de erro produzido pelas formulações intervalares, como também os desempenhos obtidos através das simplificações propostas, são analisadas e comparadas com resultados baseados na literatura. O uso de técnicas intervalares viabilizou uma análise eficiente de erros com validação automática para os métodos da Int-DWTs. Em contextos onde que as escalas de representação são relevantes para o problema, o ganho de exatidão obtido com a otimizações propostas representam uma contribuição significativa para a área de Computação Científica.
+Este trabalho descreve a modelagem e o desenvolvimento de metodologia bem como a análise de resultados para consolidação da biblioteca Int-DWTs, contendo Métodos Intervalares para Transformadas Discretas Wavelet. Os métodos presentes em Int-DWTs incluem estensões intervalares e suas correspondentes otimizações para Transformadas Discretas Wavelet (TDWs), mais especificamente para as Transformadas Wavelet de Haar e Daubechies. As otimizações implementadas promoveram simplificações algébricas visando o incremento de desempenho e a garantia de exatidão das TDWs estudadas. São apresentadas e comparadas as análises de complexidade dos algoritmos desenvolvidos em relação aos presentes na literatura. A qualidade de resultados é verificada ao comparar três métricas: $EUC$ (Euclidean Distance), $MSE$ (\textit{Mean Squared Error}) e $PSNR$ (\textit{peak signal-to-noise ratio}). O nível de erro produzido pelas formulações intervalares, como também os desempenhos obtidos através das simplificações propostas, são analisadas e comparadas com resultados baseados na literatura. Em contextos onde as escalas de representação são relevantes para o problema, os ganhos de exatidão obtidos com as otimizações propostas representam uma contribuição significativa para a área de Computação Científica.
 
 %são implementadas utilizando a biblioteca de aritimética intervalar C-XSC.
 
@@ -77,6 +77,7 @@ This project describes the main results consolidating the Interval Methods of Di
         \item[EUC] Euclidean Distance
         \item[MSE] Mean Squared Error
         \item[PSNR] Peak Signal to Noise Ratio
+        \item[PDE] Partial Differential Equations
 \end{listofabbrv}
 
 %Sumario
@@ -86,9 +87,11 @@ This project describes the main results consolidating the Interval Methods of Di
 
 The quality of numerical results in Scientific Computing (SC) depends on understanding the different error causes and on controlling their propagation,  as well as improving  computations upon the involved procedures.
 
-This study considers the Interval Mathematics (IM) approach and proposes a solution based on Moore's arithmetic~\cite{Moore79} for the implementation of the Haar wavelet transform (HWT), considering two well established algorithms, Cascade and {\it À-Trous}, and their standard formulations assuming point values as input data, being the first step on the development of the Int-DWT library that will provide interval results for several Discrete Wavelet Transforms (DWTs).
+This study considers the Interval Mathematics (IM) approach and proposes a solution based on Moore's arithmetic~\cite{Moore79} for the interval implementation of the Daubechies Wavelet Transform (DaWT) and Haar Wavelet Transform (HWT), considering its two approaches, Cascade and À-Trous, and their standard formulations. The implementation of interval extensions of both HWT and DaWT is the first step on the development of the Int-DWT library that will provide interval results for several Discrete Wavelet Transforms (DWTs).
 
 Interval results carry over the safety of their quality together with the degree of their uncertainty~\cite{Moore79}. The diameter of the interval solution represents with fidelity the uncertainties of input parameters, being also an indicative of the error influence and of the extension of its propagation within the incoming data. Interval solutions also indicate truncation and rounding errors contained in the computed results.
+
+The C-XSC library~\cite{holbig05} is employed to support the interval implementation of all formulations addressed by the Int-DWTs library. Such open source  library consists of a set of tools for the development of numerical algorithms, integrating precision and automatic verification of the results, frequently applied in SC.
 
 In the last decade, many studies associating wavelet transforms with interval mathematics have arisen, promoting a new research direction and pointing out the relevance of  interval computations for a wide range of applications. Shu-Li et al.~\cite{shu-li2005} propose the interval extension of the interpolating wavelet family for the construction of an adaptive algorithm for solving Partial Differential Equations (PDE).
 
@@ -96,22 +99,17 @@ Another collocation method for solving PDE is presented by Liu~\cite{liu2013}, b
 
 The main motivation for interval techniques integrated with  DWTs is to provide trustworthy and validated results to technological and SC applications assuming such transformations. The pool of techniques involving wavelets is ample, specially in signal and image processing~\cite{5,6}.
 
-\newpage
+The  HWT, the  simplest Discrete Wavelet Transform~(DWT) due to the complexity of its filters, is still nowadays largely explored,  being its robustness with respect to many different mathematical structures and space formulations  a relevant aspect~\cite{novikov2012} addressed in many applications. Besides, as demonstrated in \cite{brito1998}, the imaging inaccuracy of the Haar wavelet basis is the smallest possible, motivating its usage in many 2D problems as well as the current formulation in the interval context.
 
-The  HWT, the  simplest discrete wavelet transform~(DWT) in terms of algorithm complexity, is still nowadays largely explored,  being its robustness with respect to many different mathematical structures and space formulations  a relevant aspect~\cite{novikov2012} addressed in many applications. Besides, as demonstrated in \cite{brito1998}, the imaging inaccuracy of the Haar wavelet basis is the smallest possible, motivating its usage in many 2D problems as well as the current formulation in the interval context.
-
-Hence, the present study introduces an integrated analysis of the original HWT algorithms and the proposed interval extensions.  Preliminary results of the new interval extension
-of the Int-HWT library presented in~\cite{7} are revisited here, including the interval extensions of the decimated HWT~\cite{stollnitz1995} (Cascade algorithm) for the 1D and 2D cases.
+Hence, the present study introduces an integrated analysis of the original HWT algorithms and the proposed interval extensions.  Preliminary results of the new interval extension of the HWT presented in~\cite{7} are revisited here, including the interval extensions of the decimated HWT~\cite{stollnitz1995} (Cascade algorithm) for the 1D and 2D cases.
 
 The current research addresses as well the {\it À-Trous} algorithm, a non-decimated HWT formulation ~\cite{IEEE2007,kozakevicius2013}, proposing interval extensions for both  1D and 2D cases. Furthermore, a threshold procedure for treating signals and images, considered as a significant part of many compression and filtering algorithms, is analyzed and its interval extensions are presented, namely the Hard and Soft Decision procedures. 
 
-During the study of the original normalized and non-normalized forms of the HWT \cite{stollnitz1995}, the possibility to optimize them arises from the observation of the patterns of the transform filters in each decomposition level. Therefore, algebraic simplifications are executed to eliminate operations with irrational numbers, originally responsible for the normalization of the transform and considered in each iteration of the original algorithms \cite{weit2013}.
+During the study of the original normalized and non-normalized forms of the HWT \cite{stollnitz1995}, the possibility to optimize them arises from the observation of patterns of normalization factors in each level of transformation. Therefore, algebraic simplifications are executed to eliminate operations with irrational numbers, originally responsible for the normalization of the transform and considered in each iteration of the original algorithms \cite{weit2013}.
 
-Through these simplifications, a gain of accuracy is obtained for the normalized approaches for the 1D HWT, producing therefore more reliable results. In the current work, a similar heuristic is considered to simplify the standard formulation of the undecimated HWT and DaWT, generating interval extensions implemented again in an optimal way.
+Through these simplifications, a gain of accuracy is obtained for the normalized approach of the decimated HWT, producing therefore more reliable results. In the current work, a similar heuristic is considered to simplify the standard formulation of the undecimated HWT and DaWT. This work also describes the complexity of the developed algorithms for both HWT and DaWT comparing with the ones from the literature.
 
-The C-XSC library~\cite{holbig05} is employed to support the implementation of all formulations addressed by the Int-HWT library. Such open source  library consists of a set of tools for the development of numerical algorithms, integrating precision and automatic verification of the results, frequently applied in SC~\cite{cxsclink}.
-
-The compatibility between C++ and C-XSC library allows high level programming techniques for numerical applications~\cite{holbig05a}, aggregating other available libraries to support SC and also including additional packages in the source code~\cite{cxsc3}.
+This work is organized as follows. Chapter~\ref{sec:intarit} summarizes aspects about interval arithmetics and the metrics used to validate the results. Chapter~\ref{sec:DWTs} presents the original formulations of both HWT and DaWT. Chapter~\ref{sec:optintform} details the development of the proposed optimizations. Chapter~\ref{sec:tests} shows the configuration of tests and the analysis of results. Finally, conclusions are presented in Chapter~\ref{sec:conclusion}.
 
 \chapter{Interval Mathematics}\label{sec:intarit}
 
@@ -310,7 +308,7 @@ Finally, it should be noticed that a computation of the MSE between two identica
 
 \section{C-XSC Library} \label{sec:intext}
 
-To make interval results able to contain all possible punctual results, algorithms performing only interval arithmetic have to be designed. In this context, the HWT and its many formulations are extended according to the interval arithmetic, considering the C-XSC interval library~\cite{cxsclink}.
+To make interval results able to contain all possible punctual results, algorithms performing only interval arithmetic have to be designed. In this context, the HWT and its many formulations are extended according to the interval arithmetic, considering the C-XSC\footnote{C-XSC library can be accessed at: http://www2.math.uni-wuppertal.de/$\sim$xsc/xsc/cxsc.html} interval library.
 
 C-XSC is an extensive C++ class library  for SC including a set of basic data types (from intervals to multiple precision complex intervals) whose   high
 accuracy computation must be available for some basic arithmetic operations,
@@ -321,7 +319,9 @@ Therefore, some concepts of Mathematics of Computation and
 Computational Arithmetic have been incorporated into this system,
 such as high accuracy arithmetic, interval mathematics and  automatic numerical verification.
 
-Besides,  C-XSC  is an open source library and available from \cite{cxsclink} adding  additional packages in the source code~\cite{cxsc3}.
+The compatibility between C++ and C-XSC library allows high level programming techniques for numerical applications~\cite{holbig05a}, aggregating other available libraries to support SC and also including additional packages in the source code~\cite{cxsc3}.
+
+Besides,  C-XSC  is an open source library adding  additional packages in the source code~\cite{cxsc3}.
 
 Function and operator overloading allow the common mathematical notation of expressions involving interval types. This is also true for (interval) matrix/vector expressions.
 Numerical verification methods, also called self-validating methods, are
@@ -331,12 +331,12 @@ The C-XSC library provides support for users to develop efficient
 numerical verification methods to obtain  correct and self-validating numerical applications.
 
 
-In the last years significant improvements have been made in parallelized versions of interval linear system solvers supplied by C-XSC, for more details see~\cite{pblaslink, kolbergfernandesclaudio2008, milani2010}. Once the interval extensions allow different error computations, different compression algorithms can be derived, as shown in Section~\ref{sec:compress}.
+In the last years significant improvements have been made in parallelized versions of interval linear system solvers supplied by C-XSC, for more details see~\cite{kolbergfernandesclaudio2008, milani2010}. Once the interval extensions allow different error computations, different compression algorithms can be derived, as shown in Section~\ref{sec:compress}.
 
 
 % With the summarized background already presented, in the remainder of %the current study the extension of the Haar wavelet transform for the %interval context is obtained. Taking advantage of the interval %arithmetics some formulation simplifications are made in order to %improve the quality of the interval extensions of the transforms. As an application, image compression is also pointed out in the interval context.
 
-\chapter{Discrete Wavelet Transforms}
+\chapter{Discrete Wavelet Transforms}\label{sec:DWTs}
 
 This Chapter introduces both Haar Wavelet Transform (HWT), presented in Section~\ref{sec:HWT}, and Daubechies Wavelet Transform (DaWT), Section~\ref{sec:DaWT}, and their interval formulations.
 
