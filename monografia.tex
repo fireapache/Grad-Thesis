@@ -91,9 +91,9 @@ Interval results carry over the safety of their quality together with the degree
 
 The C-XSC library~\cite{holbig05} is employed to support the interval implementation of all formulations addressed by the Int-DWTs library. Such open source  library consists of a set of tools for the development of numerical algorithms, integrating precision and automatic verification of the results, frequently applied in SC.
 
-In the last decade, many studies associating wavelet transforms with interval mathematics have arisen, promoting a new research direction and pointing out the relevance of  interval computations for a wide range of applications. Shu-Li et al.~\cite{shu-li2005} propose the interval extension of the interpolating wavelet family for the construction of an adaptive algorithm for solving Partial Differential Equations (PDE).
+In the last decade, many studies associating wavelet transforms with interval mathematics have arisen, promoting a new research direction and pointing out the relevance of  interval computations for a wide range of applications. As proposed by~\cite{shu-li2005}, the interval extension of the interpolating wavelet family for the construction of an adaptive algorithm for solving Partial Differential Equations (PDE).
 
-Another collocation method for solving PDE is presented by Liu~\cite{liu2013}, based on the interval extension for the Shannon-Garbor wavelet family. With respect to image processing applications, Minamoto and Aoki~\cite{minamoto2010} propose a blind digital image watermarking method using interval Daubechies wavelets.
+Another collocation method for solving PDE is presented by~\cite{liu2013}, based on the interval extension for the Shannon-Garbor wavelet family. With respect to image processing applications, ~\cite{minamoto2010} proposes a blind digital image watermarking method using interval Daubechies wavelets.
 
 The main motivation for interval techniques integrated with  DWTs is to provide trustworthy and validated results to technological and SC applications assuming such transformations. The techniques involving wavelets is ample, specially in signal and image processing~\cite{5,6}.
 
@@ -344,7 +344,7 @@ This Section describes both decimated and undecimated formulations of the HWT, p
 
 \subsection{Decimated Formulation}\label{sec:hwt-decimated}
 
-The Haar basis was proposed in 1910, introduced by the Hungarian mathematician Alfred Haar \cite{haara} in a different approach than the one considered by Daubechies in 1988, when she presented her orthogonal basis with compact support for the space of square integrable functions\cite{daubechies1992}, called wavelets.
+The Haar basis was proposed in 1910, introduced by the Hungarian mathematician Alfred Haar \cite{haara} in a different approach than the one considered by \cite{daub1988}, when she presented her orthogonal basis with compact support for the space of square integrable functions\cite{daubechies1992}, called wavelets.
 
 Nevertheless, through her work, the Haar functions started to be seen as a particular case of orthogonal wavelets. Nowadays, the HWT is well stated with some different fast algorithm formulations, been well established for many applications, specially those involving data compression, as considered by JPEG-2000 \cite{JPEG2000}.
 
@@ -1100,7 +1100,7 @@ The result is an approximation of the original function.  Figure~\ref{fig:compre
 
 The hard thresholding is trivial for punctual data, but it can not be applied in the same way to interval information. The punctual algorithm for compression uses a real value $ \tau $ as threshold value, and the decision of the details details which must be ignored, considers a set of simple punctual comparisons.
 
-When treating with interval data, the parameter $ \tau $ becomes an interval, carrying the error in the threshold calculus. This way the compress decision can not be evaluated with the same punctual comparison as before~\cite{Moore79}. Two solutions were developed to manage the decision in this interval extension, the first was named as Hard Decision and the second as Soft Decision, inspired by the nomenclature considered by \cite{donoho1995} for its threshold operators.
+When treating with interval data, the parameter $ \tau $ becomes a degenerated interval based on its punctual input value, but can also incorporate some level of error if necessary. This way the compress decision can not be evaluated with the same punctual comparison as before~\cite{Moore79}. Two solutions were developed to manage the decision in this interval extension, the first was named as Hard Decision and the second as Soft Decision, inspired by the nomenclature considered by \cite{donoho1995} for its threshold operators.
 
 \begin{figure}[ht]
     \centering
@@ -1109,9 +1109,9 @@ When treating with interval data, the parameter $ \tau $ becomes an interval, ca
     \label{fig:C_SDC_HDC}
 \end{figure}
 
-The Hard Decision is made by verifying if the interval data is entirely less than $ \tau $, comparing the left bound of the information and the right bound of the interval parameter. This procedure grants that every possible punctual coefficient is less than all possible punctual values belonging to $ \tau $.
+The Hard Decision is made by verifying if the interval data is entirely less than $ \tau $, comparing the infimum of the information and the supremum of the interval parameter. This procedure grants that every possible punctual coefficient is less than all possible punctual values belonging to $ \tau $.
 
-The Soft Decision is made by verifying if most of the interval data is less than the midpoint of $ \tau $, comparing the left bound of the information and the center of the threshold. This procedure grants that most possible punctual coefficients are between the punctual values of $ \overline{\tau} $ and $ \underline{\tau} $.
+The Soft Decision is made by verifying if most of the interval data is less than the midpoint of $ \tau $, comparing the infimum of the information and the center of the threshold. This procedure grants that most possible punctual coefficients are between the punctual values of $ \overline{\tau} $ and $ \underline{\tau} $.
 
 \chapter{Tests and Results}
 \label{sec:tests}
@@ -1220,7 +1220,7 @@ Both approaches also share the same percentage of accuracy gain, $92.6\%$ and $8
 
 In order to evaluate the 1D DaWT and its interval extension, three tests are executed using vectors filled with $1048576$, $4194304$ and $16777216$ random values as input respectively. For tests using 2D DaWT algorithms, the inputs were generated from $1024$x$1024$, $2048$x$2048$ and $4096$x$4096$ matrices of random values.
 
-\subsection{One Dimensinal}
+\subsection{One Dimensional}
 
 The results shown in Figure~\ref{fig:test5} describe the performance of both decomposition and composition procedures from Section~\ref{sec:1DDaWT}, targeting the one dimensional DaWT. 
 
@@ -1255,7 +1255,7 @@ The interval extension shows that the results are $343$x, $22$x and $203629$x le
 
 The results from $EUC$ are $68.3\%$, $68.3\%$ and $68.3\%$, data from $MSE$ indicate gains of $89.9\%$, $91.4\%$ and $91.9\%$, and $PSNR$ gains are $13.7\%$, $18.1\%$ and $22.4\%$. The results from $EUC$, $MSE$ and $PSNR$ show a very good gain over the original formulations of the DaWT.
 
-\subsection{Two Dimensinal}
+\subsection{Two Dimensional}
 
 This Section presents the results of both Standard and Non-Standard approaches of the DaWT in Sections~\ref{sec:DaWT-results-Standard} and \ref{sec:DaWT-results-Non-Standard} respectively.
 
