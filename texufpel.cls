@@ -168,10 +168,10 @@ Versão: \currversion^^J
   % \def\ei@date{\@publmonth~\@publyear}%
 }
 
-\if@english%
+%\if@english%
 \selectlanguage{english}%
 \AtBeginDocument{\selectlanguage{english}}%
-\fi
+%\fi
 
 %==============================================================================
 % O uso de fonte Arial, 12 pt, é mandatório

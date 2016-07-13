@@ -22,52 +22,50 @@
 \DeclareMathSymbol{\Theta}{\mathalpha}{operators}{2}
 \newcommand{\BigO}{\ensuremath{\operatorname{O}}}
 
+\selectlanguage{english}
+
 \unidade{Centro de Desenvolvimento Tecnológico}
 \curso{Ciência da Computação}
 \nomecurso{Bacharelado em Ciência da Computação}
 \titulocurso{Bacharel em Ciência da Computação}
-\title{Int-DWTs Library - Algebraic Simplifications \\ Increasing Performance and Accuracy\\ of Discrete Wavelet Transforms}
+\title{Int-DWTs Library - Algebraic Simplifications Increasing Performance and Accuracy of Discrete Wavelet Transforms}
 
 \author{dos Santos}{Vinícius Rodrigues}
 \advisor[Profa.~Dra.]{Reiser}{Renata Hax Sander}
 \coadvisor[Prof.~Dr.]{Pilla}{Maurício}
 \collaborator[Profa.~Dra.]{Kozakevicius}{Alice}
 
-\keyword{wavelet}
-\keyword{interval}
-\keyword{performance}
-\keyword{optimization}
+\keyword{wavelet, interval, performance, optimization, haar, daubechies, accuracy, accuracy}
 
 \begin{document}
 
-%\renewcommand{\advisorname}{Orientadora}           %descomente caso tenhas orientadora
-%\renewcommand{\coadvisorname}{Coorientadora}      %descomente caso tenhas coorientadora
+\renewcommand{\advisorname}{Orientadora}           %descomente caso tenhas orientadora
+\renewcommand{\coadvisorname}{Coorientador}      %descomente caso tenhas coorientadora
+\renewcommand{\collaboratorname}{Colaboradora}
 
 \maketitle 
 
 \sloppy
 
-\begin{abstract}
+\begin{englishabstract}%
+{Biblioteca Int-DWTs - Simplificações Algébricas Aumentando Desempenho e Exatidão de Transformadas Discretas Wavelet}
+	{wavelet, intervalo, desempenho, otimização, haar, daubechies, exatidão}
 
 Este trabalho descreve a modelagem e o desenvolvimento de metodologia bem como a análise de resultados para consolidação da biblioteca Int-DWTs, contendo Métodos Intervalares para Transformadas Discretas Wavelet. Os métodos presentes em Int-DWTs incluem estensões intervalares e suas correspondentes otimizações para Transformadas Discretas Wavelet (TDWs), mais especificamente para as Transformadas Wavelet de Haar e Daubechies. As otimizações implementadas promoveram simplificações algébricas visando o incremento de desempenho e a garantia de exatidão das TDWs estudadas. São apresentadas e comparadas as análises de complexidade dos algoritmos desenvolvidos em relação aos presentes na literatura. A qualidade de resultados é verificada ao comparar três métricas: $EUC$ (Euclidean Distance), $MSE$ (\textit{Mean Squared Error}) e $PSNR$ (\textit{peak signal-to-noise ratio}). O nível de erro produzido pelas formulações intervalares, como também os desempenhos obtidos através das simplificações propostas, são analisadas e comparadas com resultados baseados na literatura. Em contextos onde as escalas de representação são relevantes para o problema, os ganhos de exatidão obtidos com as otimizações propostas representam uma contribuição significativa para a área de Computação Científica.
 
-%são implementadas utilizando a biblioteca de aritimética intervalar C-XSC.
+\end{englishabstract}
 
-\end{abstract}
+\begin{abstract}
 
-\begin{englishabstract}%
-  {Algebraic Simplifications Increasing Performance And Accuracy of Discrete Wavelet Transforms}%
-  {wavelet, interval, performance, optimization, haar, daubechies, accuracy, accuracy}
-  
 This project describes the main results consolidating the Interval Methods of Discrete Wavelet Transforms Library (Int-DWTs), providing algebraic simplifications in order to increase performance and guarantee accuracy of Discrete Wavelet Transforms (DWTs). The methods in the Int-DWTs include interval extensions and corresponding optimizations to the Haar Wavelet Transform (HWT) and Daubechies Wavelet Transform (DWT), which are implemented by using C-XSC. Optimizations for the normalized formulations of the one- and two-dimensional transforms to increase speed and guarantee accuracy of results are also presented. As an application, image compression is addressed, whose quality is computed and compared by different metrics. The error analysis of the different interval formulations as well as the speedup obtained through the interval formulations and the proposed simplifications are analyzed. The results consider a study over the interval extension of DWT, deducting simplifications and implementing optimizations based on the analogous methodology performed over HWT approaches. In addition, not only interval algorithms are developed but also metrics for evaluating procedure's accuracy are considered. By assuming concepts from Interval Mathematics, this work enables us to perform interval analysis and efficiently manage computing errors of DWTs. The metrics being used to measure result quality in the Int-DWTs are the following: Euclidean Distance, Mean Squared Error and Peak signal-to-noise ratio. In contexts where the scales of representation are relevant to the problem, the accuracy gain obtained with the proposed optimizations in the Int-DWTs represent a significant contribution to the scientific computing research area. 
 
-\end{englishabstract}
+\end{abstract}
 
 %Lista de Figuras
 \listoffigures
 
 %Lista de Tabelas
-%\listoftables
+\listoftables
 
 %lista de abreviaturas e siglas
 \begin{listofabbrv}{SPMD}
@@ -1069,7 +1067,7 @@ Both approaches inherit the 2D HWT composition procedures, keeping their origina
 
 \begin{table}[h!]
 \centering
-\caption{Number of operations of the DaWT.}
+\caption{Number of operations of the DaWT for decomposition.}
 \label{tab:Complexity-DaWT}
 \begin{tabular}{l|l|l|l}
              & 1D             & 2D Standard        & 2D Non-Standard       \\ \hline
