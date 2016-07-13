@@ -739,7 +739,7 @@ Depending on $ j $, the computation of $ \sqrt{2} $ may not be necessary, avoidi
     \label{fig:Fig4}
  \end{figure}
 
-Looking at the original decomposition procedure, shown in Figure~\ref{fig:DandDS}, the complexity of $DecompositionStep$ is $\BigO(n + 1)$, and for the main $ decomposition $ algorithm the complexity is $\BigO(n + \log(n) * (n + 2) + 1)$. By the proposed simplification they are reduced to $\BigO(n)$ and $\BigO(n + n\log(n))$, respectively. By performing the non-normalized decomposition there is no need to execute the normalization step at line 1 of the original $decomposition$ algorithm, neither the divisions by $\sqrt{2}$ at its step procedure. Therefore, overall complexity for non-normalized transformation of a $n$ sized vector is $\BigO(n\log(n))$, representing the pseudo-code shown in Figure~\ref{fig:NewDandDS}.
+Looking at the original decomposition procedure, shown in Figure~\ref{fig:DandDS}, the number of operations of the $DecompositionStep$ is $n + 1$, and for the main $ decomposition $ algorithm the number of operations is $n + \log(n) \cdot (n + 2) + 1$. By the proposed simplification they are reduced to $n + n\log(n)$ operations. By performing the non-normalized decomposition there is no need to execute the normalization step at line 1 of the original $decomposition$ algorithm, neither the divisions by $\sqrt{2}$ at its step procedure. Therefore, overall number of operations for non-normalized transformation of a $n$ sized vector is $n\log(n)$, representing the pseudo-code shown in Figure~\ref{fig:NewDandDS}.
 
 \begin{figure}[ht]
     %\centering
@@ -748,9 +748,9 @@ Looking at the original decomposition procedure, shown in Figure~\ref{fig:DandDS
     \label{fig:NewDandDS}
  \end{figure}
 
-The normalization procedure, presented in Figure~\ref{fig:1DNorm_and_Denorm}, performs the normalization step of all coefficients after their convolution using filters. Since it is executed once on every coefficient of a $n$ sized vector, its complexity can be $\BigO(n)$. 
+The normalization procedure, presented in Figure~\ref{fig:1DNorm_and_Denorm}, performs the normalization step of all coefficients after their convolution using filters. Since it is executed once on every coefficient of a $n$ sized vector its number of operations is $n$.
 
-By performing a non-normalized transform and the normalization procedure afterwards, the complexity is $\BigO(n\log(n) + n)$, which is the same complexity from the normalized transformation.
+By performing a non-normalized transform and the normalization procedure afterwards, the number of operations is $n\log(n) + n$, which is the same amount of operations from the normalized transformation.
 
 The goal is therefore the gain on accuracy obtained by avoiding high number of divisions using $\sqrt{2}$ from the original $DecompositionStep$ algorithm, as shown in Figure~\ref{fig:test1-3}.
 
@@ -763,9 +763,9 @@ The goal is therefore the gain on accuracy obtained by avoiding high number of d
 
 The normalized composition procedure follows the same basic idea to reduce computation of $\sqrt{2}$, it performs the non-normalized inverse transform, but this time a denormalization step, shown in Figure~\ref{fig:1DNorm_and_Denorm}, is executed before the transform begins. 
 
-The original algorithms for composition and its step procedure, Figure~\ref{fig:CandCS}, behave similarly to decomposition. The complexity of the $Composition$ procedure is $\BigO(n\log(n) + n)$ if the normalized formulation is considered, otherwise it is $\BigO(n\log(n))$. The denormalization step, also shown in Figure~\ref{fig:1DNorm_and_Denorm}, is almost the same $Normalization$ algorithm, whose complexity is $\BigO(n)$.
+The original algorithms for composition and its step procedure, Figure~\ref{fig:CandCS}, behave similarly to decomposition. The number of operations of the $Composition$ procedure is $n\log(n) + n$ if the normalized formulation is considered, otherwise it is $n\log(n)$. The denormalization step, also shown in Figure~\ref{fig:1DNorm_and_Denorm}, is almost the same $Normalization$ algorithm, whose complexity is $n$.
 
-The difference is at line 6, where it is dividing each coefficient by the normalization factor, preparing the data to be transformed. Therefore the optimal composition has the complexity from the original version, $\BigO(n\log(n) + n)$, but its results are more exact due to the normalization step, avoiding the calculation of $\sqrt{2}$ on every iteration.
+The difference is at line 6, where it is dividing each coefficient by the normalization factor, preparing the data to be transformed. Therefore the optimal composition has the same amount of operations from the original version, $n\log(n)$, but its results are more exact due to the normalization step, avoiding the calculation of $\sqrt{2}$ on every iteration.
 
 
 
@@ -793,9 +793,9 @@ where $ 0 \leq j' , j'' \leq (\log_{2}n) -1 $ and $ n $ indicates the matrix ord
 	\label{fig:2DNormFactors}
 \end{figure}
 
-By analyzing the original standard algorithm, Figure~\ref{fig:SDandND}, it depends on the original normalized decomposition procedure, whose complexity is $\BigO(n\log(n) + n)$, executing it for every row and column of the input matrix.
+By analyzing the original standard algorithm, Figure~\ref{fig:SDandND}, it depends on the original normalized decomposition procedure, whose number of operations is $n\log(n) + n$, executing it for every row and column of the input matrix.
 
-Considering a $n$x$n$ matrix the complexity of the original standard algorithm is $\BigO(n(n\log(n) + n) + n(n\log(n) + n))$, therefore $\BigO(2n^2\log(n) + 2n^2)$. Performing the non-normalized decomposition algorithm, discussed in Section~\ref{subsec:1DCascadeOpt}, it reduces the calculations by avoiding intermediate normalization steps.
+Considering a $n$x$n$ matrix the number of operations of the original standard algorithm is $n\cdot(n\log(n) + n) + n\cdot(n\log(n) + n)$, therefore $2n^2\log(n) + 2n^2$. Performing the non-normalized decomposition algorithm, discussed in Section~\ref{subsec:1DCascadeOpt}, it reduces the calculations by avoiding intermediate normalization steps.
 
 \begin{figure}[ht]
   	\includegraphics[width=10cm]{Imagens/StandardNormalization.png}
@@ -803,15 +803,15 @@ Considering a $n$x$n$ matrix the complexity of the original standard algorithm i
 	\label{fig:StandardNormAlg}
 \end{figure}
 
-The non-normalized standard decomposition is performed with $\BigO(2n^2\log(n))$, and the last step is to normalize the results using the $StandardNormalization$ algorithm, presented in Figure~\ref{fig:StandardNormAlg}, and since it is operating one time on each coefficient of the input matrix its complexity can be expressed by $\BigO(n^2)$.
+The non-normalized standard decomposition is performed with $2n^2\log(n)$ operations, and the last step is to normalize the results using the $StandardNormalization$ algorithm, presented in Figure~\ref{fig:StandardNormAlg}, and since it is operating one time on each coefficient of the input matrix its number of operations can be expressed by $n^2$.
 
-The complexity of performing the non-normalized standard decomposition and the standard normalization step can be expressed by $\BigO(2n^2\log(n) + n^2)$, which is faster than the original normalized procedure by avoiding a second iteration of $\BigO(n^2)$ on the input matrix.
+The number of operations by performing the non-normalized standard decomposition and the standard normalization step can be expressed by $2n^2\log(n) + n^2$, which is faster than the original normalized procedure by avoiding a second iteration of $n^2$ operations on the input matrix.
 
-The original normalized standard composition, presented in Figure~\ref{fig:InverseSCandNSC}, can be analyzed in the same way as its decomposition procedure since it performs the same number of operations but produces an approximation of the input matrix used for decomposition. The original version is executed in $\BigO(2n^2\log(n) + 2n^2)$ time, while its optimized version operates in $\BigO(2n^2\log(n) + n^2)$.
+The original normalized standard composition, presented in Figure~\ref{fig:InverseSCandNSC}, can be analyzed in the same way as its decomposition procedure since it performs the same number of operations but produces an approximation of the input matrix used for decomposition. The original version is executed in $2n^2\log(n) + 2n^2$ time, while its optimized version operates in $2n^2\log(n) + n^2$.
 
 Looking at the original non-standard algorithm, Figure~\ref{fig:SDandND}, it is executing a intermediate normalization at line 1, dividing each coefficient by the order of the input matrix, which configures a $\BigO(n^2)$ operation.
 
-Considering a quadratic matrix of order $n$, the rest of the algorithm operates in a $while$ loop which is executed $\log_2(n)$ times. For each $while$ loop there are two $for$ loops also executing $\log_2(n)$ times, each one performing the $DecompositionStep$ algorithm ($\BigO(n)$) on portions of the input matrix, depending on the level of transformation. The original non-standard decomposition is executed in $\BigO(n^2 + \log(\log(n) + \log(n)))$ time.
+Considering a quadratic matrix of order $n$, the rest of the algorithm operates in a $while$ loop which is executed $\log_2(n)$ times. For each $while$ loop there are two $for$ loops also executing $\log_2(n)$ times, each one performing the $DecompositionStep$ algorithm ($n$ operations) on portions of the input matrix, depending on the level of transformation. The original non-standard decomposition is executed with $n^2 + \log(\log(n) + \log(n))$ operations.
 
 \begin{figure}[ht]
   	\includegraphics[width=8.6cm]{Imagens/NonStandardNormalization.png}
@@ -819,44 +819,21 @@ Considering a quadratic matrix of order $n$, the rest of the algorithm operates 
 	\label{fig:NonStandardNormAlg}
 \end{figure}
 
-The non-normalized non-standard decomposition ( $\BigO(\log(\log(n) + \log(n)))$) does not need the normalization step,  and its $Non-StandardNormalization$ algorithm, shown in Figure~\ref{fig:NonStandardNormAlg}, is performed with complexity $\BigO(n^2)$.
+The non-normalized non-standard decomposition is performed on $\log(\log(n) + \log(n))$ operations,  and its $Non-StandardNormalization$ algorithm, shown in Figure~\ref{fig:NonStandardNormAlg}, is performed on $n^2$ operations.
 
-The overall complexity of these procedures is $\BigO(n^2 + \log(\log(n) + \log(n)))$, which is the same from the original normalized non-standard algorithm. The gain of time presented in Figure~\ref{fig:test2S-NS} was obtained performing simple divisions by $2$ which are faster than using $\sqrt{2}$ as divisor when analysing processor microinstructions.
+The number of operations of these procedures is $n^2 + \log(\log(n) + \log(n))$, which is the same from the original normalized non-standard algorithm. The gain of time presented in Figure~\ref{fig:test2S-NS} was obtained performing simple divisions by $2$ which are faster than using $\sqrt{2}$ as divisor when analysing processor microinstructions.
+
+\newpage
 
 \subsection{Undecimated Formulation}\label{sec:hwt-undec}
 
+This Section presents the developed optimizations for both one and two dimensional approaches of the HWT À-Trous in Sections~\ref{sec:hwt-undec-1D} and \ref{sec:hwt-undec-2D}.
 
-The simplifications implemented for the 2D int-HWT consider the same principle presented in the 1D case, i.e., the same strategy of multiplying the transformed values by the corresponding $2^{-j/2}$ normalization factor, where $j$ is the corresponding level. To compose or decompose a matrix the 1D transform is applied in all rows and in all columns of the input matrix.
-
-However, according to what was discussed in Section~\ref{sec:hwt2d}, there are two algorithms for composition and decomposition of matrices, what suggests distinct normalization procedures for both approaches.
-
-The developed study of the original algorithms~\cite{stollnitz1995} showed a pattern of normalization factors. This pattern was analyzed and employed in the development of the normalization procedures for both standard and non-standard algorithms, assuming the decimated version of the HWT.
-
-These patterns are illustrated in Figure~\ref{fig:2DNormFactors}, where three decomposition levels are presented for $8$x$8$ matrices. The parameters $ j' $ and $ j'' $ indicate the  normalization levels. The rule to calculate these normalization factors is expressed by $R$ defined in Eq.~(\ref{eq:NormFac})
-
-By analyzing the original standard algorithm, Figure~\ref{fig:SDandND}, it depends on the original normalized decomposition procedure, whose complexity is $\BigO(n\log(n) + n)$, executing it for every row and column of the input matrix.
-
-Considering a $n$x$n$ matrix the complexity of the original standard algorithm is $\BigO(n(n\log(n) + n) + n(n\log(n) + n))$, therefore $\BigO(2n^2\log(n) + 2n^2)$. Performing the non-normalized decomposition algorithm, discussed in Section~\ref{subsec:1DCascadeOpt}, it reduces the calculations by avoiding intermediate normalization steps.
-
-The non-normalized standard decomposition is performed with $\BigO(2n^2\log(n))$, and the last step is to normalize the results using the $StandardNormalization$ algorithm, presented in Figure~\ref{fig:StandardNormAlg}, and since it is operating one time on each coefficient of the input matrix its complexity can be expressed by $\BigO(n^2)$.
-
-The complexity of performing the non-normalized standard decomposition and the standard normalization step can be expressed by $\BigO(2n^2\log(n) + n^2)$, which is faster than the original normalized procedure by avoiding a second iteration of $\BigO(n^2)$ on the input matrix.
-
-The original normalized standard composition, presented in Figure~\ref{fig:InverseSCandNSC}, can be analyzed in the same way as its decomposition procedure since it performs the same number of operations but produces an approximation of the input matrix used for decomposition. The original version is executed in $\BigO(2n^2\log(n) + 2n^2)$ time, while its optimized version operates in $\BigO(2n^2\log(n) + n^2)$.
-
-Looking at the original non-standard algorithm, Figure~\ref{fig:SDandND}, it is executing a intermediate normalization at line 1, dividing each coefficient by the order of the input matrix, which configures a $\BigO(n^2)$ operation.
-
-Considering a quadratic matrix of order $n$, the rest of the algorithm operates in a $while$ loop which is executed $\log_2(n)$ times. For each $while$ loop there are two $for$ loops also executing $\log_2(n)$ times, each one performing the $DecompositionStep$ algorithm ($\BigO(n)$) on portions of the input matrix, depending on the level of transformation. The original non-standard decomposition is executed in $\BigO(n^2 + \log(\log(n) + \log(n)))$ time.
-
-The non-normalized non-standard decomposition ( $\BigO(\log(\log(n) + \log(n)))$) does not need the normalization step,  and its $Non-StandardNormalization$ algorithm, shown in Figure~\ref{fig:NonStandardNormAlg}, is performed with complexity $\BigO(n^2)$.
-
-The overall complexity of these procedures is $\BigO(n^2 + \log(\log(n) + \log(n)))$, which is the same from the original normalized non-standard algorithm. The gain of time presented in Figure~\ref{fig:test2S-NS} was obtained performing simple divisions by $2$ which is faster than using $\sqrt{2}$ as divisor.
-
-\subsubsection{One Dimensional}
+\subsubsection{One Dimensional}\label{sec:hwt-undec-1D}
 
 The normalized decomposition procedure for the undecimated version of the Int-HWT, either one-dimensional or two-dimensional, is executed in the same order from the optimization developed for the decimated version: first a non-normalized decomposition is made, as indicated in Figure~\ref{fig:DTAtrous}; after this stage the normalization of all coefficients is performed, multiplying all of them by the normalization factor $ 2^{j/2} $, where $ j $ is the resolution level of the coefficients through out the decomposition.
 
-The complexities of both $ DecompositionStep $ and $ Decomposition $ procedures are  $\BigO(2n + 2)$ and $\BigO(Levels.(2n + 3))$, respectively. Both are part of the original decomposition procedure, shown in Figure~\ref{fig:AtrousDecompMethods}. As in the previous cases, by performing a non-normalized decomposition there is no need to execute divisions by $\sqrt{2}$ in the step procedure, pseudo-code shown in Figure~\ref{fig:NewAtrousDS}, reducing the corresponding complexities to $\BigO(2n)$ and $\BigO(2n.Levels)$ (the same complexity as the original normalized transform).
+The number of operations of both $ DecompositionStep $ and $ Decomposition $ procedures are  $2n$ and $Levels\cdot 2n$, respectively. Both are part of the original decomposition procedure, shown in Figure~\ref{fig:AtrousDecompMethods}. As in the previous cases, by performing a non-normalized decomposition there is no need to execute divisions by $\sqrt{2}$ in the step procedure, pseudo-code shown in Figure~\ref{fig:NewAtrousDS}, reducing the corresponding amount of operations is $2n$ and $2n\cdot Levels$, the same complexity as the original normalized transform.
 
 \begin{figure}[ht]
   	\includegraphics[width=10cm]{Imagens/Atrous_New_DStep.png}
@@ -866,7 +843,7 @@ The complexities of both $ DecompositionStep $ and $ Decomposition $ procedures 
 
 The normalization procedure, presented in Figure~\ref{fig:Atrous1DNormalization}, performs the normalization step of all coefficients after the transform. In contrast with the decimated version, the undecimated approach deals with a set of vectors as result of the transform, and each resultant vector need to be normalized individually.
 
-The normalization procedure multiplies each scalar coefficient by its normalization factor $ 2^{i/2} $ for every resultant vector from the transform, configuring $ \BigO(n.Levels) $ from line 1 to 5 of the pseudo-code. With the new set of scalar values all wavelet coefficients are then recalculated, configuring $ \BigO(Levels.(n + 3) + 2) $ from line 6 to 16, which can be simplified to $ \BigO(n.Levels) $. The overall complexity of the procedure is $ \BigO(2n.Levels) $.
+The normalization procedure multiplies each scalar coefficient by its normalization factor, as shown in Eq.~(\ref{eq:NormFac}), for every resultant vector from the transform, configuring $ n\cdot Levels$ operations from line 1 to 5 of the pseudo-code. With the new set of scalar values all wavelet coefficients are then recalculated, configuring $ Levels\cdot(n + 3) + 2$ from line 6 to 16, which can be simplified to $ n\cdot Levels$. The overall amount of operations of the procedure is $2n\cdot Levels$.
 
 \begin{figure}[ht]
   	\includegraphics[width=9cm]{Imagens/Atrous1DNormalization.png}
@@ -874,33 +851,58 @@ The normalization procedure multiplies each scalar coefficient by its normalizat
 	\label{fig:Atrous1DNormalization}
 \end{figure}
 
-By performing a non-normalized vector transform and the normalization procedure, the complexity is $\BigO(4n.Levels)$, which is more expensive than the original normalized formulation. The gain obtained with the new implementation is on the accuracy of results by avoiding high number of divisions using $\sqrt{2}$ from the original $DecompositionStep$ algorithm, as shown in Figure~\ref{fig:test1-3}.
+By performing a non-normalized vector transform and the normalization procedure, the number of operations is $4n\cdot Levels$, which is more expensive than the original normalized formulation. The gain obtained with the new implementation is on the accuracy of results by avoiding high number of divisions using $\sqrt{2}$ from the original $DecompositionStep$ algorithm, as shown in Figure~\ref{fig:test1-3}.
 
-The composition process, shown in Figure~\ref{fig:AtrousCompMethod}, starts with a copy of all scalar coefficients from the lowest level summing it with all wavelet vectors produced during decomposition. The complexity of this procedure is $ \BigO(n.Levels) $ and can be used for both normalized and non-normalized transformations, there is no need for optimization.
+The composition process, shown in Figure~\ref{fig:AtrousCompMethod}, starts with a copy of all scalar coefficients from the lowest level summing it with all wavelet vectors produced during decomposition. The number of operations of this procedure is $ n\cdot Levels) $ and can be used for both normalized and non-normalized transformations, there is no need for optimization.
 
-\subsubsection{Two Dimension}
+\subsubsection{Two Dimension}\label{sec:hwt-undec-2D}
 
 As done for the decimated case, the undecimated transform, preformed by the À-Trous algorithm, considers the same principle presented in the one-dimensional optimization, i.e., the same strategy of multiplying the transformed values by the corresponding $2^{j/2}$ normalization factor, where $j$ is the corresponding level.
 
 In order to decompose a data matrix the two-dimensional implementation creates a set of matrices carrying scalar coefficients and another set of matrices to store wavelet coefficients. The procedure is expensive on both performing and storing the results. Applying the same idea used in previous implementations, it is possible to reduce the error involved in the process.
 
-In Figure~\ref{fig:AtrousStandardPseudo} the original standard procedure is presented. It performs the decomposition of every line and level of a $n$x$m$ matrix, configuring a complexity of $ \BigO(n.2m.Levels) $.
+In Figure~\ref{fig:AtrousStandardPseudo} the original standard procedure is presented. It performs the decomposition of every line and level of a $n$x$m$ matrix, configuring an amount of $n\cdot 2m\cdot Levels$ operations.
 
-The analog procedure for all columns of the same matrix has $\BigO(m.2n.Levels)$. The entire procedure is expressed by $\BigO(n.2m.Levels + m.2n.Levels)$, which can be simplified to $\BigO(4n.m.Levels)$.
+The analog procedure for all columns of the same matrix has $m\cdot 2n\cdot Levels$. The entire procedure is expressed by $n\cdot 2m\cdot Levels + m\cdot 2n\cdot Levels$, which can be simplified to $4n\cdot m\cdot Levels$.
 
 The non-standard procedure executes the same amount of calculations, but intercalating the decomposition of rows and columns. Both standard and non-standard algorithms can be used in conjunction with $DecompositionStep$ shown in Figure~\ref{fig:NewDandDS}, so the complexity of executing the normalized and non-normalized are the same.
 
-The next step in order to normalize the transformed values is to perform the $A\-TrousMatrixNormalization$ procedure, shown in Figure~\ref{fig:AtrousMatrixNormalization}, which is executed in $\BigO(4n.m.Levels)$.
-
-Therefore, the optimized decomposition procedure developed costs $\BigO(8n.m.Levels)$, twice the cost of the original normalized formulation, but tests indicate that our approach results in more exact values as shown in Figure~\ref{fig:test4S-NS}.
-
-\begin{figure}[ht]
+\begin{figure}[h!]
   	\includegraphics[width=11.5cm]{Imagens/ATrousMatrixNormalization.png}
   	\caption{2D undecimated Int-HWT: normalization procedure.}
 	\label{fig:AtrousMatrixNormalization}
 \end{figure}
 
 \newpage
+
+The next step in order to normalize the transformed values is to perform the $A\-TrousMatrixNormalization$ procedure, shown in Figure~\ref{fig:AtrousMatrixNormalization}, which is executed with $4n\cdot m\cdot Levels$ operations.
+
+Therefore, the optimized decomposition procedure developed costs $8n\cdot m\cdot Levels$, twice the cost of the original normalized formulation, but tests indicate that our approach results in more exact values as shown in Figure~\ref{fig:test4S-NS}.
+
+\renewcommand{\arraystretch}{1.2}
+
+\begin{table}[h!]
+\centering
+\caption{Number of operations of the Decimated HWT.}
+\label{tab:Complexity-HWT-Decimated}
+\begin{tabular}{l|l|l|l}
+             & 1D             & 2D Standard           & 2D Non-Standard       \\ \hline
+Original     & $n\log(n) + n$ & $2n^2\log(n) + 2n^2$  & $n^2 + \log(\log(n) + \log(n))$\\
+developed    & $n\log(n) + n$ & $2n^2\log(n) + n^2$   & $n^2 + \log(\log(n) + \log(n))$          
+\end{tabular}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\caption{Number of operations of the Undecimated HWT for decomposition.}
+\label{tab:Complexity-HWT-Undecimated}
+\begin{tabular}{l|l|l}
+             & 1D                & 2D                    \\ \hline
+Original     & $2 \cdot n \cdot Levels$ & $4 \cdot n \cdot m \cdot Levels $  \\
+developed    & $4 \cdot n \cdot Levels$ & $8 \cdot n \cdot m \cdot Levels $          
+\end{tabular}
+\end{table}
+
 
 \section{Daubechies Wavelet Transform}
 
@@ -966,9 +968,9 @@ Other ones are described by  (\ref{eq:ihOptFilter}) and (\ref{eq:igOptFilter}), 
 	 & = & \frac{a - b + 3\left(c - d\right) + \sqrt{3}\left(c + d - a - b\right)}{4\sqrt{2}} \label{eq:igOptFilter}
 \end{eqnarray}
 
-Looking at the original decomposition procedure, shown in Figure~\ref{fig:DaubDandDS}, the complexity of $DecompositionStep$ is $\BigO(3 + (n/2).4 + 3)$, which can be simplified to $\BigO(n)$, and for the main $Decomposition $ algorithm the complexity is $\BigO(1 + \log(n).(n + 1))$, that can be simplified to $\BigO(n\log(n))$.
+Looking at the original decomposition procedure, shown in Figure~\ref{fig:DaubDandDS}, the number of operations of the $DecompositionStep$ is $3 + (n/2)\cdot 4 + 3$, which can be simplified to $\BigO(n)$, and for the main $Decomposition $ algorithm the amount of operations is $1 + \log(n)\cdot (n + 1)$, that can be simplified to $\BigO(n\log(n))$.
 
-The complexity of the developed algorithms for decomposition, shown in Figure~\ref{fig:Daub_Opt_D_and_DStep}, are expressed by $\BigO(5 + (n/2).9 + 8)$, or just $\BigO(n)$, for the developed $DecompositionStep$ procedure and $\BigO(1 + \log(n).(n + 1))$, or just $\BigO(n\log(n))$ for the developed $Decomposition$ routine.
+The number of operations of the developed algorithms for decomposition, shown in Figure~\ref{fig:Daub_Opt_D_and_DStep}, are expressed by $5 + (n/2)\cdot 9 + 8$, or just $n$, for the developed $DecompositionStep$ procedure and $1 + \log(n)\cdot (n + 1)$, or just $n\log(n)$ for the developed $Decomposition$ routine.
 
 Therefore, both original and developed algorithms share the same complexity for normalized filters.
 
@@ -981,7 +983,7 @@ The next step is to normalize the coefficients after their convolution using the
 
 
 
-Since it is executed once on every coefficient of a $n$ sized vector, its complexity is expressed by $\BigO(n)$. Performing a non-normalized transformation and the normalization procedure afterwards, the complexity is $\BigO(n\log(n) + n)$, making the developed optimization slower than the original formulation.
+Since it is executed once on every coefficient of a $n$ sized vector, its complexity is expressed by $n$. Performing a non-normalized transformation and the normalization procedure afterwards, the number of operations is $n\log(n) + n$, making the developed optimization slower than the original formulation.
 
 The goal is therefore the gain on accuracy obtained by avoiding a high number of operations using $\sqrt{2}$ and $\sqrt{3}$ from the original $DecompositionStep$ algorithm, as shown in Figure~\ref{fig:DaubDandDS}.
 
@@ -1005,9 +1007,9 @@ In contrast to the HWT optimization strategy for composing the results, the DaWT
 
 %\includegraphics[width=10cm]{Imagens/Daub_Opt_CStep.png}
 
-In the 1D DaWT composition procedure and its step procedure, as shown in Figure~\ref{fig:DaubCandCS}, behave similarly to decomposition where its complexity is expressed by $\BigO(n\log(n))$.
+In the 1D DaWT composition procedure and its step procedure, as shown in Figure~\ref{fig:DaubCandCS}, behave similarly to decomposition where its number of operations is expressed by $n\log(n)$.
 
-The developed optimal $Composition$ procedure, shown in Figure~\ref{fig:Daub_Opt_C}, shares the same complexity of $\BigO(n\log(n))$, but its results are more exact due to the simplified filters, avoiding the unnecessary calculation of $\sqrt{2}$ and $\sqrt{3}$ on every iteration.
+The developed optimal $Composition$ procedure, shown in Figure~\ref{fig:Daub_Opt_C}, shares the same number of operations of $n\log(n)$, but its results are more exact due to the simplified filters, avoiding the unnecessary calculation of $\sqrt{2}$ and $\sqrt{3}$ on every iteration.
 
 \begin{figure}[h!]
 	%\centering
@@ -1041,7 +1043,7 @@ The normalization patterns are illustrated in Figure~\ref{fig:Daub2DNormFactors}
 	\label{fig:DaubOptStandard}
 \end{figure}
 
-The analysis of the original Standard algorithm inherited from the HWT depends on the original normalized decomposition procedure, as shown in Figure~\ref{fig:SDandND}. By executing such algorithm for every row and column of the input matrix, one can observe the corresponding complexity analysis as $\BigO(n\log(n))$. Considering a matrix $C_{N \times N}$, the complexity of the original standard algorithm is $\BigO(n(n\log(n)) + n(n\log(n)))$, or just $\BigO(n^2\log(n))$.
+The analysis of the original Standard algorithm inherited from the HWT depends on the original normalized decomposition procedure, as shown in Figure~\ref{fig:SDandND}. By executing such algorithm for every row and column of the input matrix, one can observe the corresponding number of operations analysis as $n\log(n)$. Considering a matrix $C_{n \times n}$, the number of operations of the original standard algorithm is $n(n\log(n)) + n(n\log(n))$, or just $n^2\log(n)$.
 
 \begin{figure}[h!]
   	\includegraphics[width=10cm]{Imagens/Daub_StandardStepNorm.png}
@@ -1051,7 +1053,7 @@ The analysis of the original Standard algorithm inherited from the HWT depends o
 
 In opposition to the HWT, the optimal normalized DaWT Standard decomposition has to perform its normalization step, shown in Figure~\ref{fig:DaubStandardStepNormAlg}, in between the decomposition of rows and columns, and a second time at the end of the procedure, as presented in Figure~\ref{fig:DaubOptStandard}.
 
-Since the normalization step procedure is a kernel that will apply the right normalization factor to each coefficient in a $n$x$n$ matrix, its complexity can be expressed as $\BigO(n^2)$. Therefore, the developed optimal Standard normalized decomposition procedure is performed with complexity of $\BigO(n^2\log(n) + n^2)$, or $\BigO(n^2(1 + \log(n)))$. 
+Since the normalization step procedure is a kernel that will apply the right normalization factor to each coefficient in a $n$x$n$ matrix, its number of operations can be expressed as $n^2$. Therefore, the developed optimal Standard normalized decomposition procedure is performed with number of operations of $n^2\log(n) + n^2$. 
 
 Considering this, the developed procedure is slower than the original but it is more accurated due to the new proposed filter set.
 
@@ -1064,6 +1066,17 @@ This way the Non-Standard algorithm has the same complexity as the same develope
 By the same reason that the 1D DaWT does not use any denormalization procedure, the 2D Standard and Non-Standard DaWT does not perform denormalization of its coefficients before composition either.
 
 Both approaches inherit the 2D HWT composition procedures, keeping their original complexity as discussed in Section~\ref{subsec:cascade2D_Opt_Haar}. However, the developed 2D DaWT Composition routines in Int-DWTs library present better results as consequence of using the new set of simplified filters, as discussed in Section~\ref{sec:Daub1DOptimization}.
+
+\begin{table}[h!]
+\centering
+\caption{Number of operations of the DaWT.}
+\label{tab:Complexity-DaWT}
+\begin{tabular}{l|l|l|l}
+             & 1D             & 2D Standard        & 2D Non-Standard       \\ \hline
+Original     & $n\log(n)$     & $n^2\log(n)$       & $n^2 + \log(\log(n) + \log(n))$\\
+developed    & $n\log(n) + n$ & $n^2\log(n) + n^2$ & $n^2 + \log(\log(n) + \log(n))$          
+\end{tabular}
+\end{table}
 
 \section{Interval Compression}
 \label{sec:compress}
