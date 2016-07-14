@@ -35,7 +35,7 @@
 \coadvisor[Prof.~Dr.]{Pilla}{Maurício}
 \collaborator[Profa.~Dra.]{Kozakevicius}{Alice}
 
-\keyword{wavelet, interval, performance, optimization, haar, daubechies, accuracy, accuracy}
+\keyword{wavelet, haar, daubechies, optimization, performance}
 
 \begin{document}
 
@@ -47,9 +47,22 @@
 
 \sloppy
 
+\fichacatalografica
+
+\folhadeaprovacao
+
+\begin{dedicatoria}
+  Dedico este trabalho a meu avô, Orlando Ferreira dos Santos, conhecido "Camarão", por ter apoiado meus estudos até o início de minha formação acadêmica. Por conta de eventos inevitáveis da vida, infelizmente não poderei lhe mostrar o diploma, porém registro aqui minha dedicatória ao velho camarada.
+\end{dedicatoria}
+
+\begin{epigrafe}
+  "Leave this world a little better than you found it."\\
+  {\sc --- Baden-Powell's Last Message (1945)}
+\end{epigrafe}
+
 \begin{englishabstract}%
 {Biblioteca Int-DWTs - Simplificações Algébricas Aumentando Desempenho e Exatidão de Transformadas Discretas Wavelet}
-	{wavelet, intervalo, desempenho, otimização, haar, daubechies, exatidão}
+	{wavelet, haar, daubechies, otimização, desempenho}
 
 Este trabalho descreve a modelagem e o desenvolvimento de metodologia bem como a análise de resultados para consolidação da biblioteca Int-DWTs, contendo Métodos Intervalares para Transformadas Discretas Wavelet. Os métodos presentes em Int-DWTs incluem estensões intervalares e suas correspondentes otimizações para Transformadas Discretas Wavelet (TDWs), mais especificamente para as Transformadas Wavelet de Haar e Daubechies. As otimizações implementadas promoveram simplificações algébricas visando o incremento de desempenho e a garantia de exatidão das TDWs estudadas. São apresentadas e comparadas as análises de complexidade dos algoritmos desenvolvidos em relação aos presentes na literatura. A qualidade de resultados é verificada ao comparar três métricas: $EUC$ (Euclidean Distance), $MSE$ (\textit{Mean Squared Error}) e $PSNR$ (\textit{peak signal-to-noise ratio}). O nível de erro produzido pelas formulações intervalares, como também os desempenhos obtidos através das simplificações propostas, são analisadas e comparadas com resultados baseados na literatura. Em contextos onde as escalas de representação são relevantes para o problema, os ganhos de exatidão obtidos com as otimizações propostas representam uma contribuição significativa para a área de Computação Científica.
 
@@ -901,6 +914,8 @@ developed    & $4 \cdot n \cdot Levels$ & $8 \cdot n \cdot m \cdot Levels $
 \end{tabular}
 \end{table}
 
+The Tables~\ref{tab:Complexity-HWT-Decimated} and \ref{tab:Complexity-HWT-Undecimated} present a comparison of the studied algorithmic complexity for both approaches of the WHT. The expressions show that the developed 1D and 2D Non-Standard HWT Decimated are executed with the same amount of operations compared to their original formulation. The developed 2D Standard HWT is performed with less operations than the original algorithm from the literature. The developed HWT Undecimated needs more operations to be performed comparing to the one from the literature.
+
 
 \section{Daubechies Wavelet Transform}
 
@@ -1076,6 +1091,10 @@ developed    & $n\log(n) + n$ & $n^2\log(n) + n^2$ & $n^2 + \log(\log(n) + \log(
 \end{tabular}
 \end{table}
 
+\newpage
+
+The Table~\ref{tab:Complexity-DaWT} shows that the developed DaWT is perform using more operations compared to its original formulation based on the literature.
+
 \section{Interval Compression}
 \label{sec:compress}
 
@@ -1141,12 +1160,12 @@ Euclidean Distance ($EUC$) and Mean Square Error ($MSE$) are around $99.8\%$ of 
 \begin{figure}[h!]
   \centering
   \begin{subfigure}[b]{0.48\textwidth}
-	\includegraphics[width=\textwidth]{Imagens/test1.png}
+	\includegraphics[width=\textwidth]{Imagens/test1.pdf}
 	\caption{Decimated 1D HWT}
     \label{fig:Dec1DHWT}
   \end{subfigure}
   \begin{subfigure}[b]{0.48\textwidth}
-	\includegraphics[width=\textwidth]{Imagens/test3.png}
+	\includegraphics[width=\textwidth]{Imagens/test3.pdf}
 	\caption{Undecimated 1D HWT}
 	\label{fig:Und1DHWT}
   \end{subfigure}
@@ -1173,12 +1192,12 @@ Data from Figure~\ref{fig:test2S-NS} show the performance of both standard and n
 \begin{figure}[h!]
   \centering
   \begin{subfigure}[b]{0.48\textwidth}
-	\includegraphics[width=\textwidth]{Imagens/test2S.png}
+	\includegraphics[width=\textwidth]{Imagens/test2S.pdf}
 	\caption{Decimated 2D Standard HWT}
     \label{fig:Dec2DSHWT}
   \end{subfigure}
   \begin{subfigure}[b]{0.48\textwidth}
-	\includegraphics[width=\textwidth]{Imagens/test2NS.png}
+	\includegraphics[width=\textwidth]{Imagens/test2NS.pdf}
 	\caption{Decimated 2D Non-Standard HWT}
 	\label{fig:Dec2DNSHWT}
   \end{subfigure}
@@ -1195,12 +1214,12 @@ Figure~\ref{fig:test4S-NS} shows the performance impact of both standard and non
 \begin{figure}[h!]
   \centering
   \begin{subfigure}[b]{0.48\textwidth}
-	\includegraphics[width=\textwidth]{Imagens/test4S.png}
+	\includegraphics[width=\textwidth]{Imagens/test4S.pdf}
 	\caption{Undecimated 2D Standard HWT}
     \label{fig:Und2DSHWT}
   \end{subfigure}
   \begin{subfigure}[b]{0.48\textwidth}
-	\includegraphics[width=\textwidth]{Imagens/test4NS.png}
+	\includegraphics[width=\textwidth]{Imagens/test4NS.pdf}
 	\caption{Undecimated 2D Non-Standard HWT}
 	\label{fig:Und2DNSHWT}
   \end{subfigure}
@@ -1227,17 +1246,17 @@ The results shown in Figure~\ref{fig:test5} describe the performance of both dec
 \begin{figure}[h!]
   \centering
   \begin{subfigure}[b]{0.48\textwidth}
-	\includegraphics[width=\textwidth]{Imagens/test5-1048576.png}
+	\includegraphics[width=\textwidth]{Imagens/test5-1048576.pdf}
 	\caption{Using 1048576 values}
     \label{fig:1DDaWT-1}
   \end{subfigure}
   \begin{subfigure}[b]{0.48\textwidth}
-	\includegraphics[width=\textwidth]{Imagens/test5-4194304.png}
+	\includegraphics[width=\textwidth]{Imagens/test5-4194304.pdf}
 	\caption{Using 4194304 values}
 	\label{fig:1DDaWT-2}
   \end{subfigure}
   \begin{subfigure}[b]{0.48\textwidth}
-	\includegraphics[width=\textwidth]{Imagens/test5-16777216.png}
+	\includegraphics[width=\textwidth]{Imagens/test5-16777216.pdf}
 	\caption{Using 16777216 values}
 	\label{fig:1DDaWT-3}
   \end{subfigure}
@@ -1266,17 +1285,17 @@ The results shown in Figure~\ref{fig:test6S} describe the performance of both de
 \begin{figure}[h!]
   \centering
   \begin{subfigure}[b]{0.48\textwidth}
-	\includegraphics[width=\textwidth]{Imagens/test6S-1024.png}
+	\includegraphics[width=\textwidth]{Imagens/test6S-1024.pdf}
 	\caption{Using 1024x1024 matrix}
     \label{fig:2DSDaWT-1}
   \end{subfigure}
   \begin{subfigure}[b]{0.48\textwidth}
-	\includegraphics[width=\textwidth]{Imagens/test6S-2048.png}
+	\includegraphics[width=\textwidth]{Imagens/test6S-2048.pdf}
 	\caption{Using 2048x2048 matrix}
 	\label{fig:2DSDaWT-2}
   \end{subfigure}
   \begin{subfigure}[b]{0.48\textwidth}
-	\includegraphics[width=\textwidth]{Imagens/test6S-4096.png}
+	\includegraphics[width=\textwidth]{Imagens/test6S-4096.pdf}
 	\caption{Using 4096x4096 matrix}
 	\label{fig:2DSDaWT-3}
   \end{subfigure}
@@ -1301,17 +1320,17 @@ The results shown in Figure~\ref{fig:test6NS} summarize the performance of both 
 \begin{figure}[h!]
   \centering
   \begin{subfigure}[b]{0.48\textwidth}
-	\includegraphics[width=\textwidth]{Imagens/test6NS-1024.png}
+	\includegraphics[width=\textwidth]{Imagens/test6NS-1024.pdf}
 	\caption{Using 1024x1024 matrix}
     \label{fig:2DNSDaWT-1}
   \end{subfigure}
   \begin{subfigure}[b]{0.48\textwidth}
-	\includegraphics[width=\textwidth]{Imagens/test6NS-2048.png}
+	\includegraphics[width=\textwidth]{Imagens/test6NS-2048.pdf}
 	\caption{Using 2048x2048 matrix}
 	\label{fig:2DNSDaWT-2}
   \end{subfigure}
   \begin{subfigure}[b]{0.48\textwidth}
-	\includegraphics[width=\textwidth]{Imagens/test6NS-4096.png}
+	\includegraphics[width=\textwidth]{Imagens/test6NS-4096.pdf}
 	\caption{Using 4096x4096 matrix}
 	\label{fig:2DNSDaWT-3}
   \end{subfigure}
